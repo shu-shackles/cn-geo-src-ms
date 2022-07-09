@@ -26,7 +26,26 @@
 from models.db import con
 
 
-async def confirm_user(name):
-  sql_result = con.execute(f'select uid from users where name={name}')
-  print(sql_result)
-  return True
+def confirm_user(name):
+  sql_result = con.execute(f'select uid from users where name=\'{name}\'')
+  if sql_result.all():
+    return True
+  else:
+    return False
+
+
+def is_password(name, password):
+  sql_result = con.execute(f'select uid from users where name=\'{name}\' and password = \'{password}\'')
+  if sql_result.all():
+    return True
+  else:
+    return False
+
+
+def insert(name, password):
+  con.execute(f'insert into users(name, password, type) values(\'{name}\', \'{password}\', 2)')
+  sql_result = con.execute(f'select uid from users where name=\'{name}\' and password = \'{password}\'')
+  if sql_result.all():
+    return True
+  else:
+    return False
