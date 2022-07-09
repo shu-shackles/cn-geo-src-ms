@@ -1,6 +1,6 @@
 const ASIDE_TITLE = [
   {
-    title: "非监测数据",
+    title: "地质标注",
     titleIndex: "1",
     activeName: "1",
     icon: "el-icon-document",
@@ -34,18 +34,18 @@ const ASIDE_TITLE = [
     ]
   },
   {
-    title: "监测数据",
+    title: "动态查询",
     titleIndex: "2",
     activeName: "2",
     icon: "el-icon-document",
     levelInfo: [
       {
-        level: "历史监测数据",
+        level: "矿物数据",
         levelIndex: "project_history",
         path: { name: "project_history" }
       },
       {
-        level: "实时监测数据",
+        level: "地质新闻",
         levelIndex: "project_time",
         path: { name: "project_time" }
       }
@@ -58,7 +58,7 @@ const ASIDE_TITLE = [
     icon: "el-icon-menu",
     levelInfo: [
       {
-        level: "数据分析",
+        level: "数据分析1",
         levelIndex: "project_analysis",
         path: { name: "project_analysis" }
       }

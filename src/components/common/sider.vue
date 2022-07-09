@@ -9,7 +9,7 @@
         :default-active="$route.name"
         class="el-menu-vertical-demo"
         text-color="#fff"
-        background-color="#8AC7B3"
+        background-color="#1B467B"
         active-text-color="#ffd04b">
         <div class="ava"> 
           <img class="avator" src='@/assets/images/bo.jpg'>
