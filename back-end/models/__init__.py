@@ -1,3 +1,4 @@
 # from models.user import Users
-import models.db
-import models.user
+from models import *
+# import models.db
+# import models.user

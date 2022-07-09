@@ -10,18 +10,18 @@ from models import user
 login = APIRouter(tags=["认证相关"])
 
 
-class Login_Item(BaseModel):
+class LoginItem(BaseModel):
   name: str
   password: str
 
 
-class Register_Item(BaseModel):
+class RegisterItem(BaseModel):
   name: str
   password: str
 
 
 @login.post("/login", summary="用户登录")
-async def user_login(item: Login_Item):
+async def user_login(item: LoginItem):
   if user.confirm_user(item.name):
     if user.is_password(item.name, item.password):
       return "密码正确"
@@ -32,7 +32,7 @@ async def user_login(item: Login_Item):
 
 
 @login.post("/register", summary="用户注册")
-async def user_register(item: Register_Item):
+async def user_register(item: RegisterItem):
   if user.confirm_user(item.name):
     return "用户名重复"
   else:
