@@ -1,47 +1,41 @@
+<!-- <template>
+    <div class="survey_content2 clearfix">
+        <headers :header="header" :name="name"></headers>
+        <div>
+            <MasterMap class="contents" />
+            <Rank />
+        </div>
+    </div>
+</template> -->
 <template>
     <div class="survey_content2 clearfix">
         <headers :header="header" :name="name"></headers>
-        <!-- <div class="contents clearfix">
-      <div class="grahp">
-        <div class="grahps">
-          <component :is="page.oneChart"
-                     id="chart"
-                     v-loading="loading.chartLoading"
-                     element-loading-background="#FFF"
-                     element-loading-spinner="el-icon-loading"
-                     element-loading-customClass="defineLoading"
-                     element-loading-text="拼命的加载中"
-                     :options="option">
-          </component>
+        <div class="contents clearfix">
+            <div class="grahp">
+                <div class="grahps1">
+                    <MasterMap />
+                </div>
+                <div class="grahps2">
+                    <Rank />
+                </div>
+            </div>
         </div>
-      </div>
-      <hr>
-      <el-table :data="tableData"
-                border
-                size="small"
-                :header-cell-style="{background: 'rgb(138, 199, 179,0.2)'}">
-        <el-table-column prop="date"
-                         label="SW01">
-        </el-table-column>
-        <el-table-column v-for="(item,index) in tableHeader"
-                         :key="index"
-                         :prop="item.value"
-                         :label="item.label">
-        </el-table-column>
-      </el-table>
-    </div> -->
-        
     </div>
 </template>
+
 
 <script>
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
 import * as Points from "./points";
+import MasterMap from "../DynamicQuery/MasterMap.vue"
+import Rank from "../DynamicQuery/Rank.vue"
+
 
 export default {
     components: {
-        // HighChart: () => import("../common/chart/highchart")
+        MasterMap,
+        Rank
     },
     data() {
         return {
@@ -114,32 +108,34 @@ export default {
 }
 
 .survey_content2 {
-    width: 99.5%;
+    width: 100%;
     height: 100%;
 
     .contents {
         background-color: #fff;
         // background-color: rgb(198, 219, 212);
-        margin: 15px;
+        //margin: 15px;
         padding: 15px;
 
         .grahp {
-            // height: 300px;
+            height: 560px;
             background-color: red;
             margin: 20px 0;
+            display: flex;
 
-            .grahps {
-                height: auto;
-                background-color: green;
+            .grahps1 {
+                height: 100%;
+                width: 200%;
+                background-color: #fff;
+            }
+
+            .grahps2 {
+                height: 100%;
+                width: 100%;
+                background-color: #fff;
             }
         }
     }
-}
-</style>
-<style>
-.el-checkbox__label {
-    font-size: 12px;
-    line-height: 12px;
 }
 </style>
 

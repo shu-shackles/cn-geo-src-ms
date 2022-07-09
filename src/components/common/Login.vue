@@ -129,12 +129,12 @@
          .login{
              width: 400px;
              height: 270px;
-             margin-left: 100px;
+             // margin-left: 100px;
              background-color: #93b4bf;
              border-radius: 2%;
              padding: 15px 50px 0px 0px;
              color: #ffffffc4;
-
+             margin:0 auto;
          }
         p{
             width: 100%;

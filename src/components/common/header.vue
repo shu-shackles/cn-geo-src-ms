@@ -125,93 +125,6 @@
                     </el-select>
                   </div>
                 </span>
-                <!-- <span v-if="checked[2]" class="padding-left-10">
-                  <div class="el-select">
-                    <el-select
-                      class="font-theme"
-                      placeholder="选择对比顾客"
-                      v-model="queryData.compareIsOld"
-                      @change="changeCustomer_other">
-                      <el-option
-                        v-for="item in customerList"
-                        :key="item.isOld"
-                        :label="item.label"
-                        :value="item.isOld">
-                      </el-option>
-                    </el-select>
-                  </div>
-                </span>
-                <span class="padding-left-10" v-if="checked[3]">
-                  <div class="el-select">
-                    <el-select
-                      class="font-theme"
-                      placeholder="选择对比会员"
-                      v-model="queryData.compareCustType"
-                      @change="changeMember_other">
-                      <el-option
-                        v-for="item in memberList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </div>
-                </span>
-                <span class="padding-left-10" v-if="checked[4]">
-                  <div class="el-select">
-                    <el-cascader
-                      popper-class="select_drop_theme"
-                      class="select_theme font-theme"                      
-                      :props="{ expandTrigger: 'hover' }"
-                      :options="passFlow"
-                      placeholder="选择对比客流渠道"
-                      @change="changeChannel_other">
-                    </el-cascader>
-                  </div>
-                </span>
-                <span class="padding-left-10" v-if="checked[5]">
-                  <div class="el-select">
-                    <el-select
-                      class="font-theme"
-                      placeholder="选择对比预约渠道"
-                      v-model="queryData.comBookSource"
-                      @change="changeAppoint_other">
-                      <el-option
-                        v-for="item in appointChannel"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </div>
-                </span>
-                <div v-if="checked[6]" class="padding-left-10">
-                  <el-cascader
-                    placeholder="选择对比项目"
-                    popper-class="select_drop_theme"
-                    class="select-theme"
-                    :props="{ expandTrigger: 'hover' }"
-                    v-model="compareProject"
-                    :options="projectList"
-                    @change="changeProject_other">
-                  </el-cascader>
-                </div>
-                <span class="padding-left-10" v-if="checked[7]">
-                  <div class="el-select">
-                    <el-select
-                      class="font-theme"
-                      placeholder="选择对比储值卡类型"
-                      v-model="queryData.compareCardType"
-                      @change="changeCard_other">
-                      <el-option
-                        v-for="item in cardList"
-                        :key="item.cardType"
-                        :label="item.label"
-                        :value="item.cardType">
-                      </el-option>
-                    </el-select>
-                  </div>
-                </span> -->
               </div>
             </transition>
           </div>
@@ -222,12 +135,12 @@
                :multiple='true'
                :auto-upload="false">
                <!-- <el-button slot="trigger" size="mini" type="primary">导入</el-button> -->
-               <el-button style="margin-right: 80px;" size="mini" type="primary" @click="submitUpload">上传</el-button>
+               <!-- <el-button style="margin-right: 80px;" size="mini" type="primary" @click="submitUpload">上传</el-button> -->
              </el-upload>
              
           </div> 
           <div class="float_right flex-nowrap upload" v-if="headerShow[6]">
-            <el-button style="margin-left: 10px;" size="mini" type="success" @click="submitUpload">下载</el-button>
+            <!-- <el-button style="margin-left: 10px;" size="mini" type="success" @click="submitUpload">下载</el-button> -->
           </div>
           </div>
        </div>
