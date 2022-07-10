@@ -1,12 +1,3 @@
-<!-- <template>
-    <div class="survey_content2 clearfix">
-        <headers :header="header" :name="name"></headers>
-        <div>
-            <MasterMap class="contents" />
-            <Rank />
-        </div>
-    </div>
-</template> -->
 <template>
     <div class="survey_content2 clearfix">
         <headers :header="header" :name="name"></headers>
@@ -71,6 +62,7 @@ export default {
         this.getTableData();
         this.getPointsData();
     },
+
     methods: {
         // 获取表格列表
         getTableData() {
@@ -110,6 +102,7 @@ export default {
 .survey_content2 {
     width: 100%;
     height: 100%;
+    background-color: #fff;
 
     .contents {
         background-color: #fff;

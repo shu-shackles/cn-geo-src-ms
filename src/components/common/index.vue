@@ -1,7 +1,7 @@
 <template>
   <div class="a" id='allmap'>
     <sider></sider>
-    <baidu-map :class="menuShow?'hello flex9':'hello flex10'" :zoom="zoom" @ready="handler"  center="西安" :scroll-wheel-zoom="true">
+    <baidu-map :class="'hello flex10'" style="margin-left:160px;" :zoom="zoom" @ready="handler"  center="西安" :scroll-wheel-zoom="true">
       <!-- <bm-view class="hello"></bm-view> -->
       <!-- <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT"></bm-navigation> -->
       <bm-map-type :map-types="['BMAP_NORMAL_MAP','BMAP_SATELLITE_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_BOTTOM_RIGHT" type=""></bm-map-type>
@@ -93,7 +93,7 @@
 //   }
 import * as consts from '../../common/const'
   export default {
-    name: 'HelloWorld',
+    name: 'index',
     data () {
       return { 
       center: {lng: 0, lat: 0},

@@ -1,6 +1,6 @@
 <template>
 <div class="title">
-  <div :class="showMenu?'nav_title clearfix left1':'nav_title clearfix left2'" >
+  <div :class="'nav_title clearfix left1'" >
        <p class='survey'>{{name}}</p>
        <div class='content'>
           <div class="float_left" v-if="headerShow[0]">
@@ -272,7 +272,7 @@ export default {
   width: 100%;
 }
 .left1{
-left: 142px; 
+left: 160px; 
 }
 .left2{
 left: 30px; 

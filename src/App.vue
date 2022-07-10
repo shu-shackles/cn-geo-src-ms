@@ -1,10 +1,3 @@
-<!--
- * @Description: 
- * @Author: huacong
- * @Date: 2019-07-20 10:19:32
- * @LastEditTime: 2020-06-20 10:40:55
- * @LastEditors: huacong
--->
 <template>
   <div id="app">
     <router-view />
@@ -15,7 +8,7 @@
 export default {
   name: "App",
   components:{
-  }
+  },
 };
 </script>
 
