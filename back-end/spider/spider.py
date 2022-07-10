@@ -173,7 +173,7 @@ def get_main_article_from_geological_survey(url, firstParagraph=False):
     # chapter_html是这个新闻中的html文本
     chapter_html = chapter_response.text
     # 获取正文
-    main_article = re.findall(r'2;">&nbsp; &nbsp; &nbsp; &nbsp;(.*?)</span><br />', chapter_html)
+    main_article = re.findall(r'<span style="font-size:16px;line-height:2;">(.*?)</span><br />', chapter_html)
     # 如果无匹配，返回False
     if len(main_article) == 0:
         return False
@@ -181,21 +181,25 @@ def get_main_article_from_geological_survey(url, firstParagraph=False):
     elif firstParagraph:
         # 将其中的"与<>内容删除
         firstSentence = re.sub('\<.*?\>', '', main_article[0])
+        firstSentence = firstSentence.replace("&nbsp;", "")
         return firstSentence.replace('"', '\\"')[:20]
     result = "  " + main_article[0]
 
     # 返回数据
+    print(len(main_article))
     if len(main_article) > 1:
         for i in range(1, len(main_article)):
             if not main_article[i].isdigit():
-                result += "\n  " + main_article[i]
+                result += "\\n" + main_article[i]
 
     # 图片获取部分
     """picurl1 = get_picurl_images('%s.txt' % title)
     picurl2 = get_picurl_local('%s.txt' % title)
     download_image(picurl1, '..\\..\\..\\images')
     download_local(picurl2, '..\\__local')"""
-
+    result = result.replace('"', '\\"')
+    result = result.replace('\n', '\\n')
+    result = result.replace("&nbsp;", "")
     return result
 
 
