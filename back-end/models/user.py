@@ -26,7 +26,49 @@
 from models.db import con
 
 
-async def confirm_user(name):
-  sql_result = con.execute(f'select uid from users where name={name}')
-  print(sql_result)
-  return True
+def confirm_user(name):
+    sql_result = con.execute(f'select uid from users where name=\'{name}\'')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def is_password(name, password):
+    sql_result = con.execute(f'select uid from users where name=\'{name}\' and password = \'{password}\'')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def insert(name, password):
+    con.execute(f'insert into users(name, password, type) values(\'{name}\', \'{password}\', 2)')
+    sql_result = con.execute(f'select uid from users where name=\'{name}\' and password= \'{password}\'')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def user_info(offset, count):
+    return con.execute(f'select * from "users" limit {offset}, {count}')
+
+
+def user_setinfo(password, _type, area, uid):
+    con.execute(f'UPDATE users SET password = \'{password}\', type = {_type}, AREA = \'{area}\'  WHERE uid = {uid}')
+    sql_result = con.execute(f'select * from users where area=\'{area}\' and password = \'{password}\' and uid = {uid} '
+                             f'and type = {_type}')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def user_delete(uid):
+    con.execute(f'delete from users where uid = {uid}')
+    sql_result = con.execute(f'select * from users where uid= {uid}')
+    if sql_result.all():
+        return False
+    else:
+        return True
