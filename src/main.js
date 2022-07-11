@@ -33,7 +33,10 @@ new Vue({
   router,
   store,
   components: { App },
-  template: "<App/>"
+  template: "<App/>",
+  beforeCreate() {
+    Vue.prototype.$bus = this; // 安装全局事件总线
+  }
   // watch:{
   //   $route(to,from){
   //     console.log(to);

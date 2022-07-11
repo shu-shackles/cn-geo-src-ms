@@ -4,10 +4,10 @@
         <div class="contents clearfix">
             <div class="grahp">
                 <div class="grahps1">
-                    <MasterMap />
+                    <MasterMap :MineralData="MineralData" />
                 </div>
                 <div class="grahps2">
-                    <Rank />
+                    <Rank :MineralData="MineralData" />
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@ import * as Contents from "../../common/content";
 import * as Points from "./points";
 import MasterMap from "../DynamicQuery/MasterMap.vue"
 import Rank from "../DynamicQuery/Rank.vue"
-
+import axios from 'axios'
 
 export default {
     components: {
@@ -38,8 +38,9 @@ export default {
             //   multipleSelection: [],
             //   search: "",
             //   currentPage: 1,
-            name: "动态查询",
+            name: "动态查询——矿物数据",
             page: {},
+            query: 'coal(100M tons)',
             //   loading: {
             //     indexLoading: false,
             //     pieLoading: false,
@@ -51,7 +52,67 @@ export default {
             //     pieLoading3: false
             //   },
             //   option: {}
-        };
+            MineralData: [
+                //     { "name": "南海诸岛", "value": 0 },
+                //     { "name": "北京", "value": 1 },
+                //     { "name": "天津", "value": 2 },
+                //     { "name": "上海", "value": 3 },
+                //     { "name": "重庆", "value": 4 },
+                //     { "name": "河北", "value": 5 },
+                //     { "name": "河南", "value": 6 },
+                //     { "name": "云南", "value": 7 },
+                //     { "name": "辽宁", "value": 8 },
+                //     { "name": "黑龙江", "value": 9 },
+                //     { "name": "湖南", "value": 10 },
+                //     { "name": "安徽", "value": 11 },
+                //     { "name": "山东", "value": 12 },
+                //     { "name": "新疆", "value": 13 },
+                //     { "name": "江苏", "value": 14 },
+                //     { "name": "浙江", "value": 15 },
+                //     { "name": "江西", "value": 16 },
+                //     { "name": "湖北", "value": 17 },
+                //     { "name": "广西", "value": 18 },
+                //     { "name": "甘肃", "value": 19 },
+                //     { "name": "山西", "value": 20 },
+                //     { "name": "内蒙古", "value": 21 },
+                //     { "name": "陕西", "value": 22 },
+                //     { "name": "吉林", "value": 23 },
+                //     { "name": "福建", "value": 24 },
+                //     { "name": "贵州", "value": 25 },
+                //     { "name": "广东", "value": 26 },
+                //     { "name": "青海", "value": 27 },
+                //     { "name": "西藏", "value": 28 },
+                //     { "name": "四川", "value": 29 },
+                //     { "name": "宁夏", "value": 30 },
+                //     { "name": "海南", "value": 31 },
+                //     { "name": "台湾", "value": 32 },
+                //     { "name": "香港", "value": 33 },
+                //     { "name": "澳门", "value": 34 }
+            ]
+        }
+    },
+    computed: {
+
+    },
+    mounted() {
+        this.$bus.$on('MineralQuery', (data) => {
+            this.query = data
+            axios({
+                method: 'get',
+                url: `http://localhost:8080/api/v1/mineralType`,
+                params: { type: this.query }
+            }).then(response => {
+                console.log(response.data)
+                this.MineralData = response.data
+                for (let i = 0; i < this.MineralData.length; i++) {
+                    this.MineralData[i].name = this.MineralData[i].province
+                }
+            },
+                error => {
+                    console.log('失败了')
+                    this.MineralData = error.message
+                });
+        })
     },
     created() {
         this.header = consts.getHeaderConfig("history");
@@ -61,6 +122,9 @@ export default {
         // this.one=this.contens.one
         this.getTableData();
         this.getPointsData();
+    },
+    beforeDestroy() {
+        this.$bus.$off('MineralQuery')
     },
 
     methods: {
@@ -100,7 +164,8 @@ export default {
 }
 
 .survey_content2 {
-    width: 100%;
+    margin-left: 18px;
+    width: auto;
     height: 100%;
     background-color: #fff;
 
