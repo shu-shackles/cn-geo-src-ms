@@ -5,6 +5,7 @@
 
 <script>
 import '../../../static/map/china.js'
+import axios from 'axios'
 import echarts from 'echarts'
 export default {
     name: 'MasterMap',
@@ -12,9 +13,10 @@ export default {
         return {
             MineralType: '煤炭',
             loading2: false,
+            MineralData: []
         };
     },
-    props: ['MineralData'],
+    props:['MineralData'],
     watch: {
         MineralType() {
             this.getProvince_count()

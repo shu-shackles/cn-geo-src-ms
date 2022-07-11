@@ -174,6 +174,11 @@ export default {
     },
     watch: {
     },
+    mounted() {
+        this.$nextTick(() => {
+            this.changeTableType();
+        });
+    },
     methods: {
         getProject() {
             this.projectList = consts.Project
@@ -186,8 +191,8 @@ export default {
         },
         // 改变表格类型
         changeTableType() {
-            this.$bus.$emit('MineralType',this.TableTypeList[this.queryData.tableType].label)
-            this.$bus.$emit('MineralQuery',this.TableTypeList[this.queryData.tableType].query)
+            this.$bus.$emit('MineralType', this.TableTypeList[this.queryData.tableType].label)
+            this.$bus.$emit('MineralQuery', this.TableTypeList[this.queryData.tableType].query)
         },
         // 改变对比表格类型
         changeTable_other() { },
