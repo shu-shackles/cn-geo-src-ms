@@ -8,3 +8,4 @@ from .forest import forest
 from .mineral import mineral
 
 from .spider import spider
+from .IDAuthen import IDAuthen
