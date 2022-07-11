@@ -8,7 +8,8 @@ area = APIRouter(tags=["区域"])
 @area.get("/areas", summary="区域划分")
 def get_all():
     sql_result = con.execute(f'SELECT * FROM areas')
-    return sql_result.all()
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
 
 # 确定区域信息
 def confirm_area(area):
@@ -47,9 +48,23 @@ def edit_area(area, lng, lat):
     else:
         return "区域不存在"
 
-# 根据获取到的区域名称按列表方式返回区域内所有点位
+# 删除区域
+@area.delete("areaDelete", summary="删除区域信息")
+def delete_area(area):
+    if confirm_area(area):
+        con.execute(f'DELETE FROM areas WHERE area=\'{area}\'')
+        sql_result = con.execute(f'SELECT * FROM areas WHERE area=\'{area}\'')
+        if sql_result.all():
+            return "删除失败"
+        else:
+            return "删除成功"
+    else:
+        return "区域不存在"
+
+# 根据获取到的区域名称返回区域内所有点位
 @area.get("/boundaries", summary="区域内点位")
 def get_single(Area):
     sql_result = con.execute(
         f'SELECT lng, lat FROM boundaries WHERE area=\'{Area}\' ORDER BY `order`')
-    return sql_result.all()
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data

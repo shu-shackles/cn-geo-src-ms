@@ -10,12 +10,23 @@ forest = APIRouter(tags=["森林资源"])
 def get_all():
     sql_result = con.execute(
         f'SELECT * FROM forest ORDER BY ABS(`forest coverage`) DESC')
-    return sql_result.all()
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
 
 
-# 根据获取到的省份名称按列表方式返回对应数据
+# 根据获取到的省份名称返回对应数据
 @forest.get("/forestProvince", summary="省市森林数据")
 def get_single(province):
     sql_result = con.execute(
         f'SELECT * FROM forest WHERE `province/company`=\'{province}\'')
-    return sql_result.all()
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
+
+
+# 根据获取到的资源名称返回对应数据，按资源量降序排列
+@forest.get("/forestType", summary="指定森林数据")
+def get_type(type):
+    sql_result = con.execute(
+        f'SELECT `province/company`, `{type}` FROM forest ORDER BY ABS(`{type}`) DESC')
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
