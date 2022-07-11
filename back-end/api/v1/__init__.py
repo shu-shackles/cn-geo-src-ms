@@ -11,3 +11,6 @@ v1.include_router(tags)
 v1.include_router(area)
 v1.include_router(forest)
 v1.include_router(mineral)
+
+v1.include_router(spider)
+
