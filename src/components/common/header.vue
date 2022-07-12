@@ -191,8 +191,7 @@ export default {
         },
         // 改变表格类型
         changeTableType() {
-            this.$bus.$emit('MineralType', this.TableTypeList[this.queryData.tableType].label)
-            this.$bus.$emit('MineralQuery', this.TableTypeList[this.queryData.tableType].query)
+            this.$bus.$emit('MineralType', this.TableTypeList[this.queryData.tableType])
         },
         // 改变对比表格类型
         changeTable_other() { },

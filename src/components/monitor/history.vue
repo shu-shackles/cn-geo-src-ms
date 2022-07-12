@@ -31,36 +31,15 @@ export default {
     data() {
         return {
             header: [],
-            //   contens: {},
-            //   one: {},
-            //   tableData: [],
-            //   tableHeader: [{ id: 0, value: "value", label: "地下水位(m7)" }],
-            //   multipleSelection: [],
-            //   search: "",
-            //   currentPage: 1,
             name: "动态查询——矿物数据",
             page: {},
             query: 'coal(100M tons)',
-            //   loading: {
-            //     indexLoading: false,
-            //     pieLoading: false,
-            //     pieLoading1: false,
-            //     chartLoading: false,
-            //     chartLoading1: false,
-            //     tableLoading: false,
-            //     pieLoading2: false,
-            //     pieLoading3: false
-            //   },
-            //   option: {}
             MineralData: []
         }
     },
-    computed: {
-
-    },
     mounted() {
-        this.$bus.$on('MineralQuery', (data) => {
-            this.query = data
+        this.$bus.$on('MineralType', (data) => {
+            this.query = data.query
             axios({
                 method: 'get',
                 url: `http://localhost:8080/api/v1/mineralType`,
@@ -73,7 +52,6 @@ export default {
                 }
             },
                 error => {
-                    console.log('失败了')
                     this.MineralData = error.message
                 });
         })
@@ -81,14 +59,11 @@ export default {
     created() {
         this.header = consts.getHeaderConfig("history");
         this.page = consts.getPageConfig("one");
-        // this.contens=Contents.getContent('table')
-
-        // this.one=this.contens.one
         this.getTableData();
         this.getPointsData();
     },
     beforeDestroy() {
-        this.$bus.$off('MineralQuery')
+        this.$bus.$off('MineralType')
     },
 
     methods: {
@@ -105,7 +80,6 @@ export default {
         },
         getPointsData() {
             this.option = Points.onePoints;
-            // this.option=Points.one
         }
     }
 };

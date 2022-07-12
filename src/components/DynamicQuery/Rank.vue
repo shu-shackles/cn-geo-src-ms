@@ -6,7 +6,7 @@
             </el-table-column>
             <el-table-column prop="province" label="省份" width="150" align="center">
             </el-table-column>
-            <el-table-column prop="value" label="含量" align="center">
+            <el-table-column prop="value" :label="unit" align="center">
             </el-table-column>
         </el-table-column>
     </el-table>
@@ -18,6 +18,7 @@ export default {
     data() {
         return {
             MineralType: '煤炭',
+            MineralUnit: '亿吨',
             MineralData: []
         }
     },
@@ -25,6 +26,9 @@ export default {
     computed: {
         title() {
             return `${this.MineralType}资源排名前十省份`
+        },
+        unit() {
+            return `含量（${this.MineralUnit}）`
         },
         TableData() {
             let data = this.MineralData
@@ -37,7 +41,8 @@ export default {
     },
     mounted() {
         this.$bus.$on('MineralType', (data) => {
-            this.MineralType = data
+            this.MineralType = data.label
+            this.MineralUnit = data.unit
         })
     },
     beforeDestroy() {

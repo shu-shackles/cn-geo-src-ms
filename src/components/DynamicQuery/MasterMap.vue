@@ -1,45 +1,39 @@
 <template>
-    <div id="chinaEcharts" ref="chinaEcharts" v-loading='loading2' class="leftEcharts" style="height:100%;width: 100%">
+    <div id="chinaEcharts" ref="chinaEcharts" v-loading='loading' class="leftEcharts" style="height:100%;width: 100%">
     </div>
 </template>
 
 <script>
 import '../../../static/map/china.js'
-import axios from 'axios'
 import echarts from 'echarts'
 export default {
     name: 'MasterMap',
     data() {
         return {
             MineralType: '煤炭',
+            MineralUnit: '亿吨',
             loading2: false,
-            MineralData: []
         };
     },
-    props:['MineralData'],
+    props: ['MineralData'],
     watch: {
-        MineralType() {
-            this.getProvince_count()
+        MineralData() {
+            this.chinaEcharts(this.MineralData, this.MineralData[0].value)
         }
     },
     mounted() {
         this.$bus.$on('MineralType', (data) => {
-            this.MineralType = data
+            this.MineralType = data.label
+            this.MineralUnit = data.unit
         })
-        this.getProvince_count()
     },
     beforeDestroy() {
         this.$bus.$off('MineralType')
     },
     methods: {
-        getProvince_count() {
-            let maxNum = Math.max.apply(Math, this.MineralData.map(item => { return item.value }))
-            this.chinaEcharts(this.MineralData, maxNum)
-            this.loading2 = false
-        },
-
-        // 热力图
+        // 生成热力图
         chinaEcharts(dataList, maxNum) {
+            let that = this;
             let myChart = echarts.init(document.getElementById('chinaEcharts'));
             let resizeTimer = null;
             let option = {
@@ -59,18 +53,19 @@ export default {
                     },
                     text: ['高', '低'],
                     calculable: true,
+                    show: false
                 },
                 tooltip: {
                     trigger: 'item',
                     formatter: function (params) {
                         let toolTiphtml = ''
                         if (isNaN(params.value)) {
-                            toolTiphtml = '暂无数据'
+                            toolTiphtml = params.seriesName + '<br />' + params.name + '：' + '暂无数据'
                         }
                         else {
-                            toolTiphtml = params.seriesName + '<br />' + params.name + '：' + params.value
-                            return toolTiphtml
+                            toolTiphtml = params.seriesName + '<br />' + params.name + '：' + params.value + that.MineralUnit
                         }
+                        return toolTiphtml
                     }
                 },
                 toolbox: {
