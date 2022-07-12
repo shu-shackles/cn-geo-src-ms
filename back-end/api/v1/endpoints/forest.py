@@ -27,6 +27,6 @@ def get_single(province):
 @forest.get("/forestType", summary="指定森林数据")
 def get_type(type):
     sql_result = con.execute(
-        f'SELECT `province/company`, `{type}` FROM forest ORDER BY ABS(`{type}`) DESC')
+        f'SELECT `province/company`, `{type}` as "value" FROM forest ORDER BY ABS(`{type}`) DESC')
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data

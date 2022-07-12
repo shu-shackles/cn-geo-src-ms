@@ -4,10 +4,10 @@
         <div class="contents clearfix">
             <div class="grahp">
                 <div class="grahps1">
-                    <MasterMap />
+                    <MasterMap :MineralData="MineralData" />
                 </div>
                 <div class="grahps2">
-                    <Rank />
+                    <Rank :MineralData="MineralData" />
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@ import * as Contents from "../../common/content";
 import * as Points from "./points";
 import MasterMap from "../DynamicQuery/MasterMap.vue"
 import Rank from "../DynamicQuery/Rank.vue"
-
+import axios from 'axios'
 
 export default {
     components: {
@@ -31,36 +31,39 @@ export default {
     data() {
         return {
             header: [],
-            //   contens: {},
-            //   one: {},
-            //   tableData: [],
-            //   tableHeader: [{ id: 0, value: "value", label: "地下水位(m7)" }],
-            //   multipleSelection: [],
-            //   search: "",
-            //   currentPage: 1,
-            name: "动态查询",
+            name: "动态查询——矿物数据",
             page: {},
-            //   loading: {
-            //     indexLoading: false,
-            //     pieLoading: false,
-            //     pieLoading1: false,
-            //     chartLoading: false,
-            //     chartLoading1: false,
-            //     tableLoading: false,
-            //     pieLoading2: false,
-            //     pieLoading3: false
-            //   },
-            //   option: {}
-        };
+            query: 'coal(100M tons)',
+            MineralData: []
+        }
+    },
+    mounted() {
+        this.$bus.$on('MineralType', (data) => {
+            this.query = data.query
+            axios({
+                method: 'get',
+                url: `http://localhost:8080/api/v1/mineralType`,
+                params: { type: this.query }
+            }).then(response => {
+                console.log(response.data)
+                this.MineralData = response.data
+                for (let i = 0; i < this.MineralData.length; i++) {
+                    this.MineralData[i].name = this.MineralData[i].province
+                }
+            },
+                error => {
+                    this.MineralData = error.message
+                });
+        })
     },
     created() {
         this.header = consts.getHeaderConfig("history");
         this.page = consts.getPageConfig("one");
-        // this.contens=Contents.getContent('table')
-
-        // this.one=this.contens.one
         this.getTableData();
         this.getPointsData();
+    },
+    beforeDestroy() {
+        this.$bus.$off('MineralType')
     },
 
     methods: {
@@ -77,7 +80,6 @@ export default {
         },
         getPointsData() {
             this.option = Points.onePoints;
-            // this.option=Points.one
         }
     }
 };
@@ -100,7 +102,8 @@ export default {
 }
 
 .survey_content2 {
-    width: 100%;
+    margin-left: 18px;
+    width: auto;
     height: 100%;
     background-color: #fff;
 

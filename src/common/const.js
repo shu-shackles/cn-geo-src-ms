@@ -124,24 +124,64 @@ const Project = [
 
 const TableType = [
   {
-    label: "全部",
+    label: "煤炭",
+    unit: "亿吨",
+    query: "coal(100M tons)",
     value: 0
   },
   {
-    label: "形变",
+    label: "石油",
+    unit: "万吨",
+    query: "fossil_oil(10K tons)",
     value: 1
   },
   {
-    label: "降雨量",
+    label: "天然气",
+    unit: "亿立方米",
+    query: "gas(100M cubic meters)",
     value: 2
   },
   {
-    label: "地下水位",
+    label: "铁矿",
+    unit: "亿吨",
+    query: "iron(100M tons)",
     value: 3
   },
   {
-    label: "温度",
+    label: "铜矿",
+    unit: "万吨",
+    query: "bronze(10K tons)",
     value: 4
+  },
+  {
+    label: "铅矿",
+    unit: "万吨",
+    query: "lead(10k tons)",
+    value: 5
+  },
+  {
+    label: "锌矿",
+    unit: "万吨",
+    query: "zinc(10k tons)",
+    value: 6
+  },
+  {
+    label: "金矿",
+    unit: "吨",
+    query: "gold(tons)",
+    value: 7
+  },
+  {
+    label: "银矿",
+    unit: "吨",
+    query: "silver(tons)",
+    value: 8
+  },
+  {
+    label: "硫铁矿",
+    unit: "万吨",
+    query: "FeS2(10k tons)",
+    value: 9
   }
 ];
 
