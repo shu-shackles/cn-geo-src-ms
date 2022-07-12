@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Response, status
 from pydantic import BaseModel
 # from fastapi.security import OAuth2PasswordRequestForm
 
@@ -10,33 +10,36 @@ from models import user
 login = APIRouter(tags=["认证相关"])
 
 
-class LoginItem(BaseModel):
-    name: str
-    password: str
-
-
+# class LoginItem(BaseModel):
+#     username: str
+#     password: str
+#
+#
 class RegisterItem(BaseModel):
-    name: str
+    username: str
     password: str
 
 
-@login.post("/login", summary="用户登录")
-async def user_login(item: LoginItem):
-    if user.confirm_user(item.name):
-        if user.is_password(item.name, item.password):
+@login.post("/login/username={username}&password={password}", summary="用户登录")
+async def user_login(username, password, response: Response):
+    if user.confirm_user(username):
+        if user.is_password(username, password):
+            response.status_code = status.HTTP_200_OK
             return "密码正确"
         else:
+            response.status_code = 230
             return "密码错误"
     else:
+        response.status_code = 231
         return "用户名不存在"
 
 
 @login.post("/register", summary="用户注册")
 async def user_register(item: RegisterItem):
-    if user.confirm_user(item.name):
+    if user.confirm_user(item.username):
         return "用户名重复"
     else:
-        if user.insert(item.name, item.password):
+        if user.insert(item.username, item.password):
             return "插入成功"
         else:
             return "插入失败"

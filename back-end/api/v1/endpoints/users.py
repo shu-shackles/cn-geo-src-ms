@@ -39,8 +39,8 @@ async def user_setinfo(item: SetInfoItem):
         return "修改失败"
 
 
-@users.delete('/deleteuser', summary="")
-async def user_delete(item:DeleteItem):
+@users.delete('/deleteuser', summary="删除用户")
+async def user_delete(item: DeleteItem):
     if user.user_delete(item.uid):
         return "删除成功"
     else:
