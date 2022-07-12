@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="survey_content2 clearfix">
     <headers :header="header"
              :name="name"></headers>
@@ -32,17 +32,34 @@
       </el-table>
     </div>
   </div>
+</template> -->
+<template>
+    <div class="survey_content2 clearfix">
+        <headers :header="header" :name="name"></headers>
+        <div class="contents clearfix">
+            <div class="grahp">
+                <div class="grahps1">
+                    <NewsList/>
+                </div>
+                <div class="grahps2">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
-import * as Points from "./points";
+import * as Points from "../monitor/points";
+import NewsList from "./NewsList.vue"
 
 export default {
   components: {
-    HighChart: () => import("../common/chart/highchart"),
-    sangkey: () => import("../common/chart/sangkey")
+    // HighChart: () => import("../common/chart/highchart"),
+    // sangkey: () => import("../common/chart/sangkey")
+    NewsList
   },
   data() {
     return {
@@ -98,7 +115,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<!-- <style lang="less" scoped>
 @import "../../../static/css/clear";
 @import "../../../static/css/common";
 .clearfix {
@@ -121,7 +138,7 @@ export default {
     padding: 15px;
     .grahp {
       // height: 300px;
-      background-color: red;
+      background-color: #fff;
       margin: 20px 0;
       .grahps {
         height: auto;
@@ -136,5 +153,53 @@ export default {
   font-size: 12px;
   line-height: 12px;
 }
-</style>
+</style> -->
+<style lang="less" scoped>
+@import "../../../static/css/clear";
+@import "../../../static/css/common";
 
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    visibility: hidden;
+    clear: both;
+    height: 0;
+}
+
+.survey_content2 {
+    margin-left: 18px;
+    width: auto;
+    height: 100%;
+    background-color: #fff;
+
+    .contents {
+        background-color: #fff;
+        // background-color: rgb(198, 219, 212);
+        //margin: 15px;
+        padding: 15px;
+
+        .grahp {
+            height: 560px;
+            background-color: red;
+            margin: 20px 0;
+            display: flex;
+
+            .grahps1 {
+                height: 100%;
+                width: 200%;
+                background-color: #fff;
+            }
+
+            .grahps2 {
+                height: 100%;
+                width: 100%;
+                background-color: #fff;
+            }
+        }
+    }
+}
+</style>

@@ -18,12 +18,18 @@ import "element-ui/lib/theme-chalk/index.css";
 import sider from "./components/common/sider.vue";
 import Headers from "./components/common/header.vue";
 import HighCharts from "highcharts";
+import { List, Icon, Avatar } from 'ant-design-vue'
 Vue.use(ElementUI);
 Vue.use(BMap, {
   ak: "mj5Ztq2ugALxuBChiUgs6H0V7Cu0hfHU"
 });
 Vue.component("sider", sider);
 Vue.component("headers", Headers);
+Vue.component(List.name,List)
+Vue.component(List.Item.name,List.Item)
+Vue.component(Icon.name,Icon)
+Vue.component(Avatar.name,Avatar)
+Vue.component(List.Item.Meta.name,List.Item.Meta)
 Vue.use(HighCharts);
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;

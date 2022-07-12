@@ -41,13 +41,13 @@ const ASIDE_TITLE = [
     levelInfo: [
       {
         level: "矿物数据",
-        levelIndex: "project_history",
-        path: { name: "project_history" }
+        levelIndex: "query_mineral",
+        path: { name: "query_mineral" }
       },
       {
         level: "地质新闻",
-        levelIndex: "project_time",
-        path: { name: "project_time" }
+        levelIndex: "query_news",
+        path: { name: "query_news" }
       }
     ]
   },

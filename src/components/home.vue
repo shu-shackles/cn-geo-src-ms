@@ -4,7 +4,7 @@
     <div class="body">
         <sider/>
         <!-- <el-scrollbar class="page-component__scroll" :style="{ paddingLeft: movePadding }"> -->
-        <div :class="showMenu?'content left1':'content left2'">
+        <div :class="'content left1'">
             <router-view></router-view>
         </div>
       <!-- </el-scrollbar> -->
