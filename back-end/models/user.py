@@ -42,8 +42,9 @@ def is_password(name, password):
         return False
 
 
-def insert(name, password):
-    con.execute(f'insert into users(name, password, type) values(\'{name}\', \'{password}\', 2)')
+def insert(name, password, _id, id_name):
+    con.execute(f'insert into users(name, password, type, ID, IDNAME) values(\'{name}\', \'{password}\', 2 ,\'{_id}\','
+                f' \'{id_name}\')')
     sql_result = con.execute(f'select uid from users where name=\'{name}\' and password= \'{password}\'')
     if sql_result.all():
         return True

@@ -18,6 +18,9 @@ class LoginItem(BaseModel):
 class RegisterItem(BaseModel):
     username: str
     password: str
+    check_pass: str
+    ID: str
+    IDNAME: str
 
 
 @login.post("/login", summary="用户登录")
@@ -35,11 +38,18 @@ async def user_login(item: LoginItem, response: Response):
 
 
 @login.post("/register", summary="用户注册")
-async def user_register(item: RegisterItem):
+async def user_register(item: RegisterItem, response: Response):
+    if len(item.password) > 16:
+        response.status_code = 230
+        return "密码长度大于16位"
+    if len(item.password) < 6:
+        response.status_code = 231
+        return "密码长度小于6位"
     if user.confirm_user(item.username):
+        response.status_code = 232
         return "用户名重复"
     else:
-        if user.insert(item.username, item.password):
+        if user.insert(item.username, item.password, item.ID, item.IDNAME):
             return "插入成功"
         else:
             return "插入失败"
