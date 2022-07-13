@@ -10,20 +10,20 @@ from models import user
 login = APIRouter(tags=["认证相关"])
 
 
-# class LoginItem(BaseModel):
-#     username: str
-#     password: str
-#
-#
+class LoginItem(BaseModel):
+    username: str
+    password: str
+
+
 class RegisterItem(BaseModel):
     username: str
     password: str
 
 
-@login.post("/login/username={username}&password={password}", summary="用户登录")
-async def user_login(username, password, response: Response):
-    if user.confirm_user(username):
-        if user.is_password(username, password):
+@login.post("/login", summary="用户登录")
+async def user_login(item: LoginItem, response: Response):
+    if user.confirm_user(item.username):
+        if user.is_password(item.username, item.password):
             response.status_code = status.HTTP_200_OK
             return "密码正确"
         else:
