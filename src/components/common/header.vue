@@ -39,6 +39,12 @@
                         </el-option>
                     </el-select>
                 </div>
+                <div class="float_left" v-if="headerShow[1]">
+                    <el-autocomplete type="text" v-model="queryString" :fetch-suggestions="querySearch"
+                        placeholder="请输入搜索内容" @select="handleSelect" @change="handleChange" clearable="true"
+                        onkeypress="if(window.event.keyCode==13) this.blur()" ref="autocomplete"
+                        @keyup.enter.native="handleChange" prefix-icon="el-icon-search"></el-autocomplete>
+                </div>
                 <!-- <div class="float_left" v-if="headerShow[3]">
                     <span>监测点：</span>
                     <el-cascader size="mini" class="select-md-w" expand-trigger="hover" v-model="initPoint"
@@ -152,7 +158,8 @@ export default {
             ],
             checked: [true, false, false, false, false],
             showPick: false,
-            timeVal: ''
+            timeVal: '',
+            queryString: '',
         }
     },
     computed: {
@@ -219,6 +226,34 @@ export default {
         submitUpload() {
             this.$refs.upload.submit();
         },
+        querySearch(queryString, cb) {
+            var historyList = JSON.parse(sessionStorage.getItem('historyList'));
+            var results = queryString ? historyList.filter(this.createFilter(queryString)) : historyList;
+            // 调用 callback 返回建议列表的数据
+            cb(results);
+        },
+        createFilter(queryString) {
+            return (historyList) => {
+                return (historyList.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+            };
+        },
+        handleSelect(item) {
+            this.$bus.$emit('search', item.value)
+            this.queryString = ''
+        },
+        handleChange() {
+            var historyList = JSON.parse(sessionStorage.getItem('historyList'));
+            let p = { value: this.queryString }
+            historyList.push(p)
+            historyList = historyList.reduce((cur, next) => {
+                historyList[next.value] ? "" : historyList[next.value] = true && cur.push(next);
+                return cur;
+            }, [])
+            sessionStorage.setItem('historyList', JSON.stringify(historyList))
+            this.$bus.$emit('search', this.queryString)
+            this.queryString = ''
+            this.$refs.autocomplete.suggestions = []
+        }
     }
 }
 </script>

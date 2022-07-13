@@ -18,9 +18,9 @@
 <script>
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
-import * as Points from "./points";
-import MasterMap from "../DynamicQuery/MasterMap.vue"
-import Rank from "../DynamicQuery/Rank.vue"
+import * as Points from "../monitor/points";
+import MasterMap from "./MasterMap.vue"
+import Rank from "./Rank.vue"
 import axios from 'axios'
 
 export default {
@@ -57,7 +57,7 @@ export default {
         })
     },
     created() {
-        this.header = consts.getHeaderConfig("history");
+        this.header = consts.getHeaderConfig("mineralData");
         this.page = consts.getPageConfig("one");
         this.getTableData();
         this.getPointsData();

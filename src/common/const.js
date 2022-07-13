@@ -41,13 +41,13 @@ const ASIDE_TITLE = [
     levelInfo: [
       {
         level: "矿物数据",
-        levelIndex: "project_history",
-        path: { name: "project_history" }
+        levelIndex: "query_mineral",
+        path: { name: "query_mineral" }
       },
       {
         level: "地质新闻",
-        levelIndex: "project_time",
-        path: { name: "project_time" }
+        levelIndex: "query_news",
+        path: { name: "query_news" }
       }
     ]
   },
@@ -317,13 +317,13 @@ const headerConfig = [
     contrast: false
   },
   {
-    name: "history",
-    headerShow: [true, true, true, true, false,true,true,true],
+    name: "mineralData",
+    headerShow: [true, false, true, true, false,true,true,true],
     contrast: false
   },
   {
-    name: "analysis",
-    headerShow: [true, true, true, true, false],
+    name: "geoNews",
+    headerShow: [false, true, true, true, false],
     contrast: true
   }
 ];
