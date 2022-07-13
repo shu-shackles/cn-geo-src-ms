@@ -1,48 +1,17 @@
-<!-- <template>
-  <div class="survey_content2 clearfix">
-    <headers :header="header"
-             :name="name"></headers>
-    <div class="contents clearfix">
-      <div class="grahp">
-        <div class="grahps">
-          <component :is="page.oneChart"
-                     id="chart"
-                     v-loading="loading.chartLoading"
-                     element-loading-background="#FFF"
-                     element-loading-spinner="el-icon-loading"
-                     element-loading-customClass="defineLoading"
-                     element-loading-text="拼命的加载中"
-                     :options="option">
-          </component>
-        </div>
-      </div>
-      <hr>
-      <el-table :data="tableData"
-                border
-                size="small"
-                :header-cell-style="{background: 'rgb(138, 199, 179,0.2)'}">
-        <el-table-column prop="date"
-                         label="SW01">
-        </el-table-column>
-        <el-table-column v-for="(item,index) in tableHeader"
-                         :key="index"
-                         :prop="item.value"
-                         :label="item.label">
-        </el-table-column>
-      </el-table>
-    </div>
-  </div>
-</template> -->
 <template>
     <div class="survey_content2 clearfix">
         <headers :header="header" :name="name"></headers>
         <div class="contents clearfix">
             <div class="grahp">
                 <div class="grahps1">
-                    <NewsList/>
+                    <NewsList />
                 </div>
                 <div class="grahps2">
-
+                    <div v-if="src!=''" style="height:100%;overflow-y:hidden;overflow-x:hidden">
+                        <iframe class="iframeA" :src="src"
+                            frameborder="0" scrolling="yes">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,104 +25,63 @@ import * as Points from "../monitor/points";
 import NewsList from "./NewsList.vue"
 
 export default {
-  components: {
-    // HighChart: () => import("../common/chart/highchart"),
-    // sangkey: () => import("../common/chart/sangkey")
-    NewsList
-  },
-  data() {
-    return {
-      header: [],
-      contens: {},
-      one: {},
-      tableData: [],
-      tableHeader: [{ id: 0, value: "value", label: "地下水位(m7)" }],
-      multipleSelection: [],
-      search: "",
-      currentPage: 1,
-      name: "数据分析",
-      page: {},
-      loading: {
-        indexLoading: false,
-        pieLoading: false,
-        pieLoading1: false,
-        chartLoading: false,
-        chartLoading1: false,
-        tableLoading: false,
-        pieLoading2: false,
-        pieLoading3: false
-      },
-      option: {}
-    };
-  },
-  created() {
-    this.header = consts.getHeaderConfig("analysis");
-    this.page = consts.getPageConfig("one");
-    // this.contens=Contents.getContent('table')
+    components: {
+        NewsList
+    },
+    data() {
+        return {
+            header: [],
+            contens: {},
+            one: {},
+            tableData: [],
+            tableHeader: [{ id: 0, value: "value", label: "地下水位(m7)" }],
+            multipleSelection: [],
+            search: "",
+            currentPage: 1,
+            name: "动态查询——地质新闻",
+            page: {},
+            //loading: false,
+            option: {},
+            src: ''
+        };
+    },
+    created() {
+        this.header = consts.getHeaderConfig("geoNews");
+        this.page = consts.getPageConfig("one");
+        // this.contens=Contents.getContent('table')
 
-    // this.one=this.contens.one
-    this.getTableData();
-    this.getPointsData();
-  },
-  methods: {
-    // 获取表格列表
-    getTableData() {
-      this.tableData = Contents.pointsTable;
+        // this.one=this.contens.one
+        this.getTableData();
+        this.getPointsData();
     },
-    // 删除
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
+    mounted() {
+        this.$bus.$on('openPage',(url)=>{
+            this.src = url
+        })
     },
-    filterTag(value, row) {
-      return row.format === value;
+    beforeDestroy() {
+        this.$bus.$off('openPage')
     },
-    getPointsData() {
-      this.option = Points.onePoints;
-      // this.option=Points.one
+    methods: {
+        // 获取表格列表
+        getTableData() {
+            this.tableData = Contents.pointsTable;
+        },
+        // 删除
+        deleteRow(index, rows) {
+            rows.splice(index, 1);
+        },
+        filterTag(value, row) {
+            return row.format === value;
+        },
+        getPointsData() {
+            this.option = Points.onePoints;
+            // this.option=Points.one
+        }
     }
-  }
 };
 </script>
 
-<!-- <style lang="less" scoped>
-@import "../../../static/css/clear";
-@import "../../../static/css/common";
-.clearfix {
-  *zoom: 1;
-}
-.clearfix:after {
-  content: "";
-  display: block;
-  visibility: hidden;
-  clear: both;
-  height: 0;
-}
-.survey_content2 {
-  width: 99.5%;
-  height: 100%;
-  .contents {
-    background-color: #fff;
-    // background-color: rgb(198, 219, 212);
-    margin: 15px;
-    padding: 15px;
-    .grahp {
-      // height: 300px;
-      background-color: #fff;
-      margin: 20px 0;
-      .grahps {
-        height: auto;
-        background-color: green;
-      }
-    }
-  }
-}
-</style>
-<style>
-.el-checkbox__label {
-  font-size: 12px;
-  line-height: 12px;
-}
-</style> -->
 <style lang="less" scoped>
 @import "../../../static/css/clear";
 @import "../../../static/css/common";
@@ -190,7 +118,7 @@ export default {
 
             .grahps1 {
                 height: 100%;
-                width: 200%;
+                width: 100%;
                 background-color: #fff;
             }
 
@@ -201,5 +129,14 @@ export default {
             }
         }
     }
+}
+
+.iframeA {
+    //position: absolute;
+    transform: scale(.5, .5) translate(-50%, -50%);
+    width: 200%;
+    height: 200%;
+    top: 0;
+    left: 0
 }
 </style>

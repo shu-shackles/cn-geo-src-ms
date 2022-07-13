@@ -57,7 +57,7 @@ export default {
         })
     },
     created() {
-        this.header = consts.getHeaderConfig("history");
+        this.header = consts.getHeaderConfig("mineralData");
         this.page = consts.getPageConfig("one");
         this.getTableData();
         this.getPointsData();
