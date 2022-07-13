@@ -52,4 +52,5 @@ async def user_register(item: RegisterItem, response: Response):
         if user.insert(item.username, item.password, item.ID, item.IDNAME):
             return "插入成功"
         else:
+            response.status_code = 233
             return "插入失败"
