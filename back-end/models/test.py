@@ -1,12 +1,15 @@
 import json
 import requests
 
-url = "https://geocloud.cgs.gov.cn/#/geoscienceProducts/geoscienceProductsDetail?child_id" \
-      "=cpgl_dzcp_8a8889b96e107a07016e125a5b5f01d8&yjlb=dxkp "
+"""url = "http://mnr.gov.cn/dt/ywbb/"
 response = requests.get(url)
 response.encoding = 'utf-8'
-html = response.text
+html = response.text"""
+
+asd = ['2022-07-01', './202207/t20220701_2740919.html', '陈一新：决不允许利用“养老房”坑骗老年人']
 
 
 if __name__ == "__main__":
-    print(html)
+    if asd[2].find("联合国") != -1 and not asd[1].startswith("./"):
+        print("123")
+    print("233")

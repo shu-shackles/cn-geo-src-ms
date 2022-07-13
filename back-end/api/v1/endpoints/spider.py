@@ -6,7 +6,7 @@ import uvicorn
 import json
 from fastapi import Depends, FastAPI, HTTPException
 
-from models.spider import get_main_article, get_news_by_province, get_main_article_from_geological_survey
+from models.spider import get_main_article, get_news_by_key_word
 
 spider = APIRouter(tags=["爬虫"])
 
@@ -16,7 +16,7 @@ spider = APIRouter(tags=["爬虫"])
 def get_news_from_geological_survey(key: str, nums: int, pages: int):
     result = ""
     # 调用爬虫函数，获取新闻列表
-    newsList = get_news_by_province(key, nums, pages)
+    newsList = get_news_by_key_word(key, nums, pages)
     first = True
 
     # 转换为json格式返回
@@ -37,7 +37,7 @@ def get_news_from_geological_survey(key: str, nums: int, pages: int):
 # 传入某个新闻的url地址，返回其正文(之后还会返回图片)
 @spider.get("/news/Chinese geography/{chapter_url:path}")
 def get_article_and_picture(chapter_url: str):
-    main_article = get_main_article_from_geological_survey(chapter_url)
+    main_article = get_main_article(chapter_url)
     result = "{"+'"main_article": "'+main_article+'"}'
     result = json.loads(result)
     return result

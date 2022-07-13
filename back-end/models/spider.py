@@ -83,28 +83,34 @@ def download_local(url, dir):
 
 
 # 获取新闻的发行时间、链接、标题
-def get_news_title():
-    url = 'http://mnr.gov.cn/dt/ywbb/'
+def get_news_title_1(key, pages=""):
+    url = 'http://mnr.gov.cn/dt/ywbb/'+pages
+    base_url = 'http://mnr.gov.cn/dt/ywbb/'
     response = requests.get(url)
     response.encoding = 'utf-8'
     html = response.text
-    print(html)
+    result = []
+
     # chapter_info_list获取所有新闻的日期、地址、标题
     chapter_info_list = re.findall(r'<li><span>(.*?)</span><a href="(.*?)" target="_blank">(.*?)</a></li>', html, re.S)
     # 将网站信息改为list
     chapter_info_list = list(map(list, chapter_info_list))
-    # 对地址奇怪的新闻进行清洗，并将相对地址改为绝对地址
-    for i in range(len(chapter_info_list) - 1, -1, -1):
-        if not chapter_info_list[i][1].startswith("./"):
-            chapter_info_list.pop(i)
-        else:
-            chapter_info_list[i][1] = "http://mnr.gov.cn/dt/ywbb/" + chapter_info_list[i][1][2:]
 
-    return chapter_info_list
+    for i in range(len(chapter_info_list)):
+        if chapter_info_list[i][2].find(key) == -1 or not chapter_info_list[i][1].startswith("./"):
+            continue
+        # 先获取新闻首段
+        firstParagraph = get_main_article_1(base_url + chapter_info_list[i][1][2:], True)
+        # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
+        if firstParagraph:
+            result.append([chapter_info_list[i][2], firstParagraph, base_url + chapter_info_list[i][1][2:],
+                          chapter_info_list[i][0][:]])
+
+    return result
 
 
 # 输入一个url，返回该网址的正文
-def get_main_article(chapter_url):
+def get_main_article_1(chapter_url, firstParagraph = False):
     chapter_response = requests.get(chapter_url)
     chapter_response.encoding = 'utf-8'
 
@@ -114,6 +120,8 @@ def get_main_article(chapter_url):
     main_article = re.findall(r'[\u4e00-\u9fa5\d，。：“”；：？！（）]{25,}', chapter_html)
     if len(main_article) == 0:
         raise Exception("url error")
+    if firstParagraph:
+        return main_article[0][:30]
     result = "  " + main_article[0]
     if len(main_article) > 1:
         for i in range(1, len(main_article)):
@@ -130,11 +138,9 @@ def get_main_article(chapter_url):
 
 
 # 输入关键字、数量、页数，返回前page页的num个包含关键字的新闻相关内容，以列表形式返回(列表长度<=num)
-def get_news_by_province(key, nums, pages):
+def get_news_title_2(key, pages):
     # 网站主页的url
     base_url = "http://www.zgdztk.com/"
-    # 新闻列表url
-    url = 'http://mnr.gov.cn/dt/ywbb/'
 
     result = []
 
@@ -155,18 +161,16 @@ def get_news_by_province(key, nums, pages):
         for i in range(len(chapter_info_list)):
             if chapter_info_list[i][1].find(key) != -1:
                 # 先获取新闻首段
-                firstParagraph = get_main_article_from_geological_survey(base_url + chapter_info_list[i][0], True)
+                firstParagraph = get_main_article_2(base_url + chapter_info_list[i][0], True)
                 # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
                 if firstParagraph:
                     result.append([chapter_info_list[i][1], firstParagraph, base_url + chapter_info_list[i][0],
                                    chapter_info_list[i][3][14:]])
-                if len(result) >= nums:
-                    return result
 
     return result
 
 
-def get_main_article_from_geological_survey(url, firstParagraph=False):
+def get_main_article_2(url, firstParagraph=False):
     chapter_response = requests.get(url)
     chapter_response.encoding = 'gbk'
 
@@ -182,11 +186,10 @@ def get_main_article_from_geological_survey(url, firstParagraph=False):
         # 将其中的"与<>内容删除
         firstSentence = re.sub('\<.*?\>', '', main_article[0])
         firstSentence = firstSentence.replace("&nbsp;", "")
-        return firstSentence.replace('"', '\\"')[:20]
+        return firstSentence.replace('"', '\\"')[:30]
     result = "  " + main_article[0]
 
     # 返回数据
-    print(len(main_article))
     if len(main_article) > 1:
         for i in range(1, len(main_article)):
             if not main_article[i].isdigit():
@@ -203,5 +206,54 @@ def get_main_article_from_geological_survey(url, firstParagraph=False):
     return result
 
 
+# 输入关键字、数量、页数，返回前page页的num个包含关键字的新闻相关内容，以列表形式返回(列表长度<=num)
+def get_news_title_3(key, pages):
+    # 网站主页的url
+    base_url = "http://www.forestry.gov.cn/sites/main/main/list-dfdt.jsp?p=1&st=2002-01-01&et=2099-12-30&page="
+    main_url = "http://www.forestry.gov.cn"
+
+    result = []
+
+    for page in range(pages):
+        url = base_url + str(page)
+        response = requests.get(url)
+        response.encoding = 'utf-8'
+        html = response.text
+
+        # chapter_info_list获取所有新闻的日期、地址、标题
+        chapter_info_list = re.findall(
+            r'<li class="cl"><a title=\'(.*?)\' target=\'_blank\' '
+            r'href="(.*?)">(.*?)</a><span class="date">(.*?)</span></li>', html, re.S)
+        # 将网站信息改为list
+        chapter_info_list = list(map(list, chapter_info_list))
+        # 对地址奇怪的新闻进行清洗，并将相对地址改为绝对地址
+        for i in range(len(chapter_info_list)):
+            if chapter_info_list[i][1].find(key) != -1:
+                # 先获取新闻首段
+                firstParagraph = get_main_article_2(base_url + chapter_info_list[i][0], True)
+                # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
+                if firstParagraph:
+                    result.append([chapter_info_list[i][0], firstParagraph, main_url + chapter_info_list[i][1],
+                                   chapter_info_list[i][3]])
+
+    return result
+
+
+def get_main_article_3(url, firstParagraph=False):
+    return "233"
+
+
+def get_news_by_key_word(key, num):
+    result = get_news_title_1(key)
+    for i in range(1, 3):
+        result += get_news_title_1(key, "index_"+str(i)+".html")
+    result += get_news_title_2(key, 3)
+    return result
+
+
+def get_main_article(url):
+    return get_main_article_1(url)
+
+
 if __name__ == "__main__":
-    print(get_news_by_province("山东", 2, 1))
+    print(get_news_title_3("云南", 1))
