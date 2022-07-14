@@ -20,12 +20,12 @@ class TagsUploadItem(BaseModel):
     imgSrc: str
 
 
-class TagsGetAreaInformal(BaseModel):
-    area: str
-
-
-class TagsGetArea(BaseModel):
-    area: str
+# class TagsGetAreaInformal(BaseModel):
+#     area: str
+#
+#
+# class TagsGetArea(BaseModel):
+#     area: str
 
 
 class TagAudit(BaseModel):
@@ -36,14 +36,14 @@ class TagAudit(BaseModel):
 @tags.post("/upload", summary="上传标记")
 async def tag_upload(item: TagsUploadItem):
     if item.type == 1:
-        if tag.tag_upload("A1", item.uid, item.time, item.lng, item.lat, item.etype,
+        if tag.tag_upload(coords_to_city(item.lng, item.lat), item.uid, item.time, item.lng, item.lat, item.etype,
                           item.title, item.desc, item.imgSrc):
             return "不需审核，添加成功"
         else:
             return "不需审核，添加失败"
     else:
         if item.type == 2:
-            if tag.tag_upload_informal("A1", item.uid, item.time, item.lng, item.lat, item.etype,
+            if tag.tag_upload_informal(coords_to_city(item.lng, item.lat), item.uid, item.time, item.lng, item.lat, item.etype,
                                        item.title, item.desc, item.imgSrc):
                 return "需要审核，添加成功"
             else:
@@ -52,30 +52,30 @@ async def tag_upload(item: TagsUploadItem):
             return "人员权限错误"
 
 
-@tags.get("/areainformaltags/:area", summary="区域未审核标记")
-async def tag_area_informal(item: TagsGetAreaInformal):
-    sql_result = tag.tag_get_area_informal(item.area)
+@tags.post("/areainformaltags/{area}", summary="区域未审核标记")
+async def tag_area_informal(area):
+    if area == "全部":
+        sql_result = tag.tag_get_area_informal("")
+        data = [dict(zip(result.keys(), result)) for result in sql_result]
+        return data
+    sql_result = tag.tag_get_area_informal(area)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
-    for data_node in data:
-        data_node["area"] = coords_to_city(data_node["lng"], data_node["lat"])
-    result = json.dumps(data)
-    return result
+    return data
 
 
-@tags.get("/areatags/:area", summary="区域已审核标记")
-async def tag_area(item: TagsGetArea):
-    sql_result = tag.tag_get_area(item.area)
+@tags.post("/areatags/{area}", summary="区域已审核标记")
+async def tag_area(area):
+    if area == "全部":
+        sql_result = tag.tag_get_area("")
+        data = [dict(zip(result.keys(), result)) for result in sql_result]
+        return data
+    sql_result = tag.tag_get_area(area)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
-    for data_node in data:
-        data_node["area"] = coords_to_city(data_node["lng"], data_node["lat"])
-    result = json.dumps(data)
-    return result
+    return data
 
 
-@tags.post('/finishaudit/{area}', summary="审核标记结果")
-async def tag_audit(item: TagAudit, area):
-    if not tag.tag_area_exist(item.eid, area):
-        return "区域内不存在此标记"
+@tags.post('/finishaudit', summary="审核标记结果")
+async def tag_audit(item: TagAudit):
     if item.auditStatus == -1:
         if tag.tag_delete_informal(item.eid):
             return "审核不通过，删除成功"

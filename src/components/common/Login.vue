@@ -5,14 +5,16 @@
             <p>用户登陆</p>
             <!--element的form表单-->
             <div class="login-content">
-                <el-form  :label-position="labelPosition" :model="formLabelAlign"
-                         :rules="rules" ref="formLabelAlign" status-icon  label-width="100px">
+                <el-form  :label-position="right" :model="formLabelAlign"
+                        :rules="rules" ref="formLabelAlign" status-icon  label-width="70px">
+
                     <el-form-item label="用户名" prop="username">
                         <el-input  v-model="formLabelAlign.username"
-                                   placeholder="请输入用户名"  autocomplete="on" >
+                                  placeholder="请输入用户名"  autocomplete="on" >
                             <i slot="prefix" class="iconfont icon-my"></i>
                         </el-input>
                     </el-form-item>
+
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="formLabelAlign.password" placeholder="请输入密码"
                                   autocomplete="off">
@@ -21,11 +23,31 @@
                             <!-- <i slot="suffix" class="iconfont icon-display"></i> -->
                         </el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="info" plain @click="onSubmit('formLabelAlign')">登录</el-button>
-                        <el-button type="info" plain @click="onRegister">注册</el-button>
-                    </el-form-item>
+
+                    <el-form style="margin-bottom:10px;"> 
+                        <el-form-item style="margin-bottom:0px;">
+                          <el-button type="primary" round @click="onSubmit('formLabelAlign')">登录</el-button>
+                        </el-form-item>
+                    </el-form>
+
+                    <el-form  style="margin-bottom:0px;"> 
+                        <el-form-item style="margin-bottom:0px;">
+                          <b style="color:black">没有账号</b>
+                          <el-link :underline="false" type="success" @click="onRegister">立即注册</el-link>
+                        </el-form-item>
+                    </el-form>
+                    <!-- <slide-verify :l="42"
+                      :r="10"
+                      :w="310"
+                      :h="155"
+                      slider-text="向右滑动"
+                      @success="onSuccess"
+                      @fail="onFail"
+                      @refresh="onRefresh"
+                    ></slide-verify>
+                    <div>{{msg}}</div> -->
                 </el-form>
+
             </div>
         </div>
 
@@ -51,9 +73,10 @@
         }
       }
       return {
+        msg:'',
         labelPosition: 'right',
         formLabelAlign: {
-         username: '',
+          username: '',
           password: ''
         },
         rules: {
@@ -84,28 +107,40 @@
             if (valid) {
               this.axios.post('login', this.formLabelAlign)
                 .then(res => {
-                  if (res.data.code === 200) {
-                    sessionStorage.setItem('userName', res.data.user.user_name)
+                  if (res.status === 200) {
+                    // sessionStorage.setItem('userName', res.data.user.user_name)
                     // this.$store.commit('user', res.data.user)
-                    // this.$message.success('登录成功')
+                    console.log(res)
+                    this.$message.success('登录成功')
                     this.$router.push('/index')
                   }else{
                     //如果登录失败，重置表单，重新填写
                     //element的消息提示组件
-                    this.$message.success('登录失败')
+                    console.log(res)
+                    this.$message.error('登录失败: '+res.data+' 请重试！')
                     this.$refs[formName].resetFields()
                   }
                 })
                 .catch(err => {
+                  console.log(2)
                   console.log(err)
                 })
             }
           })
-          this.$router.push('/index')
+          // this.$router.push('/index')
         },
       //注册
       onRegister(){
         this.$router.push('/register')
+      },
+      onSuccess(){
+        this.msg = 'login success'
+      },
+      onFail(){
+        this.msg = 'login failed'
+      },
+      onRefresh(){
+        this.msg = 'refresh'
       }
 
       }
@@ -127,21 +162,23 @@
         background-size: cover;
 
          .login{
-             width: 400px;
-             height: 270px;
+             align-items:center;
+             width: 450px;
+             height: 320px;
              // margin-left: 100px;
-             background-color: #93b4bf;
+             background-color: white;
              border-radius: 2%;
-             padding: 15px 50px 0px 0px;
+             padding: 15px 50px 15px 50px;
              color: #ffffffc4;
              margin:0 auto;
          }
         p{
             width: 100%;
-            padding-left:23px;
+            padding-left:0px;
             margin-bottom: 10px;
             font-size: 22px;
             text-align: center;
+            color:black;
         }
         .login-content{
         .el-button{
@@ -158,7 +195,8 @@
 <style>
 
     .login-content .el-form-item__label{
-         color: #ebecefe3;
+         color: #606266
+;
      }
 
 

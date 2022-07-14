@@ -1,7 +1,8 @@
+import {test} from "../test.js"
 <template>
     <div class="registerContainer">
         <div class="register">
-            <p>用户注册</p>
+            <p>欢迎注册</p>
             <el-form ref="form" :model="form" label-width="80px" status-icon :rules="rules">
                 <el-form-item label="用户名" prop="username">
                     <el-input v-model="form.username" autocomplete="off"></el-input>
@@ -12,12 +13,15 @@
                 <el-form-item label="确认密码" prop="checkpass">
                     <el-input type="password" v-model="form.checkpass" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="form.email" autocomplete="off"></el-input>
+                <el-form-item label="姓名" prop="IDName">
+                  <el-input v-model="form.IDName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="身份证号" prop="ID">
+                    <el-input v-model="form.ID" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('form')">提交</el-button>
-                    <el-button @click="resetForm('form')">重置</el-button>
+                    <el-button type="info" @click="resetForm('form')">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -62,22 +66,26 @@
           username:'',
           password:'',
           checkpass:'',
-          email:''
+          ID:'',
+          IDName:''
         },
         rules:{
           username:[
-            {validator:checkname, trigger: 'blur',required: true,}
+            {validator:checkname, trigger: 'blur',required: true}
           ],
-          email:[
-              { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-              { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          IDName:[
+            { required: true, message: '请输入姓名', trigger: 'blur' ,required: true}
+          ],
+          ID:[
+              { required: true, message: '请输入身份证号', trigger: 'blur' ,required: true},
+              { type: 'string', message: '请输入正确的身份证号', trigger: ['blur', 'change'] }
            ],
           password:[
-            {validator:validatePass,trigger:'blur',required: true,},
+            {validator:validatePass,trigger:'blur',required: true},
             { min: 6, max: 20, message: '长度不少于6个字符', trigger: 'blur' }
           ],
           checkpass:[
-            {validator:validatePass2 ,trigger:'blur',required: true,}
+            {validator:validatePass2 ,trigger:'blur',required: true}
           ]
         }
       }
