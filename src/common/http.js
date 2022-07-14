@@ -6,7 +6,7 @@ import ElementUI from 'element-ui'
 //   headers: {'Content-Type': 'application/json; charset=utf-8'},
 //   baseURL: 'http://118.89.112.142/report'
 // })
-axios.defaults.baseURL = 'http://localhost:5000/api/' // 本地
+axios.defaults.baseURL = 'http://localhost:8080/api/v1/' // 本地
 // axios.defaults.baseURL = 'http://118.89.112.142:8090/report' // 测试
 // axios.defaults.baseURL = 'http://report.orchidland.cn/report'
 // axios.defaults.baseURL = 'http://newreport.orchidland.cn/report'
