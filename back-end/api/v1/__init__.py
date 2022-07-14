@@ -14,4 +14,5 @@ v1.include_router(mineral)
 
 v1.include_router(spider)
 v1.include_router(IDAuthen)
+v1.include_router(image)
 

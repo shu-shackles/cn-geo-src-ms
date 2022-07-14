@@ -8,7 +8,7 @@ import requests
 def DataCheck():
   starttime = time.time()
   i = 0
-  with open('address.csv') as f:
+  with open('models/csv/address.csv') as f:
     reader = csv.reader(f)
     next(f)
     for row in reader:
@@ -69,7 +69,7 @@ def DealData(lst):  # 分列后进行处理查询
 def RecorrectV4():
   starttime = time.time()
   lst = []
-  with open('address.csv') as f:
+  with open('models/csv/address.csv') as f:
     reader = csv.reader(f)
     next(f)
     for row in reader:
@@ -80,7 +80,7 @@ def RecorrectV4():
 
   new_result_list = DealData(lst)
 
-  with open('newGPS.csv', 'w', newline='') as f:
+  with open('models/csv/newGPS.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerows(new_result_list)
   endtime = time.time()
@@ -100,7 +100,7 @@ def lo_to_addr(location):  # 经纬度转地址
 def GetAddV4():
   starttime = time.time()
 
-  with open('newGPS.csv') as f:
+  with open('models/csv/newGPS.csv') as f:
     reader = csv.reader(f)
     # for row in reader:
     #     # 行号从1开始
@@ -138,7 +138,7 @@ def GetAddV4():
 
   result_combine = zip(dis_from_location_list, address_from_location_list)
   result_list = list(result_combine)
-  with open('dis.csv', 'w', newline='') as f:
+  with open('models/csv/dis.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerows(result_list)
   endtime = time.time()
@@ -147,14 +147,14 @@ def GetAddV4():
 def generateCSV(lon, lat):
   headers = ['longitude', 'latitude']
   rows = [(lon, lat)]
-  with open('address.csv', 'w', encoding='utf8', newline='') as f:
+  with open('models/csv/address.csv', 'w', encoding='utf8', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(headers)
     writer.writerows(rows)
 
 
 def get_result():
-  with open('dis.csv') as f:
+  with open('models/csv/dis.csv') as f:
     reader = csv.reader(f)
     next(f)
     for row in reader:

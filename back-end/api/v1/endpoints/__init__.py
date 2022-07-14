@@ -9,3 +9,4 @@ from .mineral import mineral
 
 from .spider import spider
 from .IDAuthen import IDAuthen
+from images import image
