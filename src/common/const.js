@@ -1,42 +1,42 @@
 const ASIDE_TITLE = [
-  {
-    title: "地质标注",
-    titleIndex: "1",
-    activeName: "1",
-    icon: "el-icon-document",
-    levelInfo: [
-      {
-        level: "简介",
-        levelIndex: "project_survey",
-        path: { name: "project_survey" }
-      },
-      {
-        level: "文档",
-        levelIndex: "project_word",
-        path: { name: "project_word" }
-      },
-      {
-        level: "影像",
-        levelIndex: "project_img",
-        path: { name: "project_img" }
-      },
+ //{
+    // title: "地质标注",
+    // titleIndex: "1",
+    // activeName: "1",
+    // icon: "el-icon-document",
+    // levelInfo: [
+    //   {
+    //     level: "提交标注",
+    //     levelIndex: "index",
+    //     //path: { name: "project_survey" }
+    //   },
+    //   {
+    //     level: "文档",
+    //     levelIndex: "project_word",
+    //     path: { name: "project_word" }
+    //   },
+    //   {
+    //     level: "影像",
+    //     levelIndex: "project_img",
+    //     path: { name: "project_img" }
+    //   },
       // {
       //   level: "项目表格",
       //   levelIndex: "project_table",
       //   path: { name: "project_table" }
       // },
-      {
-        level: "矢量图",
-        levelIndex: "project_graph",
-        path: { name: "project_graph" }
-      },
+    //   {
+    //     level: "矢量图",
+    //     levelIndex: "project_graph",
+    //     path: { name: "project_graph" }
+    //   },
       
-    ]
-  },
+    //]
+  //},
   {
     title: "动态查询",
-    titleIndex: "2",
-    activeName: "2",
+    titleIndex: "1",
+    activeName: "1",
     icon: "el-icon-document",
     levelInfo: [
       {
@@ -53,8 +53,8 @@ const ASIDE_TITLE = [
   },
   {
     title: "数据分析",
-    titleIndex: "3",
-    activeName: "3",
+    titleIndex: "2",
+    activeName: "2",
     icon: "el-icon-menu",
     levelInfo: [
       {
@@ -66,8 +66,8 @@ const ASIDE_TITLE = [
   },
   {
     title: "系统管理",
-    titleIndex: "4",
-    activeName: "4",
+    titleIndex: "3",
+    activeName: "3",
     icon: "el-icon-setting",
     levelInfo: [
       {
