@@ -59,5 +59,5 @@ def idMatches(cardNo, realName):
 
   if content:
     content = content.decode('utf-8')
-    content = re.findall(r'"reason":"(.*?)","result"', content)[0]
+    content = re.findall(r'"isok":"(.*?)","IdCardInfor"', content)[0]
     return content
