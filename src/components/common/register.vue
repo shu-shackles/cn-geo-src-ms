@@ -23,14 +23,14 @@ import {test} from "../test.js"
                     </el-input>
                 </el-form-item>
 
-                <el-form-item style="width: 420px;" label="姓名" prop="IDNAME">
-                  <el-input style="width: 320px;" v-model="form.IDNAME"  placeholder="请输入姓名" autocomplete="off">
+                <el-form-item  style="width: 420px;" label="姓名" prop="IDNAME">
+                  <el-input id="CardIDName"  :disabled="false" style="width: 320px;" v-model="form.IDNAME"  placeholder="请输入姓名" autocomplete="off">
                     <i slot="prefix" class="el-icon-s-custom"></i>
                   </el-input>
                 </el-form-item>
 
-                <el-form-item style="width: 520px;" label="身份证号" prop="ID">
-                    <el-input style="width: 320px;" v-model="form.ID" placeholder="请输入18位身份证号" autocomplete="off">
+                <el-form-item  style="width: 520px;" label="身份证号" prop="ID">
+                    <el-input id="CardID" :disabled="false"  style="width: 320px;" v-model="form.ID" placeholder="请输入18位身份证号" autocomplete="off">
                       <i slot="prefix" class="el-icon-s-check"></i>
                     </el-input>
                     <el-button  style="width: 100px;height: 50px;margin-left: 10px;padding: 4% 4%;" type="success" @click="submitID('form')">身份审核</el-button>
@@ -120,7 +120,7 @@ import {test} from "../test.js"
             this.$alert('身份认证失败: 请确认输入信息',{type:"error"})
           }
           if(valid && this.IDValid){
-            console.log(this.form)
+            console.log(this.form);
             this.axios.post('/register',this.form)
               .then(res=>{
                 console.log(res)
@@ -158,12 +158,17 @@ import {test} from "../test.js"
               console.log(res.status)
               console.log(res)
               if(res.data.result==="1"){
-                this.IDValid = true
-                  console.log(this.IDValid)
-                  this.$alert('身份核验成功:！',{type:"success"})
+                this.IDValid = true;
+                console.log(this.IDValid);
+                //身份核验成功后身份信息不可更改
+                document.getElementById("CardID").setAttribute("readonly",true);
+                document.getElementById("CardIDName").setAttribute("readonly",true);
+                this.$alert('身份核验成功:！',{type:"success"});
               }
               else{
-                this.$alert('身份核验失败，请重试！:',{type:"error"})
+                this.IDValid = false;
+                console.log(this.IDValid);
+                this.$alert('身份核验失败，请重试！:',{type:"error"});
               }
             })
           
