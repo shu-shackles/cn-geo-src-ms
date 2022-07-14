@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-
+import json
 import ssl, hmac, base64, hashlib
 import re
 from datetime import datetime as pydatetime
@@ -59,5 +59,7 @@ def idMatches(cardNo, realName):
 
   if content:
     content = content.decode('utf-8')
-    content = re.findall(r'"isok":"(.*?)","IdCardInfor"', content)[0]
-    return content
+    data = json.loads(content)
+    # print(data["result"]["isok"])
+    # content = re.findall(r'"isok":"(.*?)","IdCardInfor"', content)[0]
+    return "1" if data["result"]["isok"] else "0"

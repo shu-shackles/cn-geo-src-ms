@@ -4,25 +4,45 @@ import {test} from "../test.js"
         <div class="register">
             <p>欢迎注册</p>
             <el-form ref="form" :model="form" label-width="80px" status-icon :rules="rules">
-                <el-form-item label="用户名" prop="username">
-                    <el-input v-model="form.username" autocomplete="off"></el-input>
+            
+                <el-form-item style="width: 420px;" label="用户名" prop="username">
+                    <el-input style="width: 320px;" v-model="form.username"  placeholder="请输入用户名" autocomplete="off">
+                      <i slot="prefix" class="el-icon-user"></i>
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
+
+                <el-form-item style="width: 420px;" label="密码" prop="password">
+                    <el-input style="width: 320px;" type="password" v-model="form.password" placeholder="请输入密码" autocomplete="off">
+                      <i slot="prefix" class="iconfont icon-lock"></i>
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="checkpass">
-                    <el-input type="password" v-model="form.checkpass" autocomplete="off"></el-input>
+
+                <el-form-item style="width: 420px;" label="确认密码" prop="check_pass">
+                    <el-input style="width: 320px;" type="password" v-model="form.check_pass"  placeholder="请再次输入密码" autocomplete="off">
+                      <i slot="prefix" class="iconfont icon-lock"></i>
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="姓名" prop="IDName">
-                  <el-input v-model="form.IDName" autocomplete="off"></el-input>
+
+                <el-form-item style="width: 420px;" label="姓名" prop="IDNAME">
+                  <el-input style="width: 320px;" v-model="form.IDNAME"  placeholder="请输入姓名" autocomplete="off">
+                    <i slot="prefix" class="el-icon-s-custom"></i>
+                  </el-input>
                 </el-form-item>
-                <el-form-item label="身份证号" prop="ID">
-                    <el-input v-model="form.ID" autocomplete="off"></el-input>
+
+                <el-form-item style="width: 520px;" label="身份证号" prop="ID">
+                    <el-input style="width: 320px;" v-model="form.ID" placeholder="请输入18位身份证号" autocomplete="off">
+                      <i slot="prefix" class="el-icon-s-check"></i>
+                    </el-input>
+                    <el-button  style="width: 100px;height: 50px;margin-left: 10px;padding: 4% 4%;" type="success" @click="submitID('form')">身份审核</el-button>
                 </el-form-item>
+              <el-form>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('form')">提交</el-button>
                     <el-button type="info" @click="resetForm('form')">重置</el-button>
                 </el-form-item>
+              </el-form>
+                
+
             </el-form>
         </div>
 
@@ -46,8 +66,8 @@ import {test} from "../test.js"
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
-          if (this.form.checkpass !== '') {
-            this.$refs.form.validateField('checkpass');
+          if (this.form.check_pass !== '') {
+            this.$refs.form.validateField('check_pass');
           }
           callback();
         }
@@ -62,29 +82,30 @@ import {test} from "../test.js"
         }
       };
       return{
+        IDValid:false,
         form:{
           username:'',
           password:'',
-          checkpass:'',
+          check_pass:'',
           ID:'',
-          IDName:''
+          IDNAME:''
         },
         rules:{
           username:[
             {validator:checkname, trigger: 'blur',required: true}
           ],
-          IDName:[
+          IDNAME:[
             { required: true, message: '请输入姓名', trigger: 'blur' ,required: true}
           ],
           ID:[
               { required: true, message: '请输入身份证号', trigger: 'blur' ,required: true},
-              { type: 'string', message: '请输入正确的身份证号', trigger: ['blur', 'change'] }
-           ],
+              { min:18,max:18, message: '输入的身份证号有误', trigger: 'blur' }
+          ],
           password:[
             {validator:validatePass,trigger:'blur',required: true},
-            { min: 6, max: 20, message: '长度不少于6个字符', trigger: 'blur' }
+            { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: 'blur' }
           ],
-          checkpass:[
+          check_pass:[
             {validator:validatePass2 ,trigger:'blur',required: true}
           ]
         }
@@ -94,16 +115,24 @@ import {test} from "../test.js"
       //提交注册
       submitForm(formName){
         this.$refs[formName].validate((valid)=>{
-          if(valid){
-            this.$ajax.post('/register',this.form)
+          console.log(this.IDValid)
+          if(!this.IDValid){
+            this.$alert('身份认证失败: 请确认输入信息',{type:"error"})
+          }
+          if(valid && this.IDValid){
+            console.log(this.form)
+            this.axios.post('/register',this.form)
               .then(res=>{
                 console.log(res)
-                if(res.data.code===200){
+                if(res.status===200 ){
                   //element的消息框提示
-                  this.$alert('注册成功',{center:true})
+                  this.$message.success('注册成功,即将跳转到登录界面！',{center:true})
+                  // this.$alert('注册成功,即将跳转到登录界面！',{center:true})
                   this.$router.push('/')
                 }else{
-                  this.$alert('注册失败',{center:true})
+                  // this.$message.error('注册失败: '+res.data,{center:true})
+                  this.$alert('注册失败: '+res.data,{type:"error"}
+                      )
                 }
               })
               .catch(err=>{
@@ -111,6 +140,36 @@ import {test} from "../test.js"
               })
           }
         })
+      },
+      //身份审核
+      submitID(forName){
+        this.$refs[forName].validate((valid)=>{
+          if(valid){
+            this.axios({
+              method: 'get',
+                url: `http://localhost:8080/api/v1/IDAuthen`,
+                params: { 
+                  cardID : this.form.ID,
+                  realName : this.form.IDNAME 
+                }
+            })
+            .then(res=>{
+              console.log(res.data)
+              console.log(res.status)
+              console.log(res)
+              if(res.data.result==="1"){
+                this.IDValid = true
+                  console.log(this.IDValid)
+                  this.$alert('身份核验成功:！',{type:"success"})
+              }
+              else{
+                this.$alert('身份核验失败，请重试！:',{type:"error"})
+              }
+            })
+          
+          }
+        })
+
       },
       //重置表单
       resetForm(formName){
@@ -131,13 +190,15 @@ import {test} from "../test.js"
     margin:auto;
     /*height:650px;*/
     .register{
-       margin: 100px auto;
-        width:40%;
+      width: 500px;
+      height: 320px;
+      margin: 100px auto;
+      // width:40%;
        .el-button{
-         padding: 4% 20%;
+         padding: 4% 10%;
          }
        .el-button--defalut{
-           float: right;
+           float: left;;
 
        }
     p{
