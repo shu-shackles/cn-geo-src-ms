@@ -2,7 +2,7 @@
     <div class="loginContainer">
         <div class="login">
             <p>中国地质资源管理系统</p>
-            <p>用户登陆</p>
+            <p>用户登录</p>
             <!--element的form表单-->
             <div class="login-content">
                 <el-form  :label-position="right" :model="formLabelAlign"
@@ -32,8 +32,10 @@
 
                     <el-form  style="margin-bottom:0px;"> 
                         <el-form-item style="margin-bottom:0px;">
-                          <b style="color:black">没有账号</b>
-                          <el-link :underline="false" type="success" @click="onRegister">立即注册</el-link>
+                          <span style="color:black;font-size:16px">没有账号</span>
+                          <a data-v-a1217096="" @click="onRegister" class="el-link el-link--success" style="height: 46px;">
+                          <span class="el-link--inner" style="height: 46px;font-size: 16px;">立即注册</span>
+                          </a>
                         </el-form-item>
                     </el-form>
                     <!-- <slide-verify :l="42"
@@ -176,7 +178,7 @@
             width: 100%;
             padding-left:0px;
             margin-bottom: 10px;
-            font-size: 22px;
+            font-size: 20px;
             text-align: center;
             color:black;
         }
