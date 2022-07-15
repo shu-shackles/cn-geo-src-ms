@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import os
 
@@ -64,9 +65,7 @@ async def tag_upload(_type, uid, time, lng, lat, etype, title, desc, file: Uploa
 @tags.post("/areainformaltags/{area}", summary="区域未审核标记")
 async def tag_area_informal(area):
     if area == "全部":
-        sql_result = tag.tag_get_area_informal("")
-        data = [dict(zip(result.keys(), result)) for result in sql_result]
-        return data
+        area = ""
     sql_result = tag.tag_get_area_informal(area)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data
@@ -75,9 +74,7 @@ async def tag_area_informal(area):
 @tags.post("/areatags/{area}", summary="区域已审核标记")
 async def tag_area(area):
     if area == "全部":
-        sql_result = tag.tag_get_area("")
-        data = [dict(zip(result.keys(), result)) for result in sql_result]
-        return data
+        area = ""
     sql_result = tag.tag_get_area(area)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data
