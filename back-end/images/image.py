@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+import os
 
 image = APIRouter(tags=["图片相关"])
 
@@ -13,10 +14,13 @@ class SelectImageItem(BaseModel):
 async def image_upload(file: UploadFile):
     image_bytes = file.file.read()
     image_name = file.filename
-    fout = open(f'images/{image_name}', 'wb')
+    i = 1
+    while os.path.exists(f'images/{image_name}({i})'):
+        i = i + 1
+    fout = open(f'images/{image_name}({i})', 'wb')
     fout.write(image_bytes)
     fout.close()
-    return {f'images/{image_name}'}
+    return {f'images/{image_name}({i})'}
 
 
 @image.post("/seek_image", summary="查找图片")
