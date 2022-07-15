@@ -1,8 +1,9 @@
 <template>
-    <div class="a" id='allmap' style="overflow: hidden">
+    <div class="a" id='allmap' style="overflow: hidden" >
         <sider></sider>
         <baidu-map style="margin-left:160px;" :class="'hello flex10'" :zoom="zoom" @ready="handler" center="延安"
             :scroll-wheel-zoom="true">
+            <TagForm/>
             <div class="float_left">
                 <el-select size="mini" style="position:absolute;left:200px;top:20px;" v-model="searchName"
                     @change="changeType" placeholder="请选择标记类型">
@@ -14,12 +15,13 @@
             <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
             </bm-map-type>
             <div v-for="item in projects" :key='item.id'>
-                <bm-marker :position="{ lng: item.lng, lat: item.lat }" @click="infoWindowOpen(item.id)">
+                <bm-marker :position="{ lng: item.lng, lat: item.lat }" @click="infoWindowOpen(item.id)"
+                    :icon="{ url: item.url, size: { width: 32, height: 32 } }">
                     <bm-label :content="item.title" :labelStyle="{ color: 'red', fontSize: '12px' }"
-                        :offset="{ width: 0, height: 25 }" />
+                        :offset="{ width: 0, height: 32 }" />
                     <bm-info-window :show="item.show" style="width:150px;" @open="infoWindowOpen(item.id)"
                         @close="infoWindowClose(item.id)">
-                        <el-descriptions :title="item.title" column="1" size="mini" style="width:150%;">
+                        <el-descriptions :title="item.title" :column="1" size="mini" style="width:150%;">
                             <el-descriptions-item label="类型">{{ item.enentype }}</el-descriptions-item>
                             <el-descriptions-item label="时间">{{ item.time }}</el-descriptions-item>
                             <el-descriptions-item label="描述">{{ item.tag_sesc }}
@@ -43,6 +45,9 @@ export default {
     name: "index",
     data() {
         return {
+            map: null,
+            lng: '',
+            lat: '',
             zoom: 5.5,
             searchName: "全部",
             type: [{ value: '全部', label: '全部' },
@@ -70,6 +75,19 @@ export default {
                     projectPoints[i].show = false
                     projectPoints[i].id = i
                     projectPoints[i].time = projectPoints[i].time.replace('T', ' ')
+                    if(projectPoints[i].enentype==='动物'){
+                        projectPoints[i].url = require('@/assets/images/ico1.png')
+                    } else if(projectPoints[i].enentype==='植物'){
+                        projectPoints[i].url = require('@/assets/images/ico2.png')
+                    } else if(projectPoints[i].enentype==='景观'){
+                        projectPoints[i].url = require('@/assets/images/ico3.png')
+                    } else if(projectPoints[i].enentype==='矿物'){
+                        projectPoints[i].url = require('@/assets/images/ico4.png')
+                    } else if(projectPoints[i].enentype==='事件'){
+                        projectPoints[i].url = require('@/assets/images/ico5.png')
+                    } else if(projectPoints[i].enentype==='其他'){
+                        projectPoints[i].url = require('@/assets/images/ico6.png')
+                    }
                 }
                 that.projectPoints = projectPoints;
                 that.projects = projectPoints;
