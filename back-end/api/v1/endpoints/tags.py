@@ -1,6 +1,5 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter
 from pydantic import BaseModel
-import os
 
 from models import tag
 from models.location import coords_to_city
@@ -8,16 +7,16 @@ from models.location import coords_to_city
 tags = APIRouter(tags=["标点相关"])
 
 
-# class TagsUploadItem(BaseModel):
-#     type: int
-#     uid: int
-#     time: str
-#     lng: float
-#     lat: float
-#     etype: int
-#     title: str
-#     desc: str
-#     imgSrc: str
+class TagsUploadItem(BaseModel):
+    type: int
+    uid: int
+    time: str
+    lng: float
+    lat: float
+    etype: int
+    title: str
+    desc: str
+    imgSrc: str
 
 
 # class TagsGetAreaInformal(BaseModel):
@@ -33,27 +32,18 @@ class TagAudit(BaseModel):
     auditStatus: int
 
 
-@tags.post("/upload/{_type}/{uid}/{time}/{lng}/{lat}/{etype}/{title}/{desc}", summary="上传标记")
-async def tag_upload(_type, uid, time, lng, lat, etype, title, desc, file: UploadFile):
-    print(_type)
-    image_bytes = file.file.read()
-    image_name = file.filename
-    i = 1
-    while os.path.exists(f'images/{image_name}({i})'):
-        i = i + 1
-    fout = open(f'images/{image_name}({i})', 'wb')
-    fout.write(image_bytes)
-    fout.close()
-    if _type == "1":
-        if tag.tag_upload(coords_to_city(lng, lat), uid, time, lng, lat, etype,
-                          title, desc, f'images/{image_name}({i})'):
+@tags.post("/upload", summary="上传标记")
+async def tag_upload(item: TagsUploadItem):
+    if item.type == 1:
+        if tag.tag_upload(coords_to_city(item.lng, item.lat), item.uid, item.time, item.lng, item.lat, item.etype,
+                          item.title, item.desc, item.imgSrc):
             return "不需审核，添加成功"
         else:
             return "不需审核，添加失败"
     else:
-        if _type == "2":
-            if tag.tag_upload_informal(coords_to_city(lng, lat), uid, time, lng, lat, etype,
-                                       title, desc, f'images/{image_name}({i})'):
+        if item.type == 2:
+            if tag.tag_upload_informal(coords_to_city(item.lng, item.lat), item.uid, item.time, item.lng, item.lat,
+                                       item.etype, item.title, item.desc, item.imgSrc):
                 return "需要审核，添加成功"
             else:
                 return "需要审核，添加失败"
