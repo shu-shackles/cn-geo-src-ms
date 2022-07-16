@@ -13,34 +13,34 @@ def get_all():
 
 # 确定区域信息
 def confirm_area(area):
-    sql_result = con.execute(f'select * from areas where area=\'{area}\'')
+    sql_result = con.execute(f'SELECT * FROM areas WHERE area=\'{area}\'')
     if sql_result.all():
         return True
     else:
         return False
 
 # 新增区域
-@area.post("areaAdd", summary="新增区域")
+@area.post("/areaAdd", summary="新增区域")
 def add_area(area, lng, lat):
     if confirm_area(area):
         return "区域名重复"
     else:
         con.execute(
-            f'insert into areas (area, lng, lat) values (\'{area}\', {lng}, {lat})')
+            f'INSERT INTO areas (area, lng, lat) VALUES (\'{area}\', {lng}, {lat})')
         sql_result = con.execute(
-            f'select * from areas where area = \'{area}\' and lng = {lng} and lat = {lat}')
+            f'SELECT * FROM areas WHERE area = \'{area}\' AND lng = {lng} AND lat = {lat}')
         if sql_result.all():
             return "增加成功"
         else:
             return "增加失败"
 
 # 修改区域
-@area.put("areaEdit", summary="修改区域信息")
+@area.put("/areaEdit", summary="修改区域信息")
 def edit_area(area, lng, lat):
     if confirm_area(area):
         con.execute(f'UPDATE areas SET lng={lng}, lat={lat} WHERE area=\'{area}\'')
         sql_result = con.execute(
-            f'select * from areas where area = \'{area}\' and lng = {lng} and lat = {lat}')
+            f'SELECT * FROM areas WHERE area = \'{area}\' AND lng = {lng} AND lat = {lat}')
         if sql_result.all():
             return "修改成功"
         else:
@@ -49,7 +49,7 @@ def edit_area(area, lng, lat):
         return "区域不存在"
 
 # 删除区域
-@area.delete("areaDelete", summary="删除区域信息")
+@area.delete("/areaDelete", summary="删除区域信息")
 def delete_area(area):
     if confirm_area(area):
         con.execute(f'DELETE FROM areas WHERE area=\'{area}\'')
@@ -62,9 +62,9 @@ def delete_area(area):
         return "区域不存在"
 
 # 根据获取到的区域名称返回区域内所有点位
-@area.get("/boundaries", summary="区域内点位")
-def get_single(Area):
+@area.get("/areaBoundaries", summary="区域内点位")
+def get_single(area):
     sql_result = con.execute(
-        f'SELECT lng, lat FROM boundaries WHERE area=\'{Area}\' ORDER BY `order`')
+        f'SELECT lng, lat FROM boundaries WHERE area=\'{area}\' ORDER BY `order`')
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data
