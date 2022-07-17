@@ -5,7 +5,7 @@
     <div class="contents clearfix">
       <div class="grahp">
         <div class="grahps">
-          <component :is="page.oneChart"
+          <!-- <component :is="page.oneChart"
                      id="chart"
                      v-loading="loading.chartLoading"
                      element-loading-background="#FFF"
@@ -13,7 +13,8 @@
                      element-loading-customClass="defineLoading"
                      element-loading-text="拼命的加载中"
                      :options="option">
-          </component>
+          </component> -->
+          <ForestChart/>
         </div>
       </div>
       <hr>
@@ -37,11 +38,12 @@
 <script>
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
+import ForestChart from "../common/chart/ForestChart.vue";
 import * as Points from "./points";
 
 export default {
   components: {
-    TwoCharts: () => import("../common/chart/twoCharts")
+    ForestChart
   },
   data() {
     return {
@@ -114,7 +116,7 @@ export default {
   height: 0;
 }
 .survey_content2 {
-  width: 99.5%;
+  width: 100%;
   height: 100%;
   .contents {
     background-color: #fff;
@@ -132,8 +134,6 @@ export default {
     }
   }
 }
-</style>
-<style>
 .el-checkbox__label {
   font-size: 12px;
   line-height: 12px;

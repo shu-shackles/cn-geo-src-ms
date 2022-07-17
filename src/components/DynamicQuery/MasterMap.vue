@@ -12,7 +12,7 @@ export default {
         return {
             MineralType: '煤炭',
             MineralUnit: '亿吨',
-            loading2: false,
+            loading: false,
         };
     },
     props: ['MineralData'],

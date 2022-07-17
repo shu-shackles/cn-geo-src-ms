@@ -1,16 +1,13 @@
 <template>
   <div id="app">
     <router-view />
-    <!-- <TagForm/> -->
   </div>
 </template>
 
 <script>
-import TagForm from './components/common/TagForm.vue';
 export default {
   name: "App",
   components:{
-    TagForm
 },
 };
 </script>

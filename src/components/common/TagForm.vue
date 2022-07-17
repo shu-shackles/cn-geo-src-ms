@@ -8,39 +8,41 @@
             id="tagAddPage">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
                 style="margin-top:0%;margin-left:-50px;margin-right:20px;" hide-required-asterisk="true">
-                <el-form-item label="经度" prop="x">
-                    <el-input-number v-model="ruleForm.x" size="small" controls-position="left" :precision="2"
+                <el-form-item label="经度" prop="lng">
+                    <el-input-number v-model="ruleForm.lng" size="small" controls-position="left" :precision="2"
                         :step="0.01" :min="-180" :max="180">
                     </el-input-number>
                 </el-form-item>
-                <el-form-item label="纬度" prop="y">
-                    <el-input-number v-model="ruleForm.y" size="small" controls-position="left" :precision="2"
+                <el-form-item label="纬度" prop="lat">
+                    <el-input-number v-model="ruleForm.lat" size="small" controls-position="left" :precision="2"
                         :step="0.01" :min="-90" :max="90">
                     </el-input-number>
                 </el-form-item>
-                <el-form-item label="标题" prop="name">
-                    <el-input v-model="ruleForm.name" size="small"></el-input>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="ruleForm.title" size="small"></el-input>
                 </el-form-item>
-                <el-form-item label="类型" prop="type">
-                    <el-select v-model="ruleForm.type" placeholder="请选择类型" size="small">
-                        <el-option label="动物" value="动物"></el-option>
-                        <el-option label="植物" value="植物"></el-option>
-                        <el-option label="景观" value="景观"></el-option>
-                        <el-option label="矿物" value="矿物"></el-option>
-                        <el-option label="事件" value="事件"></el-option>
-                        <el-option label="其他" value="其他"></el-option>
+                <el-form-item label="类型" prop="etype">
+                    <el-select v-model="ruleForm.etype" placeholder="请选择类型" size="small">
+                        <el-option label="动物" :value="2"></el-option>
+                        <el-option label="植物" :value="3"></el-option>
+                        <el-option label="景观" :value="4"></el-option>
+                        <el-option label="矿物" :value="5"></el-option>
+                        <el-option label="事件" :value="6"></el-option>
+                        <el-option label="其他" :value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop="desc">
                     <el-input type="textarea" v-model="ruleForm.desc" maxlength="100" show-word-limit resize="none">
                     </el-input>
                 </el-form-item>
-                <el-form-item label="图片" prop="image">
-                    <!-- <SingleUpload v-model='ruleForm.imgSrc' :dialogWidth="0.3" drag /> -->
-                    <ele-upload-image action="http://localhost:8080/api/v1/upload_image" v-model="image"
-                        :responseFn="handleResponse"></ele-upload-image>
+                <el-form-item label="图片" prop="imgSrc">
+                    <el-upload class="avatar-uploader" action="https://www.imgtp.com/api/upload" :show-file-list="false"
+                        :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <img v-if="ruleForm.imgSrc" :src="ruleForm.imgSrc" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
                 </el-form-item>
-                <el-form-item style="margin-top:0px;">
+                <el-form-item style="margin-top:0px;margin-left:40px;">
                     <el-button type="primary" @click="submitForm('ruleForm')">立即提交</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
@@ -49,63 +51,111 @@
     </div>
 </template>
 <script>
-import SingleUpload from './SingleUpload.vue';
-import EleUploadImage from "vue-ele-upload-image";
+import axios from 'axios';
+import '../../common/dayjs.min.js'
 export default {
     data() {
         return {
             show: false,
+            image: undefined,
             ruleForm: {
-                //position: {
-                x: undefined,
-                y: undefined,
-                //},
-                name: "",
-                type: "",
+                lng: undefined,
+                lat: undefined,
+                title: "",
+                etype: "",
                 desc: "",
-                image: undefined,
                 imgSrc: ""
             },
             rules: {
-                x: [
+                lng: [
                     { required: true, message: "请输入标记所在经度，可通过定位获取", trigger: "blur" }
                 ],
-                y: [
+                lat: [
                     { required: true, message: "请输入标记所在纬度，可通过定位获取", trigger: "change" }
                 ],
-                name: [
+                title: [
                     { required: true, message: "请输入标记名称", trigger: "blur" },
                     { min: 1, max: 10, message: "长度在 1 到 10 个字符", trigger: "blur" }
                 ],
-                type: [
+                etype: [
                     { required: true, message: "请选择标记类型", trigger: "select" }
                 ],
                 desc: [
                     { required: true, message: "请填写100字以内的标记描述", trigger: "blur" }
                 ],
-                image: [
+                imgSrc: [
                     { required: true, message: "请上传标记展示图片", trigger: "blur" }
                 ]
             }
         };
     },
+    mounted() {
+        this.$bus.$on('location', (data) => {
+            this.ruleForm.lng = data.lng
+            this.ruleForm.lat = data.lat
+        })
+    },
+    beforeDestroy() {
+        this.$bus.$off('location')
+    },
     methods: {
-        handleResponse(response, file, fileList) {
-            // 根据响应结果, 设置 URL
-            this.imgSrc = response.data[0]
-            this.image = require('@/assets/images/ico2.png')
-        },
         submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    alert("submit!");
-                }
-                else {
-                    console.log("error submit!!");
-                    return false;
-                }
-            });
+            let param = new FormData();
+            param.append('image', this.image);
+            let that = this
+            axios.post('https://www.imgtp.com/api/upload', param)
+                .then(function (response) {
+                    that.ruleForm.imgSrc = response.data.data.url
+                    console.log(response.data.data.url);
+                    console.log(that.ruleForm.imgSrc);
+                    let param2 = that.ruleForm
+                    param2['type'] = 1
+                    param2['uid'] = 1
+                    param2['time'] = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+                    axios.post('http://localhost:8080/api/v1/upload', param2)
+                        .then(function (response) {
+                            //that.image = undefined
+                            that.resetForm(formName)
+                            that.image = undefined
+                            that.backPage()
+                            alert(response.data)
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            alert('上传表单失败，请重试')
+                        });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
+        handleAvatarSuccess(_res, file) {
+            this.image = file.raw;
+            this.ruleForm.imgSrc = URL.createObjectURL(this.image);
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG) {
+                this.$message.error('上传图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
+        },
+        // submitForm(formName) {
+        //     this.$refs[formName].validate((valid) => {
+        //         if (valid) {
+        //             alert("submit!");
+        //         }
+        //         else {
+        //             console.log("error submit!!");
+        //             return false;
+        //         }
+        //     });
+        // },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
@@ -120,7 +170,6 @@ export default {
             this.show = true
         }
     },
-    components: { SingleUpload, EleUploadImage }
 }
 </script>
 <style scoped>
@@ -129,7 +178,25 @@ export default {
     right: 40px;
 }
 
-.el-textarea__inner {
-    resize: none;
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon,
+.avatar {
+    font-size: 28px;
+    color: #8c939d;
+    width: 170px;
+    height: 170px;
+    line-height: 170px;
+    text-align: center;
 }
 </style>

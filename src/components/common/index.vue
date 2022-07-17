@@ -1,9 +1,9 @@
 <template>
-    <div class="a" id='allmap' style="overflow: hidden" >
+    <div class="a" id='allmap' style="overflow: hidden">
         <sider></sider>
         <baidu-map style="margin-left:160px;" :class="'hello flex10'" :zoom="zoom" @ready="handler" center="延安"
             :scroll-wheel-zoom="true">
-            <TagForm/>
+            <TagForm />
             <div class="float_left">
                 <el-select size="mini" style="position:absolute;left:200px;top:20px;" v-model="searchName"
                     @change="changeType" placeholder="请选择标记类型">
@@ -11,7 +11,8 @@
                     </el-option>
                 </el-select>
             </div>
-            <bm-geolocation anchor="BMAP_ANCHOR_TOP_LEFT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+            <bm-geolocation anchor="BMAP_ANCHOR_TOP_LEFT" :showAddressBar="true" :autoLocation="true"
+                @locationSuccess="locationSuccess"></bm-geolocation>
             <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_BOTTOM_RIGHT">
             </bm-map-type>
             <div v-for="item in projects" :key='item.id'>
@@ -26,8 +27,8 @@
                             <el-descriptions-item label="时间">{{ item.time }}</el-descriptions-item>
                             <el-descriptions-item label="描述">{{ item.tag_sesc }}
                             </el-descriptions-item>
-                            <el-descriptions-item label="图片"><img src="../../assets/images/25771966_214139380083_2.jpg"
-                                    style="width:175px;height:100px;" alt="" /></el-descriptions-item>
+                            <el-descriptions-item label="图片"><img :src="item.imgSrc" style="width:175px;height:100px;"
+                                    alt="" /></el-descriptions-item>
                         </el-descriptions>
                     </bm-info-window>
                 </bm-marker>
@@ -75,17 +76,17 @@ export default {
                     projectPoints[i].show = false
                     projectPoints[i].id = i
                     projectPoints[i].time = projectPoints[i].time.replace('T', ' ')
-                    if(projectPoints[i].enentype==='动物'){
+                    if (projectPoints[i].enentype === '动物') {
                         projectPoints[i].url = require('@/assets/images/ico1.png')
-                    } else if(projectPoints[i].enentype==='植物'){
+                    } else if (projectPoints[i].enentype === '植物') {
                         projectPoints[i].url = require('@/assets/images/ico2.png')
-                    } else if(projectPoints[i].enentype==='景观'){
+                    } else if (projectPoints[i].enentype === '景观') {
                         projectPoints[i].url = require('@/assets/images/ico3.png')
-                    } else if(projectPoints[i].enentype==='矿物'){
+                    } else if (projectPoints[i].enentype === '矿物') {
                         projectPoints[i].url = require('@/assets/images/ico4.png')
-                    } else if(projectPoints[i].enentype==='事件'){
+                    } else if (projectPoints[i].enentype === '事件') {
                         projectPoints[i].url = require('@/assets/images/ico5.png')
-                    } else if(projectPoints[i].enentype==='其他'){
+                    } else if (projectPoints[i].enentype === '其他') {
                         projectPoints[i].url = require('@/assets/images/ico6.png')
                     }
                 }
@@ -130,6 +131,10 @@ export default {
                 this.lng = e.point.lng.toFixed(2) + "°";
                 this.lat = e.point.lat.toFixed(2) + "°";
             });
+        },
+        locationSuccess(point) {
+            console.log(point.point.lng,point.point.lat);
+            this.$bus.$emit('location',point.point)
         },
     },
     components: { TagForm }
