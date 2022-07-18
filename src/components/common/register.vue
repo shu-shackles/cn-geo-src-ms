@@ -41,7 +41,14 @@ import {test} from "../test.js"
                     <el-button type="info" @click="resetForm('form')">重置</el-button>
                 </el-form-item>
               </el-form>
-                
+              <el-form  style="margin-bottom:0px;"> 
+                        <el-form-item style="margin-bottom:0px;">
+                          <span style="color:black;font-size:16px">已有账号</span>
+                          <a data-v-a1217096="" @click="onLogin" class="el-link el-link--success" style="height: 46px;">
+                          <span class="el-link--inner" style="height: 46px;font-size: 16px;">立即登录</span>
+                          </a>
+                        </el-form-item>
+              </el-form>  
 
             </el-form>
         </div>
@@ -179,7 +186,12 @@ import {test} from "../test.js"
       //重置表单
       resetForm(formName){
         this.$refs[formName].resetFields()
+      },
+      onLogin(){
+        //已有账号立即登录
+        this.$router.push('/')
       }
+    
     }
 
 

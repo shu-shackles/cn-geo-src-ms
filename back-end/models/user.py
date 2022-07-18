@@ -53,7 +53,7 @@ def insert(name, password, _id, id_name):
 
 
 def user_info(offset, count):
-    return con.execute(f'select * from "users" limit {offset}, {count}')
+    return con.execute(f'select * from users limit {offset}, {count}')
 
 
 def user_setinfo(password, _type, area, uid):

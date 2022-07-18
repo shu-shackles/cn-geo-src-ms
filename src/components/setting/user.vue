@@ -2,58 +2,16 @@
 <div class="survey_content2 clearfix">
   <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button>
   <div class="contents clearfix">    
-    <el-table
-    :data="tableData"
-    style="width: 100%" 
-    :default-sort = "{prop: 'ID', order: 'ascending'}"   
-    >
-    <el-table-column
-      prop="ID"
-      label="ID"
-      sortable
-      width="80"
-      >
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="用户名称"
-    >
-    </el-table-column>
-    <el-table-column
-      prop="role"
-      label="用户角色">
-    </el-table-column>
-    <el-table-column
-      prop="group"
-      label="用户分组">
-    </el-table-column>
-    <el-table-column
-      prop="tel"
-      label="用户电话"
-    >
-    </el-table-column>
-    <el-table-column
-      prop="email"
-      label="用户邮箱"
-    >
-    </el-table-column>
-    <el-table-column
-      prop="status"
-      label="状态"
-    >
-    </el-table-column>
-    <el-table-column
-      prop="add"
-      label="创建时间"
-      sortable
-      >
-    </el-table-column>
-    <el-table-column
-      prop="change"
-      label="修改时间"
-      sortable
-    >
-    </el-table-column>
+    <el-table :data="tableData" style="width: 100%" :default-sort = "{prop: 'ID', order: 'ascending'}" >
+    <el-table-column prop="ID" label="ID" sortable width="80"></el-table-column>
+    <el-table-column prop="name" label="用户名称"></el-table-column>
+    <el-table-column prop="role" label="用户角色"></el-table-column>
+    <el-table-column prop="group" label="用户分组"></el-table-column>
+    <el-table-column prop="tel" label="用户电话"></el-table-column>
+    <el-table-column prop="email" label="用户邮箱"></el-table-column>
+    <el-table-column prop="status" label="状态"></el-table-column>
+    <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
+    <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
     <el-table-column label="操作" width="150">
       <template slot-scope="scope">
         <el-button
@@ -171,6 +129,7 @@
           change: '2019-11-02'
         }
       ],
+      userData:[],
       dialogFormVisible: false,
       form: {
         name: '',
@@ -188,6 +147,8 @@
     methods: {
       handleEdit(index, row) {
         console.log(index, row);
+        var rowValue = row;
+        console.log(rowValue)
       },
       // 删除
       handleDelete(index, row) {
