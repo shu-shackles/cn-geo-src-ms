@@ -10,42 +10,54 @@ export default {
     data() {
         return {
             myChart: {},
-            pieData: [
-                {
-                    value: 463,
-                    name: "江苏"
-                },
-                {
-                    value: 395,
-                    name: "浙江"
-                },
-                {
-                    value: 157,
-                    name: "山东"
-                },
-                {
-                    value: 149,
-                    name: "广东"
-                },
-                {
-                    value: 147,
-                    name: "湖南"
-                }
-            ],
-            pieName: [],
-            myChartStyle: { float:"left", width: "100%", height: "400px", } //图表样式
+            tableData: [],
+            forestType: '森林覆盖面积',
+            myChartStyle: { float: "left", width: "100%", height: "400px", padding: "20px" } //图表样式
         };
     },
+    computed: {
+        pieData() {
+            let pieData = []
+            for (let i = 0; i < this.tableData.length; i++) {
+                pieData[i] = {
+                    'name': this.tableData[i]["省市或公司"],
+                    'value': this.tableData[i][this.forestType]
+                }
+            }
+            return pieData
+        },
+        pieName() {
+            let pieName = []
+            for (let i = 0; i < this.tableData.length; i++) {
+                pieName[i] = this.tableData[i]["省市或公司"];
+            }
+            return pieName
+        }
+    },
     mounted() {
-        this.initDate(); //数据初始化
-        this.initEcharts();
+        this.$bus.$on('ForestData', (data) => {
+            this.tableData = data
+            this.initEcharts();
+        })
+        this.$bus.$on('ForestType', (data) => {
+            this.forestType = data.label
+            this.initEcharts();
+        })
+    },
+    beforeDestroy() {
+        this.$bus.$off('ForestData')
+        this.$bus.$off('ForestType')
     },
     methods: {
-        initDate() {
-            for (let i = 0; i < this.pieData.length; i++) {
-                this.pieName[i] = this.pieData[i].name;
-            }
-        },
+        // initData() {
+        //     console.log(this.tableData)
+        //     for (let i = 0; i < this.tableData.length; i++) {
+        //         console.log(this.tableData[i]["province/company"])
+        //         this.pieName[i] = this.tableData[i]["province/company"];
+        //         this.pieData[i].name = this.tableData[i]["province/company"];
+        //         this.pieData[i].value = this.tableData[i]["forest coverage"];
+        //     }
+        // },
         initEcharts() {
             // 饼图
             const option = {
@@ -59,13 +71,13 @@ export default {
                 },
                 title: {
                     // 设置饼图标题，位置设为顶部居中
-                    text: "全国森林资源分布饼图",
-                    top: "5%",
+                    text: "第九次全国森林资源清查统计饼图",
+                    top: "0%",
                     left: "center"
                 },
                 series: [
                     {
-                        name: '森林面积',
+                        name: `${this.forestType}（单位:万公顷）`,
                         type: "pie",
                         label: {
                             show: true,

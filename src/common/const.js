@@ -58,7 +58,7 @@ const ASIDE_TITLE = [
     icon: "el-icon-menu",
     levelInfo: [
       {
-        level: "数据分析1",
+        level: "森林资源",
         levelIndex: "project_analysis",
         path: { name: "project_analysis" }
       }
@@ -185,22 +185,18 @@ const TableType = [
   }
 ];
 
-const GraphType = [
+const ForestType = [
   {
-    label: "全部",
+    label: "森林覆盖面积",
     value: 0
   },
   {
-    label: "遥感影像",
+    label: "自然林面积",
     value: 1
   },
   {
-    label: "外摄图片",
+    label: "人工林面积",
     value: 2
-  },
-  {
-    label: "DEM",
-    value: 3
   }
 ];
 
@@ -318,14 +314,19 @@ const headerConfig = [
   },
   {
     name: "mineralData",
-    headerShow: [true, false, true, true, false,true,true,true],
+    headerShow: [true, false, false, true, false,true,true,true],
     contrast: false
   },
   {
     name: "geoNews",
-    headerShow: [false, true, true, true, false],
+    headerShow: [false, true, false, true, false],
     contrast: true
-  }
+  },
+  {
+    name: "analysis",
+    headerShow: [false, false, true, true, false],
+    contrast: false
+  },
 ];
 
 const pageConfig = [
@@ -363,7 +364,7 @@ export {
   Project,
   Points,
   TableType,
-  GraphType,
+  ForestType,
   getHeaderConfig,
   getPageConfig
 };

@@ -63,8 +63,8 @@ export default {
             this.$bus.$emit('openPage', '')
             axios({
                 method: 'get',
-                url: 'http://localhost:8080/api/v1/news/geological_survey',
-                params: { key: this.queryString, nums: 5, pages: 1 }
+                url: 'http://localhost:8080/api/v1/news/title',
+                params: { key: this.queryString, nums: 5 }
             }).then(response => {
                 console.log(response.data)
                 this.listData = response.data
