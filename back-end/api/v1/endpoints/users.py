@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-import json
 
 from models import user
 
@@ -27,8 +26,7 @@ class DeleteItem(BaseModel):
 async def user_info(offset, count):
     sql_result = user.user_info(offset, count)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
-    result = json.dumps(data)
-    return result
+    return data
 
 
 @users.put('/setinfo', summary="修改用户")
@@ -45,3 +43,10 @@ async def user_delete(item: DeleteItem):
         return "删除成功"
     else:
         return "删除失败"
+
+
+@users.post('allusers', summary="所有用户信息")
+async def user_all():
+    sql_result = user.user_all()
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data

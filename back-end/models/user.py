@@ -73,3 +73,7 @@ def user_delete(uid):
         return False
     else:
         return True
+
+
+def user_all():
+    return con.execute(f'select * from users')
