@@ -140,7 +140,7 @@ def get_main_article_1(chapter_url, firstParagraph=False):
 
 
 # 输入关键字、数量、页数，返回前page页的num个包含关键字的新闻相关内容，以列表形式返回(列表长度<=num)
-def get_news_title_2(key, pages):
+def get_news_title_2(key, pages, num):
     # 网站主页的url
     base_url = "http://www.zgdztk.com/"
 
@@ -164,11 +164,14 @@ def get_news_title_2(key, pages):
             if chapter_info_list[i][1].find(key) != -1:
                 # 先获取新闻首段
                 firstParagraph = get_main_article_2(base_url + chapter_info_list[i][0], True)
+                print(base_url + chapter_info_list[i][0])
                 print(firstParagraph)
                 # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
                 if firstParagraph:
                     result.append([chapter_info_list[i][1], firstParagraph, base_url + chapter_info_list[i][0],
                                    chapter_info_list[i][3][14:]])
+            if len(result) >= num:
+                return result
 
     return result
 
@@ -181,6 +184,9 @@ def get_main_article_2(url, firstParagraph=False):
     chapter_html = chapter_response.text
     # 获取正文
     main_article = re.findall(r'[\u4e00-\u9fa5\d，。：“”；：？！（）]{25,}', chapter_html)
+    if main_article[0].startswith("“中国地勘行业网”"):
+        main_article.pop(0)
+        main_article.pop(0)
     # 如果无匹配，返回False
     if len(main_article) == 0:
         return False
@@ -251,17 +257,19 @@ def get_news_title_3(key):
 def get_news_by_key_word(key, num):
     result = get_news_title_3(key)
     result += get_news_title_1(key)
+    result += get_news_title_2(key, 3, num-len(result))
+    if len(result) >= num:
+        return result[:num]
     for i in range(1, 4):
         result += get_news_title_1(key, "index_"+str(i)+".html")
-        if len(result) > num:
-            break
-    result += get_news_title_2(key, 3)
     if len(result) < num:
         return result
     return result[:num]
 
 
 def get_main_article(url):
+    if "http://www.zgdztk.com/" in url:
+        return get_main_article_2(url)
     return get_main_article_1(url)
 
 
