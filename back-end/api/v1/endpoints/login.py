@@ -39,6 +39,9 @@ async def user_login(item: LoginItem, response: Response):
 
 @login.post("/register", summary="用户注册")
 async def user_register(item: RegisterItem, response: Response):
+    if not item.password == item.check_pass:
+        response.status_code = 234
+        return "两次密码输入不一致"
     if len(item.password) > 16:
         response.status_code = 230
         return "密码长度大于16位"
