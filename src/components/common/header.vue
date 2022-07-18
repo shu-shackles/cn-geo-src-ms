@@ -33,7 +33,7 @@
           </div> -->
                 <div class="float_left" v-if="headerShow[0]">
                     <span>类型：</span>
-                    <el-select size="mini" v-model="queryData.tableType" @change="changeTableType">
+                    <el-select size="medium" v-model="queryData.tableType" @change="changeTableType">
                         <el-option v-for="item in TableTypeList" :key="item.value" :label="item.label"
                             :value="item.value">
                         </el-option>
@@ -44,6 +44,14 @@
                         placeholder="请输入搜索内容" @select="handleSelect" @change="handleChange" clearable="true"
                         onkeypress="if(window.event.keyCode==13) this.blur()" ref="autocomplete"
                         @keyup.enter.native="handleChange" prefix-icon="el-icon-search"></el-autocomplete>
+                </div>
+                <div class="float_left" v-if="headerShow[2]">
+                    <span>类型：</span>
+                    <el-select size="medium" style="width:200px;" v-model="queryData.forestType" @change="changeForestType">
+                        <el-option v-for="item in ForestTypeList" :key="item.value" :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
                 </div>
                 <!-- <div class="float_left" v-if="headerShow[3]">
                     <span>监测点：</span>
@@ -133,15 +141,15 @@ export default {
             queryData: {
                 projectId: 1,
                 tableType: 0,
-                graphType: 0,
+                forestType: 0,
                 compareTableType: null
             },
             projectList: [],
             pointList: [],
             initPoint: [3, 30],
             TableTypeList: [],
+            ForestTypeList:[],
             headerShow: [],
-            GraphTypeList: [],
             switchStatus: false,
             contrastStatus: false,
             checkId: 1,
@@ -191,7 +199,7 @@ export default {
             this.projectList = consts.Project
             this.pointList = consts.Points
             this.TableTypeList = consts.TableType
-            this.GraphTypeList = consts.GraphType
+            this.ForestTypeList = consts.ForestType
         },
         changeProject(v) {
             console.log(v);
@@ -199,6 +207,9 @@ export default {
         // 改变表格类型
         changeTableType() {
             this.$bus.$emit('MineralType', this.TableTypeList[this.queryData.tableType])
+        },
+        changeForestType(){
+            this.$bus.$emit('ForestType', this.ForestTypeList[this.queryData.forestType])
         },
         // 改变对比表格类型
         changeTable_other() { },
@@ -277,6 +288,7 @@ export default {
 .title {
     height: 80px;
     width: 100%;
+    background-color: #fff;
 }
 
 .left1 {
@@ -288,7 +300,9 @@ export default {
 }
 
 .nav_title {
-    position: fixed;
+    position: absolute;
+    left:160px;
+    width:80%;
     top: 0;
     right: 0;
     z-index: 99;
@@ -354,8 +368,6 @@ export default {
 
     }
 }
-</style>
-<style>
 .el-upload-list {
     background-color: #fff;
 }
