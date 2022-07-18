@@ -100,7 +100,7 @@ def get_news_title_1(key, pages=""):
         if chapter_info_list[i][2].find(key) == -1 or not chapter_info_list[i][1].startswith("./"):
             continue
         # 先获取新闻首段
-        firstParagraph = get_main_article_1(base_url + chapter_info_list[i][1][2:], True)
+        firstParagraph = get_main_article_1(base_url + chapter_info_list[i][1][2:], chapter_info_list[i][2], True)
         # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
         if firstParagraph:
             result.append([chapter_info_list[i][2], firstParagraph, base_url + chapter_info_list[i][1][2:],
@@ -110,7 +110,7 @@ def get_news_title_1(key, pages=""):
 
 
 # 输入一个url，返回该网址的正文
-def get_main_article_1(chapter_url, firstParagraph=False):
+def get_main_article_1(chapter_url, title, firstParagraph=False):
     chapter_response = requests.get(chapter_url)
     chapter_response.encoding = 'utf-8'
 
@@ -118,12 +118,18 @@ def get_main_article_1(chapter_url, firstParagraph=False):
     chapter_html = chapter_response.text
     # 获取正文
     main_article = re.findall(r'[\u4e00-\u9fa5\d，。：“”；：？！（）]{25,}', chapter_html)
-    if len(main_article) == 0:
+    if len(main_article) < 1:
         return False
+    for i in range(1, len(main_article)):
+        main_article[0] += main_article[i]
     if firstParagraph:
-        if len(main_article[0]) >= 30:
-            return main_article[0][:30]
-        return main_article[0]
+        while main_article[0].startswith(title):
+            main_article[0] = main_article[0][len(title):]
+        if len(main_article[0]) >= 50:
+            return main_article[0][:50]
+        if len(main_article[0]) >= 15:
+            return main_article[0]
+        return ""
     result = "  " + main_article[0]
     if len(main_article) > 1:
         for i in range(1, len(main_article)):
@@ -135,7 +141,8 @@ def get_main_article_1(chapter_url, firstParagraph=False):
     picurl2 = get_picurl_local('%s.txt' % title)
     download_image(picurl1, '..\\..\\..\\images')
     download_local(picurl2, '..\\__local')"""
-
+    result = re.sub('\<.*?\>', '', result)
+    result = result.replace('"', '\\"')
     return result
 
 
@@ -163,7 +170,7 @@ def get_news_title_2(key, pages, num):
         for i in range(len(chapter_info_list)):
             if chapter_info_list[i][1].find(key) != -1:
                 # 先获取新闻首段
-                firstParagraph = get_main_article_2(base_url + chapter_info_list[i][0], True)
+                firstParagraph = get_main_article_2(base_url + chapter_info_list[i][0], chapter_info_list[i][1], True)
                 print(base_url + chapter_info_list[i][0])
                 print(firstParagraph)
                 # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
@@ -176,7 +183,7 @@ def get_news_title_2(key, pages, num):
     return result
 
 
-def get_main_article_2(url, firstParagraph=False):
+def get_main_article_2(url, title, firstParagraph=False):
     chapter_response = requests.get(url)
     chapter_response.encoding = 'gbk'
 
@@ -188,15 +195,19 @@ def get_main_article_2(url, firstParagraph=False):
         main_article.pop(0)
         main_article.pop(0)
     # 如果无匹配，返回False
-    if len(main_article) == 0:
+    if len(main_article) < 2:
         return False
+    for j in range(1, len(main_article)):
+        main_article[0] += main_article[j]
     # 要求只返回前部分内容
-    elif firstParagraph:
+    if firstParagraph:
+        while main_article[0].startswith(title):
+            main_article[0] = main_article[0][len(title):]
         # 将其中的"与<>内容删除
         firstSentence = re.sub('\<.*?\>', '', main_article[0])
         firstSentence = firstSentence.replace("&nbsp;", "")
-        if len(firstSentence) >= 30:
-            return firstSentence.replace('"', '\\"')[:30]
+        if len(firstSentence) >= 50:
+            return firstSentence.replace('"', '\\"')[:50]
         return firstSentence.replace('"', '\\"')
     result = "  " + main_article[0]
 
@@ -239,9 +250,9 @@ def get_news_title_3(key):
         if chapter_info_list[i][1].find(key) != -1:
             # 先获取新闻首段
             if chapter_info_list[i][0].startswith("http"):
-                firstParagraph = get_main_article_1(chapter_info_list[i][0], True)
+                firstParagraph = get_main_article_1(chapter_info_list[i][0], chapter_info_list[i][1], True)
             else:
-                firstParagraph = get_main_article_1(base_url + chapter_info_list[i][0], True)
+                firstParagraph = get_main_article_1(base_url + chapter_info_list[i][0], chapter_info_list[i][1], True)
             # 记录标题、新闻首段、url、发布日期(有时候首段格式奇怪，就跳过)
             if firstParagraph:
                 if chapter_info_list[i][0].startswith("http"):

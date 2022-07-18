@@ -30,7 +30,10 @@ def get_news_from_geological_survey(key: str, nums: int):
         result += '",\n"url": "' + news[2]
         result += '",\n"date": "' + news[3] + '"\n}'
     result = '[' + result + ']'
-    result = json.loads(result)
+    try:
+        result = json.loads(result)
+    except:
+        pass
     return result
 
 
@@ -38,6 +41,7 @@ def get_news_from_geological_survey(key: str, nums: int):
 @spider.get("/news/main_article/{chapter_url:path}")
 def get_article_and_picture(chapter_url: str):
     main_article = get_main_article(chapter_url)
-    result = "{"+'"main_article": "'+main_article+'"}'
-    result = json.loads(result)
+    result = "{"+'"main_article": "'+main_article[0:10]+'"}'
+    print(result)
+    result = json.loads()
     return result
