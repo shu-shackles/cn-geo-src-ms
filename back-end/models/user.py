@@ -34,12 +34,14 @@ def confirm_user(name):
         return False
 
 
-def is_password(name, password):
-    sql_result = con.execute(f'select uid from users where name=\'{name}\' and password = \'{password}\'')
-    if sql_result.all():
-        return True
-    else:
-        return False
+def get_password(name):
+    sql_result = con.execute(f'select password from users where name=\'{name}\'')
+    return sql_result
+
+
+def get_password_uid(uid):
+    sql_result = con.execute(f'select password from users where uid = {uid}')
+    return sql_result
 
 
 def insert(name, password, _id, id_name):

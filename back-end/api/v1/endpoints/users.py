@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response
 from pydantic import BaseModel
 
 from models import user
+from core import get_password_hash
 
 users = APIRouter(tags=["用户相关"])
 
@@ -45,6 +46,16 @@ async def user_info(offset, count):
 
 @users.post('/setinfo', summary="修改用户")
 async def user_setinfo(item: SetInfoItem):
+    if item.password == user.get_password_uid(item.uid):
+        if user.user_setinfotype(item.type, item.uid) and user.user_setinfoarea(item.area, item.uid):
+            return "修改成功"
+        else:
+            return "修改失败"
+    if len(item.password) > 16:
+        return "密码长度大于16位"
+    if len(item.password) < 6:
+        return "密码长度小于6位"
+    item.password = get_password_hash(item.password)
     if user.user_setinfo(item.type, item.password, item.area, item.uid):
         return "修改成功"
     else:
@@ -70,6 +81,7 @@ async def user_setinfopassword(item: SetInfoPasswordItem, response: Response):
     if len(item.password) < 6:
         response.status_code = 231
         return "密码长度小于6位"
+    item.password = get_password_hash(item.password)
     if user.user_setinfopassword(item.password, item.uid):
         return "修改成功"
     else:

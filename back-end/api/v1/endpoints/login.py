@@ -3,7 +3,7 @@ from pydantic import BaseModel
 # from fastapi.security import OAuth2PasswordRequestForm
 
 # from models import Users
-# from core import verify_password, create_access_token
+from core import get_password_hash, verify_password, create_access_token
 # from scheams import UserIn_Pydantic
 from models import user
 
@@ -25,8 +25,10 @@ class RegisterItem(BaseModel):
 
 @login.post("/login", summary="用户登录")
 async def user_login(item: LoginItem, response: Response):
+    sql_result = user.get_password(item.username)
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
     if user.confirm_user(item.username):
-        if user.is_password(item.username, item.password):
+        if verify_password(item.password, data[0]["password"]):
             response.status_code = status.HTTP_200_OK
             return "密码正确"
         else:
@@ -52,6 +54,7 @@ async def user_register(item: RegisterItem, response: Response):
         response.status_code = 232
         return "用户名重复"
     else:
+        item.password = get_password_hash(item.password)
         if user.insert(item.username, item.password, item.ID, item.IDNAME):
             return "插入成功"
         else:
