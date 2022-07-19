@@ -4,8 +4,8 @@
         <template v-else>
             <a-list item-layout="vertical" :pagination="pagination" :data-source="listData">
                 <a-list-item slot="renderItem" key="item.title" slot-scope="item">
-                    <img slot="extra" width="240" alt="logo"
-                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />
+                    <!-- <img slot="extra" width="240" alt="logo"
+                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" /> -->
                     <a-list-item-meta :description="item.date">
                         <a @click.prevent="openPage(item.url)" slot="title" :href="item.url">{{ item.title }}</a>
                     </a-list-item-meta>

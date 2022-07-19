@@ -302,7 +302,7 @@ export default {
 .nav_title {
     position: absolute;
     left:160px;
-    width:80%;
+    width:85%;
     top: 0;
     right: 0;
     z-index: 99;

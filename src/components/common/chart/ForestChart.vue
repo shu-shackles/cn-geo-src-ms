@@ -71,7 +71,7 @@ export default {
                 },
                 title: {
                     // 设置饼图标题，位置设为顶部居中
-                    text: "第九次全国森林资源清查统计饼图",
+                    text: `第九次全国森林资源清查${this.forestType}统计饼图`,
                     top: "0%",
                     left: "center"
                 },

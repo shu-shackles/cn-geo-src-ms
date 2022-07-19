@@ -53,13 +53,40 @@ def insert(name, password, _id, id_name):
 
 
 def user_info(offset, count):
-    return con.execute(f'select * from "users" limit {offset}, {count}')
+    return con.execute(f'select * from users limit {offset}, {count}')
 
 
-def user_setinfo(password, _type, area, uid):
-    con.execute(f'UPDATE users SET password = \'{password}\', type = {_type}, AREA = \'{area}\'  WHERE uid = {uid}')
-    sql_result = con.execute(f'select * from users where area=\'{area}\' and password = \'{password}\' and uid = {uid} '
-                             f'and type = {_type}')
+def user_setinfo(_type, password, area, uid):
+    con.execute(f'UPDATE users SET type = \'{_type}\',password = \'{password}\',area = \'{area}\' WHERE uid = {uid}')
+    sql_result = con.execute(f'select * from users where uid = {uid} and type = \'{_type}\' and '
+                             f'password = \'{password}\' and area=\'{area}\'')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def user_setinfotype(_type, uid):
+    con.execute(f'UPDATE users SET type = \'{_type}\' WHERE uid = {uid}')
+    sql_result = con.execute(f'select * from users where uid = {uid} and type = \'{_type}\'')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def user_setinfopassword(password, uid):
+    con.execute(f'UPDATE users SET password = \'{password}\' WHERE uid = {uid}')
+    sql_result = con.execute(f'select * from users where password = \'{password}\' and uid = {uid}')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
+def user_setinfoarea(area, uid):
+    con.execute(f'UPDATE users SET AREA = \'{area}\'  WHERE uid = {uid}')
+    sql_result = con.execute(f'select * from users where area=\'{area}\'and uid = {uid}')
     if sql_result.all():
         return True
     else:
@@ -73,3 +100,7 @@ def user_delete(uid):
         return False
     else:
         return True
+
+
+def user_all():
+    return con.execute(f'select * from users')

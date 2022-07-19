@@ -34,15 +34,23 @@ class TagAudit(BaseModel):
 
 @tags.post("/upload", summary="上传标记")
 async def tag_upload(item: TagsUploadItem):
+    loc = coords_to_city(item.lng, item.lat)
+    if loc.startswith("黑龙江"):
+        loc = "黑龙江"
+    else:
+        if loc.startswith("内蒙古"):
+            loc = "内蒙古"
+        else:
+            loc = f'{loc[0]}{loc[1]}'
     if item.type == 1:
-        if tag.tag_upload(coords_to_city(item.lng, item.lat), item.uid, item.time, item.lng, item.lat, item.etype,
+        if tag.tag_upload(loc, item.uid, item.time, item.lng, item.lat, item.etype,
                           item.title, item.desc, item.imgSrc):
             return "不需审核，添加成功"
         else:
             return "不需审核，添加失败"
     else:
         if item.type == 2:
-            if tag.tag_upload_informal(coords_to_city(item.lng, item.lat), item.uid, item.time, item.lng, item.lat,
+            if tag.tag_upload_informal(loc, item.uid, item.time, item.lng, item.lat,
                                        item.etype, item.title, item.desc, item.imgSrc):
                 return "需要审核，添加成功"
             else:
