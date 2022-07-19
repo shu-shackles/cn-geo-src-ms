@@ -59,8 +59,13 @@ const ASIDE_TITLE = [
     levelInfo: [
       {
         level: "森林资源",
-        levelIndex: "project_analysis",
-        path: { name: "project_analysis" }
+        levelIndex: "analysis_forest",
+        path: { name: "analysis_forest" }
+      },
+      {
+        level: "矿产资源",
+        levelIndex: "analysis_mineral",
+        path: { name: "analysis_mineral" }
       }
     ]
   },
@@ -323,8 +328,13 @@ const headerConfig = [
     contrast: true
   },
   {
-    name: "analysis",
+    name: "ForestAnalysis",
     headerShow: [false, false, true, true, false],
+    contrast: false
+  },
+  {
+    name: "MineralAnalysis",
+    headerShow: [true, false, false, false, false],
     contrast: false
   },
 ];
