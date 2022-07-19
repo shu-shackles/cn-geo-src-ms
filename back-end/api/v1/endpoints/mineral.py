@@ -31,6 +31,26 @@ def get_type(type):
     return data
 
 
+@mineral.get("/mineralHistory", summary="历史矿产数据")
+def get_type():
+    sql_result = con.execute(
+        f'SELECT `ore` AS "name", ABS(`2011`) AS "2011", ABS(`2012`) AS "2012", ABS(`2013`) AS "2013", ABS(`2014`) AS "2014",'
+        f'ABS(`2015`) AS "2015", ABS(`2016`) AS "2016", ABS(`2017`) AS "2017", ABS(`2018`) AS "2018", ABS(`2019`) AS "2019"'
+        f'FROM mineral_history')
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
+
+
+@mineral.get("/mineralTypeHistory", summary="指定矿产历史数据")
+def get_type(type):
+    sql_result = con.execute(
+        f'SELECT `ore` AS "name", ABS(`2011`) AS "2011", ABS(`2012`) AS "2012", ABS(`2013`) AS "2013", ABS(`2014`) AS "2014",'
+        f'ABS(`2015`) AS "2015", ABS(`2016`) AS "2016", ABS(`2017`) AS "2017", ABS(`2018`) AS "2018", ABS(`2019`) AS "2019"'
+        f'FROM mineral_history WHERE `ore`=\'{type}\'')
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
+
+
 # coal(100M tons)
 
 
