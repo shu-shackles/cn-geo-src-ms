@@ -43,7 +43,7 @@ async def user_info(offset, count):
     return data
 
 
-@users.post('/setinfotype', summary="修改用户")
+@users.post('/setinfo', summary="修改用户")
 async def user_setinfo(item: SetInfoItem):
     if user.user_setinfo(item.type, item.password, item.area, item.uid):
         return "修改成功"
