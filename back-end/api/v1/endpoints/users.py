@@ -9,6 +9,11 @@ users = APIRouter(tags=["用户相关"])
 # class InfoItem(BaseModel):
 #   offset: int
 #   count: int
+class SetInfoItem(BaseModel):
+    type: int
+    password: str
+    area: str
+    uid: int
 
 
 class SetInfoTypeItem(BaseModel):
@@ -36,6 +41,14 @@ async def user_info(offset, count):
     sql_result = user.user_info(offset, count)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data
+
+
+@users.post('/setinfotype', summary="修改用户")
+async def user_setinfo(item: SetInfoItem):
+    if user.user_setinfo(item.type, item.password, item.area, item.uid):
+        return "修改成功"
+    else:
+        return "修改失败"
 
 
 @users.post('/setinfotype', summary="修改用户类型")

@@ -56,6 +56,16 @@ def user_info(offset, count):
     return con.execute(f'select * from users limit {offset}, {count}')
 
 
+def user_setinfo(_type, password, area, uid):
+    con.execute(f'UPDATE users SET type = \'{_type}\',password = \'{password}\',area = \'{area}\' WHERE uid = {uid}')
+    sql_result = con.execute(f'select * from users where uid = {uid} and type = \'{_type}\' and '
+                             f'password = \'{password}\' and area=\'{area}\'')
+    if sql_result.all():
+        return True
+    else:
+        return False
+
+
 def user_setinfotype(_type, uid):
     con.execute(f'UPDATE users SET type = \'{_type}\' WHERE uid = {uid}')
     sql_result = con.execute(f'select * from users where uid = {uid} and type = \'{_type}\'')
