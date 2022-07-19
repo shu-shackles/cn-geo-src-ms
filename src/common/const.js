@@ -1,37 +1,37 @@
 const ASIDE_TITLE = [
- //{
-    // title: "地质标注",
-    // titleIndex: "1",
-    // activeName: "1",
-    // icon: "el-icon-document",
-    // levelInfo: [
-    //   {
-    //     level: "提交标注",
-    //     levelIndex: "index",
-    //     //path: { name: "project_survey" }
-    //   },
-    //   {
-    //     level: "文档",
-    //     levelIndex: "project_word",
-    //     path: { name: "project_word" }
-    //   },
-    //   {
-    //     level: "影像",
-    //     levelIndex: "project_img",
-    //     path: { name: "project_img" }
-    //   },
-      // {
-      //   level: "项目表格",
-      //   levelIndex: "project_table",
-      //   path: { name: "project_table" }
-      // },
-    //   {
-    //     level: "矢量图",
-    //     levelIndex: "project_graph",
-    //     path: { name: "project_graph" }
-    //   },
-      
-    //]
+  //{
+  // title: "地质标注",
+  // titleIndex: "1",
+  // activeName: "1",
+  // icon: "el-icon-document",
+  // levelInfo: [
+  //   {
+  //     level: "提交标注",
+  //     levelIndex: "index",
+  //     //path: { name: "project_survey" }
+  //   },
+  //   {
+  //     level: "文档",
+  //     levelIndex: "project_word",
+  //     path: { name: "project_word" }
+  //   },
+  //   {
+  //     level: "影像",
+  //     levelIndex: "project_img",
+  //     path: { name: "project_img" }
+  //   },
+  // {
+  //   level: "项目表格",
+  //   levelIndex: "project_table",
+  //   path: { name: "project_table" }
+  // },
+  //   {
+  //     level: "矢量图",
+  //     levelIndex: "project_graph",
+  //     path: { name: "project_graph" }
+  //   },
+
+  //]
   //},
   {
     title: "动态查询",
@@ -81,37 +81,10 @@ const ASIDE_TITLE = [
         path: { name: "data_audit" }
       },
       {
-        level: "信息管理",
-        levelIndex: "system_manage",
-        path: { name: "system_manage" },
-        levelInfo:[
-          {
-            level: "用户管理",
-            levelIndex: "setting_user",
-            path: { name: "setting_user" },
-          },
-          {
-            level: "角色管理",
-            levelIndex: "setting_role",
-            path: { name: "setting_role" }
-          },
-          {
-            level: "组管理",
-            levelIndex: "setting_group",
-            path: { name: "setting_group" }
-          },
-          {
-            level: "权限管理",
-            levelIndex: "setting_permission",
-            path: { name: "setting_permission" }
-          }
-        ]
-      },
-      {
-        level: "帮助",
-        levelIndex: "help",
-        path: { name: "help" }
-      },
+        level: "用户管理",
+        levelIndex: "setting_user",
+        path: { name: "setting_user" }
+      }
     ]
   }
 ];
@@ -306,7 +279,7 @@ const headerConfig = [
     headerShow: [false, true, false, false, false, true],
     contrast: false
   },
-  
+
   {
     name: "graph",
     headerShow: [false, true, false, false, false, true],
@@ -319,7 +292,7 @@ const headerConfig = [
   },
   {
     name: "mineralData",
-    headerShow: [true, false, false, true, false,true,true,true],
+    headerShow: [true, false, false, true, false, true, true, true],
     contrast: false
   },
   {
@@ -336,7 +309,7 @@ const headerConfig = [
     name: "MineralAnalysis",
     headerShow: [true, false, false, false, false],
     contrast: false
-  },
+  }
 ];
 
 const pageConfig = [

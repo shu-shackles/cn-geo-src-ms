@@ -107,18 +107,11 @@ export default new Router({
             require(["@/components/setting/user.vue"], resolve)
         },
         {
-          // 角色设置setting_permission
-          path: "/setting/role",
-          name: "setting_role",
+          // 数据审核
+          path: "/setting/audit",
+          name: "data_audit",
           component: resolve =>
-            require(["@/components/setting/role.vue"], resolve)
-        },
-        {
-          // 权限设置
-          path: "/setting/permission",
-          name: "setting_permission",
-          component: resolve =>
-            require(["@/components/setting/permission.vue"], resolve)
+            require(["@/components/setting/DataAudit.vue"], resolve)
         }
       ]
     }
