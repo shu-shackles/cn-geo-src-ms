@@ -42,7 +42,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="handleEdit">确 定</el-button>
         </div>
       </el-dialog>
         <!-- <el-button
@@ -112,7 +112,29 @@
       },
       //编辑信息
       handleEdit(){
-
+        this.dialogFormVisible = false;
+        this.axios.post('setinfo', {
+            uid: this.form.uid,
+            type: this.form.type,
+            area:this.form.area,
+            password:this.form.password
+        })
+        .then(res => {
+            if (res.status === 200) {
+              console.log(res);
+              this.$message.success('修改成功！');
+              this.QueryUser();
+              // this.userData.splice(index,1)
+            }else{
+              //element的消息提示组件
+              console.log(res);
+              this.$message.error('修改失败: '+res.data+' 请重试！');
+            } 
+        })
+        .catch(err => {
+            console.log(4);
+            console.log(err);
+          })
       },
       // 删除
       handleDelete(index, row) {
