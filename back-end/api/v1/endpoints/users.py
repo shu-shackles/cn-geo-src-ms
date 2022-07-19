@@ -43,7 +43,7 @@ async def user_info(offset, count):
     return data
 
 
-@users.post('/setinfotype', summary="修改用户")
+@users.post('/setinfo', summary="修改用户")
 async def user_setinfo(item: SetInfoItem):
     if user.user_setinfo(item.type, item.password, item.area, item.uid):
         return "修改成功"
@@ -52,7 +52,7 @@ async def user_setinfo(item: SetInfoItem):
 
 
 @users.post('/setinfotype', summary="修改用户类型")
-async def user_setinfo(item: SetInfoTypeItem):
+async def user_setinfotype(item: SetInfoTypeItem):
     if user.user_setinfotype(item.type, item.uid):
         return "修改成功"
     else:
@@ -60,7 +60,7 @@ async def user_setinfo(item: SetInfoTypeItem):
 
 
 @users.post('/setinfopassword', summary="修改用户密码")
-async def user_setinfo(item: SetInfoPasswordItem, response: Response):
+async def user_setinfopassword(item: SetInfoPasswordItem, response: Response):
     if not item.password == item.check_pass:
         response.status_code = 234
         return "两次密码输入不一致"
@@ -77,7 +77,7 @@ async def user_setinfo(item: SetInfoPasswordItem, response: Response):
 
 
 @users.post('/setinfoarea', summary="修改用户地区")
-async def user_setinfo(item: SetInfoAreaItem):
+async def user_setinfoarea(item: SetInfoAreaItem):
     if user.user_setinfoarea(item.area, item.uid):
         return "修改成功"
     else:
