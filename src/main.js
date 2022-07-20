@@ -12,7 +12,7 @@ import App from "./App";
 import router from "./router";
 import ElementUI from "element-ui";
 import BMap from "vue-baidu-map";
-import store from "./store/index";
+import store from "./store/store";
 import axios from "./common/http";
 import "element-ui/lib/theme-chalk/index.css";
 import sider from "./components/common/sider.vue";

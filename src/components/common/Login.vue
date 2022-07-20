@@ -113,7 +113,28 @@
                     // sessionStorage.setItem('userName', res.data.user.user_name)
                     // this.$store.commit('user', res.data.user)
                     console.log(res)
+                    console.log("当前token为: "+this.$store.state.token)
+                    this.axios.post('login_access', "grant_type=&username="+this.formLabelAlign.username+
+                    "&password="+this.formLabelAlign.password+"&scope=&client_id=&client_secret=")
+                    .then(res => {
+                      if (res.status === 200) {
+                        console.log(res)
+                        this.$store.state.token=res.data.access_token
+                        console.log("当前token为: "+this.$store.state.token)
+                        this.$message.success('返回token成功')
+                      }else{
+
+                        console.log(res)
+                        this.$message.error('token返回失败: ')
+                        // this.$refs[formName].resetFields()
+                      }
+                    })
+                    .catch(err => {
+                      console.log(2)
+                      console.log(err)
+                    })
                     this.$message.success('登录成功')
+
                     this.$router.push('/index')
                   }else{
                     //如果登录失败，重置表单，重新填写
