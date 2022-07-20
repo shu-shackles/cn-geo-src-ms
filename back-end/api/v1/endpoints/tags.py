@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
+from core.security import oauth2_scheme
 from models import tag
 from models.location import coords_to_city
 
@@ -60,7 +61,7 @@ async def tag_upload(item: TagsUploadItem):
 
 
 @tags.post("/areainformaltags/{area}", summary="区域未审核标记")
-async def tag_area_informal(area):
+async def tag_area_informal(area, token: str = Depends(oauth2_scheme)):
     if area == "全部":
         area = ""
     sql_result = tag.tag_get_area_informal(area)

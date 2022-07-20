@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response, status, Depends
 from pydantic import BaseModel
-# from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 
 # from models import Users
 from core import get_password_hash, verify_password, create_access_token
@@ -11,6 +11,11 @@ login = APIRouter(tags=["认证相关"])
 
 
 class LoginItem(BaseModel):
+    username: str
+    password: str
+
+
+class LoginItemAccess(BaseModel):
     username: str
     password: str
 
@@ -42,7 +47,7 @@ async def user_login(item: LoginItem, response: Response):
 
 
 @login.post("/login_access", summary="用户登录，返回token")
-async def user_login_access(item: LoginItem, response: Response):
+async def user_login_access(response: Response, item: OAuth2PasswordRequestForm = Depends()):
     sql_result = user.get_password(item.username)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     if user.confirm_user(item.username):
