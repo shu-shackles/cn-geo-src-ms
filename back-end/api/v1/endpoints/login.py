@@ -30,7 +30,25 @@ async def user_login(item: LoginItem, response: Response):
     if user.confirm_user(item.username):
         if verify_password(item.password, data[0]["password"]):
             response.status_code = status.HTTP_200_OK
-            return "密码正确"
+            sql_result = user.get_user(item.username)
+            data = [dict(zip(result.keys(), result)) for result in sql_result]
+            return data
+        else:
+            response.status_code = 230
+            return "密码错误"
+    else:
+        response.status_code = 231
+        return "用户名不存在"
+
+
+@login.post("/login_access", summary="用户登录，返回token")
+async def user_login_access(item: LoginItem, response: Response):
+    sql_result = user.get_password(item.username)
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    if user.confirm_user(item.username):
+        if verify_password(item.password, data[0]["password"]):
+            response.status_code = status.HTTP_200_OK
+            return {"access_token": create_access_token({"username": item.username}), "token_type": "bearer"}
         else:
             response.status_code = 230
             return "密码错误"

@@ -39,6 +39,11 @@ def get_password(name):
     return sql_result
 
 
+def get_user(name):
+    sql_result = con.execute(f'select * from users where name=\'{name}\'')
+    return sql_result
+
+
 def get_password_uid(uid):
     sql_result = con.execute(f'select password from users where uid = {uid}')
     return sql_result
