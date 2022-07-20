@@ -3,8 +3,9 @@ from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordRequestForm
 
 # from models import Users
-from core import get_password_hash, verify_password, create_access_token
+from core import get_password_hash, verify_password, create_access_token, get_current_user
 # from scheams import UserIn_Pydantic
+from core.security import oauth2_scheme
 from models import user
 
 login = APIRouter(tags=["认证相关"])
@@ -53,13 +54,24 @@ async def user_login_access(response: Response, item: OAuth2PasswordRequestForm 
     if user.confirm_user(item.username):
         if verify_password(item.password, data[0]["password"]):
             response.status_code = status.HTTP_200_OK
-            return {"access_token": create_access_token({"username": item.username}), "token_type": "bearer"}
+            sql_result = user.get_user(item.username)
+            data = [dict(zip(result.keys(), result)) for result in sql_result]
+            data_node = data[0]
+            data_node["username"] = item.username
+            return {"access_token": create_access_token(data_node), "token_type": "bearer"}
         else:
             response.status_code = 230
             return "密码错误"
     else:
         response.status_code = 231
         return "用户名不存在"
+
+
+@login.post("/login_get_user", summary="根据token返回用户信息")
+async def user_get_token(token: str = Depends(oauth2_scheme)):
+    sql_result = get_current_user(token)
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
 
 
 @login.post("/register", summary="用户注册")
