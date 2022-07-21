@@ -110,8 +110,8 @@
               this.axios.post('login', this.formLabelAlign)
                 .then(res => {
                   if (res.status === 200) {
-                    // sessionStorage.setItem('userName', res.data.user.user_name)
-                    // this.$store.commit('user', res.data.user)
+                    window.sessionStorage.setItem('user', res.data[0].name)
+                    console.log(res.data[0].name)
                     console.log(res)
                     console.log("当前token为: "+this.$store.state.token)
                     this.axios.post('login_access', "grant_type=&username="+this.formLabelAlign.username+
@@ -119,8 +119,10 @@
                     .then(res => {
                       if (res.status === 200) {
                         console.log(res)
-                        this.$store.state.token=res.data.access_token
+                        window.sessionStorage.setItem('userToken', res.data.access_token)
+                        // this.$store.state.token=res.data.access_token
                         console.log("当前token为: "+this.$store.state.token)
+
                         this.$message.success('返回token成功')
                       }else{
 

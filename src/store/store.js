@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-        token : "****"
+        user: sessionStorage.getItem('user'),
+        token : sessionStorage.getItem('userToken')
     },
     mutations:{
 
