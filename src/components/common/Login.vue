@@ -57,6 +57,7 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
   export default {
     data () {
       //element表单校验
@@ -96,6 +97,9 @@
     created () {
       // this.islogin()
     },
+    computed:{
+      ...mapState(['token'])
+    },
     methods: {
       //判断是否登录，已登录则跳转到主页
       islogin(){
@@ -107,14 +111,7 @@
       onSubmit (formName) {
           this.$refs[formName].validate((valid)=> {
             if (valid) {
-              this.axios.post('login', this.formLabelAlign)
-                .then(res => {
-                  if (res.status === 200) {
-                    window.sessionStorage.setItem('user', res.data[0].name)
-                    console.log(res.data[0].name)
-                    console.log(res)
-                    console.log("当前token为: "+this.$store.state.token)
-                    this.axios.post('login_access', "grant_type=&username="+this.formLabelAlign.username+
+              this.axios.post('login_access', "grant_type=&username="+this.formLabelAlign.username+
                     "&password="+this.formLabelAlign.password+"&scope=&client_id=&client_secret=")
                     .then(res => {
                       if (res.status === 200) {
@@ -122,37 +119,46 @@
                         window.sessionStorage.setItem('userToken', res.data.access_token)
                         // this.$store.state.token=res.data.access_token
                         console.log("当前token为: "+this.$store.state.token)
+                        console.log()
+                        this.$message.success('登录成功')
+                        this.$router.push('/index')
 
-                        this.$message.success('返回token成功')
                       }else{
-
                         console.log(res)
                         this.$message.error('token返回失败: ')
                         // this.$refs[formName].resetFields()
                       }
                     })
                     .catch(err => {
-                      console.log(2)
-                      console.log(err)
+                      console.log("出现错误："+err)
                     })
-                    this.$message.success('登录成功')
-
-                    this.$router.push('/index')
-                  }else{
-                    //如果登录失败，重置表单，重新填写
-                    //element的消息提示组件
-                    console.log(res)
-                    this.$message.error('登录失败: '+res.data+' 请重试！')
-                    this.$refs[formName].resetFields()
+              console.log("token:"+this.token)
+            }
+            this.axios({
+                method: 'post',
+                url: 'login_get_user',
+                headers: {'Authorization':"Bearer "+this.token
                   }
                 })
-                .catch(err => {
-                  console.log(2)
-                  console.log(err)
-                })
-            }
+              .then(function (res) {
+                  //handle success
+                  window.sessionStorage.setItem('uid', res.data.uid)
+                  window.sessionStorage.setItem('name', res.data.name)
+                  window.sessionStorage.setItem('password', res.data.password)
+                  window.sessionStorage.setItem('type', res.data.type)
+                  window.sessionStorage.setItem('area', res.data.area)
+                  window.sessionStorage.setItem('ID', res.data.ID)
+                  window.sessionStorage.setItem('IDName', res.data.IDName)
+                  window.sessionStorage.setItem('data',JSON.stringify(res.data))
+                  console.log(res);
+                  // console.log(this.name+this.password+this.area+this.type+this.ID+this.IDName)
+                  
+              })
+              .catch(function (response) {
+                  //handle error
+                  console.log("error:"+response);
+              });
           })
-          // this.$router.push('/index')
         },
       //注册
       onRegister(){

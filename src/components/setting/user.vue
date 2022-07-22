@@ -1,5 +1,6 @@
 <template>
 <div class="survey_content2 clearfix">
+  <p>当前用户的token为：{{token}}</p>
   <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button>
   <div class="contents clearfix">    
     <el-table :data="userData" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'; 
   export default {
     data() {
       return {
@@ -76,6 +78,9 @@
       },
       formLabelWidth: '120px'      
       }
+    },
+    computed:{
+      ...mapState(['token'])
     },
     mounted(){
       this.QueryUser();
