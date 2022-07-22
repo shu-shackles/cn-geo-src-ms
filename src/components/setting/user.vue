@@ -1,12 +1,12 @@
 <template>
 <div class="survey_content2 clearfix">
-  <p>当前用户的token为：{{token}}</p>
-  <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button>
+  <!-- <p>当前用户的token为：{{data}}</p> -->
+  <!-- <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button> -->
   <div class="contents clearfix">    
     <el-table :data="userData" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
     <el-table-column prop="uid" label="UID" sortable width="80"></el-table-column>
     <el-table-column prop="name" label="用户名称"></el-table-column>
-    <el-table-column prop="password" label="用户密码"></el-table-column>
+    <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
     <el-table-column prop="type" label="用户类型"></el-table-column>
     <el-table-column prop="area" label="地区"></el-table-column>
     <el-table-column prop="IDName" label="姓名"></el-table-column>
@@ -27,9 +27,9 @@
         </el-button>
         <el-dialog title="编辑用户信息" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-          <el-form-item label="用户密码" :label-width="formLabelWidth">
+          <!-- <el-form-item label="用户密码" :label-width="formLabelWidth">
             <el-input v-model="form.password" autocomplete="off"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="用户类型" :label-width="formLabelWidth">
             <el-select v-model="form.type" placeholder="请选择用户类型">
               <el-option label="管理员" value="0"></el-option>
@@ -80,7 +80,7 @@
       }
     },
     computed:{
-      ...mapState(['token'])
+      ...mapState(['data'])
     },
     mounted(){
       this.QueryUser();
@@ -193,7 +193,7 @@
   .contents{
   background-color: #fff;
   // background-color: rgb(198, 219, 212);
-  margin: 60px 20px;
+  margin: 0px 0px 60px 20px;
   padding: 15px;
   height: 100%;
   }
