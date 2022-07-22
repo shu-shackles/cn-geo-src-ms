@@ -17,6 +17,12 @@ class SetInfoItem(BaseModel):
     uid: int
 
 
+class SetInfoTypeAreaItem(BaseModel):
+    type: int
+    area: str
+    uid: int
+
+
 class SetInfoTypeItem(BaseModel):
     type: int
     uid: int
@@ -57,6 +63,14 @@ async def user_setinfo(item: SetInfoItem):
         return "密码长度小于6位"
     item.password = get_password_hash(item.password)
     if user.user_setinfo(item.type, item.password, item.area, item.uid):
+        return "修改成功"
+    else:
+        return "修改失败"
+
+
+@users.post('/setinfo_type_area', summary="修改用户类型和地区")
+async def user_setinfo_type_area(item: SetInfoTypeAreaItem):
+    if user.user_setinfotype(item.type, item.uid) and user.user_setinfoarea(item.area, item.uid):
         return "修改成功"
     else:
         return "修改失败"
