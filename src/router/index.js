@@ -1,22 +1,17 @@
-/*
- * @Description:
- * @Autor: Sia
- * @Date: 2019-07-20 10:19:32
- * @LastEditors: huacong
- * @LastEditTime: 2020-06-20 10:40:41
- */
 import Vue from "vue";
 import Router from "vue-router";
-import store from "../store/index";
-
+import store from "../store/store.js";
+import axios from "axios";
+import { WindowsBalloon } from "node-notifier";
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: "/",
       name: "login",
-      component: resolve => require(["@/components/common/Login.vue"], resolve)
+      component: resolve =>
+        require(["@/components/common/Login.vue"], resolve)
     },
     {
       path: "/register",
@@ -37,40 +32,6 @@ export default new Router({
       path: "/survey",
       component: resolve => require(["@/components/home.vue"], resolve),
       children: [
-        // {
-        //   // 项目简介
-        //   path: "/project/survey",
-        //   name: "project_survey",
-        //   component: resolve =>
-        //     require(["@/components/project/survey.vue"], resolve)
-        // },
-        // {
-        //   // 项目文档
-        //   path: "/project/word",
-        //   name: "project_word",
-        //   component: resolve =>
-        //     require(["@/components/project/word.vue"], resolve)
-        // },
-        // {
-        //   // 项目表格
-        //   path: '/project/table',
-        //   name: 'project_table',
-        //   component: resolve => require(['@/components/project/table.vue'], resolve),
-        // },
-        // {
-        //   // 项目矢量数据
-        //   path: "/project/graph",
-        //   name: "project_graph",
-        //   component: resolve =>
-        //     require(["@/components/project/graph.vue"], resolve)
-        // },
-        // {
-        //   // 项目影像
-        //   path: "/project/img",
-        //   name: "project_img",
-        //   component: resolve =>
-        //     require(["@/components/project/img.vue"], resolve)
-        // },
         {
           // 矿物数据
           path: "/query/mineral",
@@ -117,3 +78,48 @@ export default new Router({
     }
   ]
 });
+const whiteRouter = ["/","/register"];
+
+// 用了一些奇技淫巧解决了一些问题，不值得学习
+var flag = true;
+var n = 1;
+//全局前置路由守卫：初始化的时候被调用、在每一次路由切换之前被调用
+router.beforeEach((to, from, next) => {
+  if (whiteRouter.indexOf(to.path) !== -1) {
+    next();
+    n = 1;
+  } else {
+    getToken();
+    console.log(flag);
+    if (flag) {
+      next();
+    } else {
+      next("/");
+      location.reload();
+      alert("请先登录！");
+    }
+  }
+});
+
+function getToken() {
+  if (n > 0) {
+    var config = {
+      method: "post",
+      url: "http://localhost:8080/api/v1/login_get_user",
+      headers: {
+        Authorization: "Bearer " + store.state.token
+      }
+    };
+    axios(config)
+      .then(response => {
+        flag = true;
+        n = 1;
+      })
+      .catch(error => {
+        flag = false;
+        n = 0;
+      });
+  }
+}
+
+export default router;

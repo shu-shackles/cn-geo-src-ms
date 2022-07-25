@@ -53,11 +53,13 @@
 <script>
 import axios from 'axios';
 import '../../common/dayjs.min.js'
+import {mapState} from 'vuex'
 export default {
     data() {
         return {
             show: false,
             image: undefined,
+            userInfo: JSON.parse(this.$store.state.data),
             ruleForm: {
                 lng: undefined,
                 lat: undefined,
@@ -89,11 +91,30 @@ export default {
             }
         };
     },
+    // computed: {
+    //         ...mapState(['token'])
+    // },
     mounted() {
         this.$bus.$on('location', (data) => {
             this.ruleForm.lng = data.lng
             this.ruleForm.lat = data.lat
-        })
+        }) 
+        console.log(this.userInfo)
+        // var config = {
+        //     method: 'post',
+        //     url: 'http://localhost:8080/api/v1/login_get_user',
+        //     headers: {
+        //         'Authorization': 'Bearer '+this.token
+        //     }
+        // };
+
+        // axios(config)
+        //     .then(function (response) {
+        //         console.log(JSON.stringify(response.data));
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
     },
     beforeDestroy() {
         this.$bus.$off('location')
@@ -109,8 +130,8 @@ export default {
                     console.log(response.data.data.url);
                     console.log(that.ruleForm.imgSrc);
                     let param2 = that.ruleForm
-                    param2['type'] = 1
-                    param2['uid'] = 1
+                    param2['type'] = that.userInfo.type
+                    param2['uid'] = that.userInfo.uid
                     param2['time'] = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                     axios.post('http://localhost:8080/api/v1/upload', param2)
                         .then(function (response) {
