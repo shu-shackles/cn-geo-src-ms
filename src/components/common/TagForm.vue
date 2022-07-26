@@ -91,9 +91,11 @@ export default {
             }
         };
     },
-    // computed: {
-    //         ...mapState(['token'])
-    // },
+    watch:{
+        show(){
+            this.userInfo = JSON.parse(this.$store.state.data)
+        }
+    },
     mounted() {
         this.$bus.$on('location', (data) => {
             this.ruleForm.lng = data.lng
