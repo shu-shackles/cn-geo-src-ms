@@ -37,7 +37,7 @@
                 </el-form-item>
                 <el-form-item label="图片" prop="imgSrc">
                     <el-upload class="avatar-uploader" action="https://www.imgtp.com/api/upload" :show-file-list="false"
-                        :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" v-model="ruleForm.imgSrc">
                         <img v-if="ruleForm.imgSrc" :src="ruleForm.imgSrc" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -53,7 +53,7 @@
 <script>
 import axios from 'axios';
 import '../../common/dayjs.min.js'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -73,26 +73,26 @@ export default {
                     { required: true, message: "请输入标记所在经度，可通过定位获取", trigger: "blur" }
                 ],
                 lat: [
-                    { required: true, message: "请输入标记所在纬度，可通过定位获取", trigger: "change" }
+                    { required: true, message: "请输入标记所在纬度，可通过定位获取", trigger: "blur" }
                 ],
                 title: [
                     { required: true, message: "请输入标记名称", trigger: "blur" },
                     { min: 1, max: 10, message: "长度在 1 到 10 个字符", trigger: "blur" }
                 ],
                 etype: [
-                    { required: true, message: "请选择标记类型", trigger: "select" }
+                    { required: true, message: "请选择标记类型", trigger: ['blur', 'change'] }
                 ],
                 desc: [
                     { required: true, message: "请填写100字以内的标记描述", trigger: "blur" }
                 ],
                 imgSrc: [
-                    { required: true, message: "请上传标记展示图片", trigger: "blur" }
+                    { required: true, message: "请上传标记展示图片", trigger: ["blur", 'change'] }
                 ]
             }
         };
     },
-    watch:{
-        show(){
+    watch: {
+        show() {
             this.userInfo = JSON.parse(this.$store.state.data)
         }
     },
@@ -100,57 +100,44 @@ export default {
         this.$bus.$on('location', (data) => {
             this.ruleForm.lng = data.lng
             this.ruleForm.lat = data.lat
-        }) 
-        console.log(this.userInfo)
-        // var config = {
-        //     method: 'post',
-        //     url: 'http://localhost:8080/api/v1/login_get_user',
-        //     headers: {
-        //         'Authorization': 'Bearer '+this.token
-        //     }
-        // };
-
-        // axios(config)
-        //     .then(function (response) {
-        //         console.log(JSON.stringify(response.data));
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+        })
     },
     beforeDestroy() {
         this.$bus.$off('location')
     },
     methods: {
         submitForm(formName) {
-            let param = new FormData();
-            param.append('image', this.image);
-            let that = this
-            axios.post('https://www.imgtp.com/api/upload', param)
-                .then(function (response) {
-                    that.ruleForm.imgSrc = response.data.data.url
-                    console.log(response.data.data.url);
-                    console.log(that.ruleForm.imgSrc);
-                    let param2 = that.ruleForm
-                    param2['type'] = that.userInfo.type
-                    param2['uid'] = that.userInfo.uid
-                    param2['time'] = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-                    axios.post('http://localhost:8080/api/v1/upload', param2)
-                        .then(function (response) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let param = new FormData();
+                    param.append('image', this.image);
+                    axios.post('https://www.imgtp.com/api/upload', param)
+                        .then(response=> {
+                            this.ruleForm.imgSrc = response.data.data.url
+                            let param2 = this.ruleForm
+                            param2['type'] = this.userInfo.type
+                            param2['uid'] = this.userInfo.uid
+                            param2['time'] = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+                            param2['imgSrc'] = response.data.data.url
+                            console.log(param2,this.ruleForm)
+                            return axios.post('http://localhost:8080/api/v1/upload', param2)
+                        })
+                        .then(response=> {
                             //that.image = undefined
-                            that.resetForm(formName)
-                            that.image = undefined
-                            that.backPage()
+                            this.resetForm(formName)
+                            this.image = undefined
+                            this.backPage()
                             alert(response.data)
                         })
-                        .catch(function (error) {
+                        .catch(error=> {
                             console.log(error);
                             alert('上传表单失败，请重试')
                         });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         },
         handleAvatarSuccess(_res, file) {
             this.image = file.raw;
