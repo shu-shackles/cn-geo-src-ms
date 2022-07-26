@@ -43,9 +43,16 @@ class DeleteItem(BaseModel):
     uid: int
 
 
-@users.get("/info/{offset}/{count}", summary="当前用户")
+@users.get("/info/{offset}/{count}", summary="查询用户表")
 async def user_info(offset, count):
     sql_result = user.user_info(offset, count)
+    data = [dict(zip(result.keys(), result)) for result in sql_result]
+    return data
+
+
+@users.get("/info_name/{username}", summary="根据用户名查询信息")
+async def user_info_name(username):
+    sql_result = user.user_info_name(username)
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data
 
