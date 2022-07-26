@@ -128,7 +128,7 @@
                           headers: {'Authorization':"Bearer "+this.token
                             }
                           })
-                        .then(function (res) {
+                        .then(res=> {
                             //handle success
                             window.sessionStorage.setItem('uid', res.data[0].uid)
                             window.sessionStorage.setItem('name', res.data[0].name)
@@ -138,6 +138,7 @@
                             window.sessionStorage.setItem('ID', res.data[0].ID)
                             window.sessionStorage.setItem('IDName', res.data[0].IDName)
                             window.sessionStorage.setItem('data',JSON.stringify(res.data[0]))
+                            this.$store.state.data = res.data[0]
                             console.log(res);
                             console.log(res.data[0].uid)
                             console.log(this.data)

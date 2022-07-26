@@ -20,8 +20,11 @@ export default new Vuex.Store({
         SET_Token(state, data) {
             state.token = data
             sessionStorage.setItem("userToken", data)
+        },
+        SET_Data(state, data) {
+            state.data = data
+            sessionStorage.setItem("data", data)
         }
-
     },
     actions:{
 
