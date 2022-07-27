@@ -110,7 +110,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <div class="block">
+  <div class="block" style="margin-top:10px; margin-bottom: 10px;">
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
