@@ -40,12 +40,13 @@
 
 <script>
 import * as consts from '../../common/const'
-
+import axios from 'axios'
 export default {
     data() {
         return {
-            showMenu:true,
+            showMenu: true,
             menu: {},
+            type: -1
         }
     },
     created() {
@@ -70,7 +71,31 @@ export default {
         },
         // 获取导航栏
         getMenu() {
-            this.menu = consts.ASIDE_TITLE
+            console.log('!!!!!!!!!', this.$store.state.token)
+            var config = {
+                method: 'post',
+                url: 'http://localhost:8080/api/v1/login_get_user',
+                headers: {
+                    'Authorization': 'Bearer ' + this.$store.state.token,
+                },
+            };
+            axios(config)
+                .then(response => {
+                    console.log('-----------', response.data[0].type);
+                    this.type = response.data[0].type
+                    if (this.type == 0) {
+                        this.menu = consts.ASIDE_TITLE0
+                    }
+                    else if (this.type == 1) {
+                        this.menu = consts.ASIDE_TITLE1
+                    }
+                    else if (this.type == 2) {
+                        this.menu = consts.ASIDE_TITLE0
+                    }
+                })
+                .catch(error => {
+                    console.log('-----------', error);
+                });
             // this.projects=this.menu.project
         },
         // 点击退出，返回到登录页面

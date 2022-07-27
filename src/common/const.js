@@ -1,38 +1,101 @@
-const ASIDE_TITLE = [
-  //{
-  // title: "地质标注",
-  // titleIndex: "1",
-  // activeName: "1",
-  // icon: "el-icon-document",
-  // levelInfo: [
-  //   {
-  //     level: "提交标注",
-  //     levelIndex: "index",
-  //     //path: { name: "project_survey" }
-  //   },
-  //   {
-  //     level: "文档",
-  //     levelIndex: "project_word",
-  //     path: { name: "project_word" }
-  //   },
-  //   {
-  //     level: "影像",
-  //     levelIndex: "project_img",
-  //     path: { name: "project_img" }
-  //   },
-  // {
-  //   level: "项目表格",
-  //   levelIndex: "project_table",
-  //   path: { name: "project_table" }
-  // },
-  //   {
-  //     level: "矢量图",
-  //     levelIndex: "project_graph",
-  //     path: { name: "project_graph" }
-  //   },
-
-  //]
-  //},
+const ASIDE_TITLE2 = [
+    {
+      title: "动态查询",
+      titleIndex: "1",
+      activeName: "1",
+      icon: "el-icon-document",
+      levelInfo: [
+        {
+          level: "矿物数据",
+          levelIndex: "query_mineral",
+          path: { name: "query_mineral" }
+        },
+        {
+          level: "地质新闻",
+          levelIndex: "query_news",
+          path: { name: "query_news" }
+        }
+      ]
+    },
+    {
+      title: "数据分析",
+      titleIndex: "2",
+      activeName: "2",
+      icon: "el-icon-menu",
+      levelInfo: [
+        {
+          level: "森林资源",
+          levelIndex: "analysis_forest",
+          path: { name: "analysis_forest" }
+        },
+        {
+          level: "矿产资源",
+          levelIndex: "analysis_mineral",
+          path: { name: "analysis_mineral" }
+        }
+      ]
+    },
+    {
+      title: "系统管理",
+      titleIndex: "3",
+      activeName: "3",
+      icon: "el-icon-setting",
+      levelInfo: [
+      ]
+    }
+  ];
+const ASIDE_TITLE1 = [
+  {
+    title: "动态查询",
+    titleIndex: "1",
+    activeName: "1",
+    icon: "el-icon-document",
+    levelInfo: [
+      {
+        level: "矿物数据",
+        levelIndex: "query_mineral",
+        path: { name: "query_mineral" }
+      },
+      {
+        level: "地质新闻",
+        levelIndex: "query_news",
+        path: { name: "query_news" }
+      }
+    ]
+  },
+  {
+    title: "数据分析",
+    titleIndex: "2",
+    activeName: "2",
+    icon: "el-icon-menu",
+    levelInfo: [
+      {
+        level: "森林资源",
+        levelIndex: "analysis_forest",
+        path: { name: "analysis_forest" }
+      },
+      {
+        level: "矿产资源",
+        levelIndex: "analysis_mineral",
+        path: { name: "analysis_mineral" }
+      }
+    ]
+  },
+  {
+    title: "系统管理",
+    titleIndex: "3",
+    activeName: "3",
+    icon: "el-icon-setting",
+    levelInfo: [
+      {
+        level: "数据审核",
+        levelIndex: "data_audit",
+        path: { name: "data_audit" }
+      }
+    ]
+  }
+];
+const ASIDE_TITLE0 = [
   {
     title: "动态查询",
     titleIndex: "1",
@@ -343,7 +406,9 @@ let getPageConfig = name => {
   return b;
 };
 export {
-  ASIDE_TITLE,
+  ASIDE_TITLE0,
+  ASIDE_TITLE1,
+  ASIDE_TITLE2,
   Project,
   Points,
   TableType,

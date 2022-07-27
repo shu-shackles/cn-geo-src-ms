@@ -126,8 +126,13 @@ export default {
                             //that.image = undefined
                             this.resetForm(formName)
                             this.image = undefined
-                            this.backPage()
                             alert(response.data)
+                            if(response.data==='不需审核，添加成功'){
+                                location.reload()
+                            }else{
+                                this.backPage()
+                            }
+                            
                         })
                         .catch(error=> {
                             console.log(error);
@@ -155,17 +160,6 @@ export default {
             }
             return isJPG && isLt2M;
         },
-        // submitForm(formName) {
-        //     this.$refs[formName].validate((valid) => {
-        //         if (valid) {
-        //             alert("submit!");
-        //         }
-        //         else {
-        //             console.log("error submit!!");
-        //             return false;
-        //         }
-        //     });
-        // },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },

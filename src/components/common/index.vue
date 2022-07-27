@@ -3,7 +3,7 @@
         <sider></sider>
         <baidu-map style="margin-left:160px;" :class="'hello flex10'" :zoom="zoom" @ready="handler" center="延安"
             :scroll-wheel-zoom="true">
-            <TagForm />
+            <TagForm @change='$forceUpdate'/>
             <div class="float_left">
                 <el-select size="mini" style="position:absolute;left:200px;top:20px;" v-model="searchName"
                     @change="changeType" placeholder="请选择标记类型">

@@ -11,7 +11,7 @@ const router = new Router({
       path: "/",
       name: "login",
       component: resolve =>
-        require(["@/components/common/Login.vue"], resolve)
+        require(["@/components/common/Login.vue"], resolve),
     },
     {
       path: "/register",
@@ -94,8 +94,8 @@ router.beforeEach((to, from, next) => {
     if (flag) {
       next();
     } else {
-      next("/");
-      location.reload();
+      router.replace({ name: 'login' })
+      //location.reload();
       alert("请先登录！");
     }
   }
