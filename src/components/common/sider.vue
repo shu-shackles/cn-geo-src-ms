@@ -8,6 +8,7 @@
                 background-color="#1B467B" active-text-color="#ffd04b">
                 <div class="ava">
                     <img class="avator" src='@/assets/images/bo.jpg'>
+                    <!-- <div>欢迎您，****</div> -->
                     <div class="avatorBtn btns" @click='backIndex()'>主页</div>
                     <div class="avatorBtn" @click='backLogin()'>退出</div>
                 </div>
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import * as consts from '../../common/const'
 import axios from 'axios'
 export default {
@@ -50,9 +52,13 @@ export default {
         }
     },
     created() {
+        console.log(this.data)
+        console.log(this.token)
         this.getMenu()
     },
     computed: {
+        // ...mapState(['data']),
+        ...mapState(['token']),
         showMenu: {
             // getter
             get: function () {

@@ -2,7 +2,16 @@
 <div class="survey_content2 clearfix">
   <!-- <p>当前用户的token为：{{data}}</p> -->
   <!-- <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button> -->
-  <div class="contents clearfix">    
+  <div class="contents clearfix">
+    <el-row type="flex" justify="left">
+      <el-input style="width:250px ;margin: 5px 5px 5px 5px;"
+        placeholder="请输入用户名"
+        prefix-icon="el-icon-search"
+        v-model="input"
+        clearable>
+      </el-input>
+      <el-button type="primary" icon="el-icon-search" @click="QueryInfo(this.input)" style=" margin: 5px 5px 5px 5px;" circle></el-button>
+    </el-row>  
     <el-table :data="userData" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
     <el-table-column prop="uid" label="UID" sortable width="80"></el-table-column>
     <el-table-column prop="name" label="用户名称"></el-table-column>
@@ -65,6 +74,7 @@
   export default {
     data() {
       return {
+      input:'',
       userData:[],
       dialogFormVisible: false,
       form: {
@@ -86,6 +96,20 @@
       this.QueryUser();
     },
     methods: {
+      //根据用户名模糊查询用户
+      QueryInfo(name) {
+        this.axios({
+              method: 'get',
+                url: `http://localhost:8080/api/v1/IDAuthen`+"/"+name,
+                params: { 
+                  username:name
+                }
+            })
+          .catch(err => {
+            console.log(2)
+            console.log(err)
+          })
+      },
       //查询所有用户
       QueryUser() {
         this.axios.post('allusers')
@@ -117,12 +141,18 @@
       },
       //编辑信息
       handleEdit(){
+        if(this.form.uid===1){
+          this.$message({
+          message: '超级管理员不可以编辑',
+          type: 'error'
+          });
+          return
+        }
         this.dialogFormVisible = false;
-        this.axios.post('setinfo', {
+        this.axios.post('setinfo_type_area', {
             uid: this.form.uid,
             type: this.form.type,
-            area:this.form.area,
-            password:this.form.password
+            area:this.form.area
         })
         .then(res => {
             if (res.status === 200) {
