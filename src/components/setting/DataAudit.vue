@@ -4,46 +4,98 @@
   <!-- <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button> -->
   <div class="contents clearfix">    
     <el-table :data="tagData" style="width: 100%" :default-sort = "{prop: 'eid', order: 'ascending'}" >
-    <el-table-column prop="uid" label="UID" sortable width="80"></el-table-column>
-    <el-table-column prop="eid" label="标记ID"></el-table-column>
+    <el-table-column prop="eid" sortable label="标记ID" width="150"></el-table-column>
+    <el-table-column prop="uid" label="UID"  width="100"></el-table-column>
+
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
-    <el-table-column prop="time" label="提交时间"></el-table-column>
+    <el-table-column prop="time" :formatter="timeFormat" label="提交时间"></el-table-column>
     <el-table-column prop="title" label="标题"></el-table-column>
     <el-table-column prop="tag_sesc" label="描述"></el-table-column>
     <!-- <el-table-column prop="ID" label="身份证号"></el-table-column> -->
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
     <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
-    <el-table-column label="操作" width="150">
+    <el-table-column label="详细信息" width="150">
       <template slot-scope="scope">
 
         <el-button
           size="mini"
           type="warning"
-          @click="clickEdit(scope.$index, scope.row)">审核
+          @click="clickEdit(scope.$index, scope.row)">详情
         </el-button>
-        <el-dialog title="审核标记信息" :visible.sync="dialogFormVisible">
+        <el-dialog title="标记信息" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-          <!-- <el-form-item label="用户密码" :label-width="formLabelWidth">
-            <el-input v-model="form.password" autocomplete="off"></el-input>
-          </el-form-item> -->
-          <el-form-item label="标记类型" :label-width="formLabelWidth">
-            <el-select v-model="form.type" readonly placeholder="请审核标记类型">
-                <el-option label="动物" :value="2"></el-option>
-                <el-option label="植物" :value="3"></el-option>
-                <el-option label="景观" :value="4"></el-option>
-                <el-option label="矿物" :value="5"></el-option>
-                <el-option label="事件" :value="6"></el-option>
-                <el-option label="其他" :value="1"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item readonly label="用户区域" :label-width="formLabelWidth">
-            <el-input v-model="form.area" autocomplete="off"></el-input>
-          </el-form-item>
+        <el-descriptions class="margin-top" title="标记详情" :column="3" :size="size" border>
+            <template slot="extra">
+                <el-button type="primary" size="small">审核</el-button>
+            </template>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-user"></i>
+                用户ID 
+            </template>
+            {{form.uid}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-mobile-phone"></i>
+                标记标题
+            </template>
+            {{form.title}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-location-outline"></i>
+                标记描述
+            </template>
+            {{form.tag_sesc}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-tickets"></i>
+                标记类型
+            </template>
+            <el-tag size="small">{{form.enentype}}</el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-office-building"></i>
+                经度
+            </template>
+            {{form.lng}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-office-building"></i>
+                纬度
+            </template>
+            {{form.lat}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+            <template slot="label">
+                <i class="el-icon-office-building"></i>
+                提交时间
+            </template>
+            {{form.time}}
+            </el-descriptions-item>
+            <el-descriptions-item>
+                <template slot="label">
+                <i class="el-icon-office-building"></i>
+                标记图片
+                </template>
+                <div class="demo-image__placeholder">
+                    <div class="block">
+                        <el-image style="width: 100px; height: 100px" :src=form.imgSrc :fit="fill" :preview-src-list=[form.imgSrc]>
+                        <div slot="placeholder" class="image-slot">
+                            加载中<span class="dot">...</span>
+                        </div>
+                        </el-image>
+                    </div>
+                </div>
+            </el-descriptions-item>
+        </el-descriptions>
+
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleEdit">确 定</el-button>
-        </div>
+
       </el-dialog>
         <!-- <el-button
           size="mini"
@@ -89,6 +141,11 @@
       this.QueryTag();
     },
     methods: {
+    // 时间类型格式化
+      timeFormat (row) {
+        row.time  = row.time.replace('T',' ')
+        return row.time
+      },
       //查询所有标记
       QueryTag() {
         this.axios.post('areainformaltags'+"/全部")
@@ -110,9 +167,14 @@
       //点击编辑按钮
       clickEdit(index, row) {
         this.form.uid=row.uid;
-        this.form.type=row.type;
-        this.form.password=row.password;
+        this.form.enentype=row.enentype;
+        this.form.time=row.time;
+        this.form.lng=row.lng;
+        this.form.lat=row.lat;
         this.form.area=row.area;
+        this.form.title=row.title;
+        this.form.tag_sesc=row.tag_sesc;
+        this.form.imgSrc=row.imgSrc;
         this.dialogFormVisible = true;
         console.log(index, row);
         var rowValue = row;
