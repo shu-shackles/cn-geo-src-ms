@@ -7,10 +7,10 @@
       <el-input style="width:250px ;margin: 5px 5px 5px 5px;"
         placeholder="请输入用户名"
         prefix-icon="el-icon-search"
-        v-model="input"
+        v-model="inputName"
         clearable>
       </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="QueryInfo(this.input)" style=" margin: 5px 5px 5px 5px;" circle></el-button>
+      <el-button type="primary" icon="el-icon-search" @click="QueryInfo(inputName)" style=" margin: 5px 5px 5px 5px;" circle></el-button>
     </el-row>  
     <el-table :data="userData" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
     <el-table-column prop="uid" label="UID" sortable width="80"></el-table-column>
@@ -74,7 +74,7 @@
   export default {
     data() {
       return {
-      input:'',
+      inputName:'',
       userData:[],
       dialogFormVisible: false,
       form: {
@@ -104,18 +104,24 @@
       },
       //根据用户名模糊查询用户
       QueryInfo(name) {
-        this.axios({
-              method: 'get',
-                url: `http://localhost:8080/api/v1/IDAuthen`+"/"+name,
-                params: { 
-                  username:name
-                }
-            })
-          .catch(err => {
-            console.log(2)
-            console.log(err)
-          })
-      },
+        // console.log(name)
+            this.axios({
+                  method: 'get',
+                  url: `http://localhost:8080/api/v1/info_name`+"/"+name,
+                })
+              .then(res=>{
+                this.userData=res.data;
+                console.log(res.data)
+                console.log(res.status)
+                console.log(res)
+                })
+              .catch(err => {
+                console.log(2)
+                console.log(err)
+              })
+      }
+    
+  ,
       //查询所有用户
       QueryUser() {
         this.axios.post('allusers')
