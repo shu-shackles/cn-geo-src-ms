@@ -26,8 +26,10 @@
         <el-form :model="form">
         <el-descriptions class="margin-top" title="标记详情" :column="3" :size="size" border>
             <template slot="extra">
-                <el-button type="primary" size="small">审核</el-button>
+                <el-button :disabled="btnChangeEnable" type="success" @click="auditSuc(form.eid)" size="small">审核通过</el-button>
+                <el-button :disabled="btnChangeEnable" type="danger" @click="auditErr(form.eid)" size="small">审核失败</el-button>
             </template>
+
             <el-descriptions-item>
             <template slot="label">
                 <i class="el-icon-user"></i>
@@ -37,49 +39,49 @@
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-mobile-phone"></i>
+                <i class="el-icon-s-grid"></i>
                 标记标题
             </template>
             {{form.title}}
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-location-outline"></i>
+                <i class="el-icon-tickets"></i>
                 标记描述
             </template>
             {{form.tag_sesc}}
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-tickets"></i>
+                <i class="el-icon-more"></i>
                 标记类型
             </template>
             <el-tag size="small">{{form.enentype}}</el-tag>
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-office-building"></i>
+                <i class="el-icon-location-outline"></i>
                 经度
             </template>
             {{form.lng}}
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-office-building"></i>
+                <i class="el-icon-location-information"></i>
                 纬度
             </template>
             {{form.lat}}
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-office-building"></i>
+                <i class="el-icon-date"></i>
                 提交时间
             </template>
             {{form.time}}
             </el-descriptions-item>
             <el-descriptions-item>
                 <template slot="label">
-                <i class="el-icon-office-building"></i>
+                <i class="el-icon-picture-outline"></i>
                 标记图片
                 </template>
                 <div class="demo-image__placeholder">
@@ -116,7 +118,7 @@
   export default {
     data() {
       return {
-      readonly: true,
+      btnChangeEnable: false,
       tagData:[],
       dialogFormVisible: false,
       form: {
@@ -141,6 +143,40 @@
       this.QueryTag();
     },
     methods: {
+    //审核成功
+        auditSuc(eid){
+            console.log(eid)
+            this.axios.post('finishaudit',{
+                "eid": eid,
+                "auditStatus": 1
+            })
+            .then(res=>{
+                console.log(res)
+                this.$message.success('审核成功')
+                //审核完成后不可点击
+                this.btnChangeEnable=true
+            })
+            .catch(err=>{
+                this.$message.error('审核出现问题')
+            })
+        },
+    //审核失败
+        auditErr(eid){
+            this.axios.post('finishaudit',{
+                "eid": eid,
+                "auditStatus": -1
+            })
+            .then(res=>{
+                console.log(res)
+                this.$message.success('已提交审核结果')
+                //审核完成后不可点击
+                this.btnChangeEnable=true
+
+            })
+            .catch(err=>{
+                this.$message.error('审核出现问题')
+            })
+        },
     // 时间类型格式化
       timeFormat (row) {
         row.time  = row.time.replace('T',' ')
@@ -167,6 +203,7 @@
       //点击编辑按钮
       clickEdit(index, row) {
         this.form.uid=row.uid;
+        this.form.eid=row.eid;
         this.form.enentype=row.enentype;
         this.form.time=row.time;
         this.form.lng=row.lng;
