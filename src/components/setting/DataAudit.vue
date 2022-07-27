@@ -155,6 +155,7 @@
                 this.$message.success('审核成功')
                 //审核完成后不可点击
                 this.btnChangeEnable=true
+                this.QueryTag();
             })
             .catch(err=>{
                 this.$message.error('审核出现问题')
@@ -171,6 +172,7 @@
                 this.$message.success('已提交审核结果')
                 //审核完成后不可点击
                 this.btnChangeEnable=true
+                this.QueryTag();
 
             })
             .catch(err=>{
@@ -184,7 +186,12 @@
       },
       //查询所有标记
       QueryTag() {
-        this.axios.post('areainformaltags'+"/全部")
+        console.log("type:"+this.$store.state.data.type)
+        var type = this.$store.state.data.type;
+        if(type=='1')
+        {
+        var area = this.$store.state.data.area;
+        this.axios.post('areainformaltags/'+area)
           .then(res => {
             if (res.status === 200) {
               console.log(res);
@@ -199,9 +206,28 @@
             console.log(2)
             console.log(err)
           })
+        }
+        else{
+            this.axios.post('areainformaltags'+"/全部")
+            .then(res => {
+                if (res.status === 200) {
+                console.log(res);
+                this.tagData=res.data;
+                }else{
+                //如果登录失败，重置表单，重新填写
+                //element的消息提示组件
+                console.log(res)
+                }
+            })
+            .catch(err => {
+                console.log(2)
+                console.log(err)
+            })
+        }
       },
       //点击编辑按钮
       clickEdit(index, row) {
+        this.btnChangeEnable=false;
         this.form.uid=row.uid;
         this.form.eid=row.eid;
         this.form.enentype=row.enentype;

@@ -7,9 +7,30 @@
             <el-menu router :default-active="$route.name" class="el-menu-vertical-demo" text-color="#fff"
                 background-color="#1B467B" active-text-color="#ffd04b">
                 <div class="ava">
-                    <img class="avator" src='@/assets/images/bo.jpg'>
-                    <!-- <div>欢迎您，****</div> -->
-                    <div class="avatorBtn btns" @click='backIndex()'>主页</div>
+                    <img class="avator" src='@/assets/images/logo.png'>
+                    <div class="name">欢迎您</div>
+                    <div class=" changePWbtn" @click='centerDialogVisible = true'> {{$store.state.data.name}}</div>
+                    <el-dialog
+                        title="修改密码"
+                        :visible.sync="centerDialogVisible"
+                        width="30%"
+                        center>
+                        <el-form>
+                            <el-form-item label="请输入新密码" :label-width="formLabelWidth">
+                                <el-input v-model="password" autocomplete="off" show-password></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <el-form>
+                            <el-form-item label="请确认密码" :label-width="formLabelWidth">
+                                <el-input v-model="check_pass" autocomplete="off" show-password></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="centerDialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="changePW()">确 定</el-button>
+                        </span>
+                    </el-dialog>
+                    <div class=" btns" @click='backIndex()'>主页</div>
                     <div class="avatorBtn" @click='backLogin()'>退出</div>
                 </div>
                 <label v-for="item in menu" :key="item.titleIndex">
@@ -46,9 +67,12 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            centerDialogVisible:false,
             showMenu: true,
             menu: {},
-            type: -1
+            type: -1,
+            password:'',
+            check_pass:''
         }
     },
     created() {
@@ -106,12 +130,30 @@ export default {
         },
         // 点击退出，返回到登录页面
         backLogin() {
+            // this.$store.state.token = "%"
+            // console.log(this.$store.state.token)
             this.$router.push({ name: 'login' })
         },
         backIndex() {
             this.$router.push({ name: 'index' })
         },
-        changeTitle() { }
+        changeTitle() { },
+        changePW(){
+            this.centerDialogVisible = false;
+            var uid = this.$store.state.data.uid;
+            this.axios.post('setinfopassword',{
+                "password": this.password,
+                "check_pass": this.check_pass,
+                "uid": uid
+            })
+            .then(res=>{
+                this.$message.success('密码修改成功！');
+            })
+            .catch(err=>{
+                this.$message.error('密码修改失败！');
+            })
+        }
+
     }
 }
 </script>
@@ -156,16 +198,33 @@ export default {
             width: 100%;
             height: 80px;
 
+
             .avator {
                 position: absolute;
-                width: 60px;
-                height: 60px;
-                background-color: red;
-                top: 10px;
-                left: 40px;
-                border-radius: 50%;
+                width: 70px;
+                height: 70px;
+                background-color:white;
+                top: 5px;
+                left: 5px;
+                border-radius: 70%;
             }
+            .name{
+                position: absolute;
+                right: 20px;
+                top: 10px;
+                font-size: 12px;
+                color: #fff;
+            }
+            .changePWbtn{
+                position: absolute;
+                right: 25px;
+                top: 30px;
+                font-size: 12px;
+                color: #fff;
+                cursor: pointer;
 
+
+            }
             .avatorBtn {
                 position: absolute;
                 right: 10px;
@@ -176,7 +235,15 @@ export default {
             }
 
             .btns {
-                bottom: 50px;
+                position: absolute;
+                
+                bottom: 10px; 
+                right: 50px;
+                font-size: 12px;
+                color: #fff;
+                cursor: pointer;
+
+                
             }
         }
     }
