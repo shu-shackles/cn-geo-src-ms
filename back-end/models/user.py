@@ -44,6 +44,11 @@ def get_user(name):
     return sql_result
 
 
+def user_info_name(name):
+    sql_result = con.execute(f'select * from users where name like \'%%{name}%%\'')
+    return sql_result
+
+
 def get_password_uid(uid):
     sql_result = con.execute(f'select password from users where uid = {uid}')
     return sql_result
