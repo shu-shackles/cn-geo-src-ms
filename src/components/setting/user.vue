@@ -17,7 +17,7 @@
     <el-table-column prop="name" label="用户名称"></el-table-column>
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
     <el-table-column prop="type" label="用户类型"></el-table-column>
-    <el-table-column prop="area" label="地区"></el-table-column>
+    <el-table-column prop="area" :formatter="areaFormat" label="地区"></el-table-column>
     <el-table-column prop="IDName" label="姓名"></el-table-column>
     <el-table-column prop="ID" label="身份证号"></el-table-column>
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
@@ -96,6 +96,12 @@
       this.QueryUser();
     },
     methods: {
+      // 类型格式化
+      areaFormat (row) {
+        let showProp = null
+        row.area ? showProp = row.area : showProp = '----'
+        return showProp
+      },
       //根据用户名模糊查询用户
       QueryInfo(name) {
         this.axios({
