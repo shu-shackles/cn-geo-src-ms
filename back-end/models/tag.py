@@ -28,12 +28,13 @@ def tag_upload_informal(area, uid, time, lng, lat, etype, title, desc, imgSrc):
 
 
 def tag_get_area(area):
-    return con.execute(f'select area, uid, lng, lat, title, tags.`desc` as "tag_sesc", eventype.`desc` as "enentype", '
-                       f'time, imgSrc from tags,eventype where area like \'{area}%%\' and tags.etype = eventype.etype')
+    return con.execute(f'select eid, area, uid, lng, lat, title, tags.`desc` as "tag_sesc", eventype.`desc` '
+                       f'as "enentype", time, imgSrc from tags,eventype where area like \'{area}%%\' '
+                       f'and tags.etype = eventype.etype')
 
 
 def tag_get_area_informal(area):
-    return con.execute(f'select area, uid, lng, lat, title, informal_tags.`desc` as "tag_sesc", eventype.`desc` as '
+    return con.execute(f'select eid, area, uid, lng, lat, title, informal_tags.`desc` as "tag_sesc", eventype.`desc` as '
                        f'"enentype", time, imgSrc from informal_tags,eventype where area like \'{area}%%\' and '
                        f'informal_tags.etype = eventype.etype')
 
