@@ -12,7 +12,10 @@
       </el-input>
       <el-button type="primary" icon="el-icon-search" @click="QueryInfo(inputName)" style=" margin: 5px 5px 5px 5px;" circle></el-button>
     </el-row>  
-    <el-table :data="userData" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
+    <el-table :data="userData.slice(
+        (pageInfo.currentPage - 1) * pageInfo.pageSize,
+        pageInfo.currentPage * pageInfo.pageSize
+      )"  style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
     <el-table-column prop="uid" label="UID" sortable width="80"></el-table-column>
     <el-table-column prop="name" label="用户名称"></el-table-column>
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
@@ -63,6 +66,18 @@
       </template>
     </el-table-column>
   </el-table>
+  <div class="block">
+    <el-pagination
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.pageTotal"
+      :page-sizes="[8, 16, 24, 32]"
+      :page-size="pageInfo.pageSize"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage">
+    </el-pagination>
+  </div>
   </div>
 
 </div>
@@ -74,6 +89,12 @@
   export default {
     data() {
       return {
+      //分页
+      pageInfo: {
+        currentPage: 1,
+        pageSize: 8, //每页的初始数量
+        pageTotal: 2, //总页数
+      },
       inputName:'',
       userData:[],
       dialogFormVisible: false,
@@ -96,6 +117,15 @@
       this.QueryUser();
     },
     methods: {
+      handleSizeChange(val) {
+        //pageSize 改变时会触发
+        this.pageInfo.pageSize = val
+      },
+      handleCurrentChange(val) {
+        //currentPage 改变时会触发
+        this.pageInfo.currentPage = val
+      },
+
       // 类型格式化
       areaFormat (row) {
         let showProp = null
@@ -111,6 +141,7 @@
                 })
               .then(res=>{
                 this.userData=res.data;
+                this.pageInfo.pageTotal = this.userData.length //根据数据量显示页数
                 console.log(res.data)
                 console.log(res.status)
                 console.log(res)
@@ -129,6 +160,7 @@
             if (res.status === 200) {
               console.log(res);
               this.userData=res.data;
+              this.pageInfo.pageTotal = this.userData.length //根据数据量显示页数
             }else{
               //如果登录失败，重置表单，重新填写
               //element的消息提示组件

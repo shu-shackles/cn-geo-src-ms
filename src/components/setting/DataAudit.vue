@@ -3,7 +3,10 @@
   <!-- <p>当前用户的token为：{{data}}</p> -->
   <!-- <el-button class='right' type="success" size="small" @click='add'>添加用户</el-button> -->
   <div class="contents clearfix">    
-    <el-table :data="tagData" style="width: 100%" :default-sort = "{prop: 'eid', order: 'ascending'}" >
+    <el-table :data="tagData.slice(
+        (pageInfo.currentPage - 1) * pageInfo.pageSize,
+        pageInfo.currentPage * pageInfo.pageSize
+      )" style="width: 100%" :default-sort = "{prop: 'eid', order: 'ascending'}" >
     <el-table-column prop="eid" sortable label="标记ID" width="150"></el-table-column>
     <el-table-column prop="uid" label="UID"  width="100"></el-table-column>
 
@@ -107,6 +110,18 @@
       </template>
     </el-table-column>
   </el-table>
+  <div class="block">
+    <el-pagination
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.pageTotal"
+      :page-sizes="[8, 16, 24, 32]"
+      :page-size="pageInfo.pageSize"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage">
+    </el-pagination>
+  </div>
   </div>
 
 </div>
@@ -118,6 +133,12 @@
   export default {
     data() {
       return {
+        //分页
+      pageInfo: {
+        currentPage: 1,
+        pageSize: 8, //每页的初始数量
+        pageTotal: 6, //总页数
+      },
       btnChangeEnable: false,
       tagData:[],
       dialogFormVisible: false,
@@ -143,6 +164,14 @@
       this.QueryTag();
     },
     methods: {
+      handleSizeChange(val) {
+        //pageSize 改变时会触发
+        this.pageInfo.pageSize = val
+      },
+      handleCurrentChange(val) {
+        //currentPage 改变时会触发
+        this.pageInfo.currentPage = val
+      },
     //审核成功
         auditSuc(eid){
             console.log(eid)
@@ -196,6 +225,8 @@
             if (res.status === 200) {
               console.log(res);
               this.tagData=res.data;
+              this.pageInfo.pageTotal = this.tagData.length //根据数据量显示页数
+
             }else{
               //如果登录失败，重置表单，重新填写
               //element的消息提示组件
@@ -213,6 +244,8 @@
                 if (res.status === 200) {
                 console.log(res);
                 this.tagData=res.data;
+                this.pageInfo.pageTotal = this.tagData.length //根据数据量显示页数
+
                 }else{
                 //如果登录失败，重置表单，重新填写
                 //element的消息提示组件
