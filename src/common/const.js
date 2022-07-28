@@ -34,14 +34,6 @@ const ASIDE_TITLE2 = [
           path: { name: "analysis_mineral" }
         }
       ]
-    },
-    {
-      title: "系统管理",
-      titleIndex: "3",
-      activeName: "3",
-      icon: "el-icon-setting",
-      levelInfo: [
-      ]
     }
   ];
 const ASIDE_TITLE1 = [

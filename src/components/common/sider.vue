@@ -8,13 +8,13 @@
                 background-color="#1B467B" active-text-color="#ffd04b">
                 <div class="ava">
                     <img class="avator" src='@/assets/images/logo.png'>
-                    <div class="name">欢迎您</div>
-                    <div class=" changePWbtn" @click='centerDialogVisible = true'> {{$store.state.data.name}}</div>
-                    <el-dialog
-                        title="修改密码"
-                        :visible.sync="centerDialogVisible"
-                        width="30%"
-                        center>
+                    <div class="name">
+                        <div>欢迎您</div>
+                        <div style="text-align:center" @click='centerDialogVisible = true'>
+                            {{ $store.state.data.name }}</div>
+                    </div>
+                    <el-dialog :modal-append-to-body="false" title="修改密码" :visible.sync="centerDialogVisible"
+                        width="30%" center>
                         <el-form>
                             <el-form-item label="请输入新密码" :label-width="formLabelWidth">
                                 <el-input v-model="password" autocomplete="off" show-password></el-input>
@@ -67,12 +67,12 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            centerDialogVisible:false,
+            centerDialogVisible: false,
             showMenu: true,
             menu: {},
             type: -1,
-            password:'',
-            check_pass:''
+            password: '',
+            check_pass: ''
         }
     },
     created() {
@@ -120,7 +120,7 @@ export default {
                         this.menu = consts.ASIDE_TITLE1
                     }
                     else if (this.type == 2) {
-                        this.menu = consts.ASIDE_TITLE0
+                        this.menu = consts.ASIDE_TITLE2
                     }
                 })
                 .catch(error => {
@@ -138,20 +138,20 @@ export default {
             this.$router.push({ name: 'index' })
         },
         changeTitle() { },
-        changePW(){
+        changePW() {
             this.centerDialogVisible = false;
             var uid = this.$store.state.data.uid;
-            this.axios.post('setinfopassword',{
+            this.axios.post('setinfopassword', {
                 "password": this.password,
                 "check_pass": this.check_pass,
                 "uid": uid
             })
-            .then(res=>{
-                this.$message.success('密码修改成功！');
-            })
-            .catch(err=>{
-                this.$message.error('密码修改失败！');
-            })
+                .then(res => {
+                    this.$message.success('密码修改成功！');
+                })
+                .catch(err => {
+                    this.$message.error('密码修改失败！');
+                })
         }
 
     }
@@ -203,28 +203,20 @@ export default {
                 position: absolute;
                 width: 70px;
                 height: 70px;
-                background-color:white;
+                background-color: white;
                 top: 5px;
                 left: 5px;
                 border-radius: 70%;
             }
-            .name{
+
+            .name {
                 position: absolute;
-                right: 20px;
+                right: 21px;
                 top: 10px;
                 font-size: 12px;
                 color: #fff;
             }
-            .changePWbtn{
-                position: absolute;
-                right: 25px;
-                top: 30px;
-                font-size: 12px;
-                color: #fff;
-                cursor: pointer;
 
-
-            }
             .avatorBtn {
                 position: absolute;
                 right: 10px;
@@ -236,14 +228,14 @@ export default {
 
             .btns {
                 position: absolute;
-                
-                bottom: 10px; 
+
+                bottom: 10px;
                 right: 50px;
                 font-size: 12px;
                 color: #fff;
                 cursor: pointer;
 
-                
+
             }
         }
     }

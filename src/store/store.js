@@ -14,7 +14,7 @@ export default new Vuex.Store({
         IDName: sessionStorage.getItem('IDName'),
         ID    : sessionStorage.getItem('ID'),
         token : sessionStorage.getItem('userToken'),
-        data  : sessionStorage.getItem('data')
+        data  : JSON.parse(sessionStorage.getItem('data'))
     },
     mutations:{
         SET_Token(state, data) {
