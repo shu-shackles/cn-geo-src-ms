@@ -110,20 +110,20 @@
       </template>
     </el-table-column>
   </el-table>
-  <div class="block" style="margin-top:10px; margin-bottom: 10px;">
+  
+  </div>
+<div class="block" style="  margin-bottom: 0px;background-color: #fff;">
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
       :total="pageInfo.pageTotal"
-      :page-sizes="[8, 16, 24, 32]"
+      :page-sizes="[12, 10, 8, 5]"
       :page-size="pageInfo.pageSize"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="pageInfo.currentPage">
     </el-pagination>
   </div>
-  </div>
-
 </div>
   
 </template>
@@ -136,7 +136,7 @@
         //分页
       pageInfo: {
         currentPage: 1,
-        pageSize: 8, //每页的初始数量
+        pageSize: 12, //每页的初始数量
         pageTotal: 6, //总页数
       },
       btnChangeEnable: false,
@@ -353,16 +353,16 @@
 @import '../../../static/css/common';
 .survey_content2{
    width: 99.5%;
-  // height: 100%;
+  height: 100%;
   .body{
     height: 100%;
   }
   .contents{
   background-color: #fff;
   // background-color: rgb(198, 219, 212);
-  margin: 0px 0px 60px 20px;
+  margin: 0px 0px 0px 20px;
   padding: 15px;
-  height: 100%;
+  height: 95%;
   }
   .right{
     // height: 30px;
