@@ -3,7 +3,7 @@ import {test} from "../test.js"
     <div class="registerContainer">
         <div class="register">
             <p>欢迎注册</p>
-            <el-form ref="form" :model="form"  label-width="80px" status-icon :rules="rules">
+            <el-form ref="form" :model="form" label-width="80px" status-icon :rules="rules">
             
                 <el-form-item style="width: 420px;" label="用户名" prop="username">
                     <el-input style="width: 320px;" v-model="form.username"  placeholder="请输入用户名" autocomplete="off">
@@ -17,7 +17,7 @@ import {test} from "../test.js"
                     </el-input>
                 </el-form-item>
 
-                <el-form-item style="width: 420px;" label="确认密码" prop="check_pass ">
+                <el-form-item style="width: 420px;" label="确认密码" prop="check_pass">
                     <el-input style="width: 320px;" type="password" v-model="form.check_pass"  placeholder="请再次输入密码" autocomplete="off">
                       <i slot="prefix" class="iconfont icon-lock"></i>
                     </el-input>

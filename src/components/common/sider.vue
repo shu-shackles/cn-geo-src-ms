@@ -10,20 +10,23 @@
                     <img class="avator" src='@/assets/images/logo.png'>
                     <div class="name">
                         <div>欢迎您</div>
-                        <div style="text-align:center" @click='centerDialogVisible = true'>
+                        <div style="text-align:center;cursor: pointer;" @click='centerDialogVisible = true'>
                             {{ $store.state.data.name }}</div>
                     </div>
                     <el-dialog :modal-append-to-body="false" title="修改密码" :visible.sync="centerDialogVisible"
                         width="30%" center>
-                        <el-form>
-                            <el-form-item label="请输入新密码" :label-width="formLabelWidth">
-                                <el-input v-model="password" autocomplete="off" show-password></el-input>
-                            </el-form-item>
-                        </el-form>
-                        <el-form>
-                            <el-form-item label="请确认密码" :label-width="formLabelWidth">
-                                <el-input v-model="check_pass" autocomplete="off" show-password></el-input>
-                            </el-form-item>
+                        <el-form ref="form" status-icon :model="form" :rules="rules">
+                        <el-form-item label="密码" prop="password">
+                        <el-input  type="password" v-model="form.password" placeholder="请输入密码" autocomplete="off">
+                            <i slot="prefix" class="iconfont icon-lock"></i>
+                            </el-input>
+                        </el-form-item>
+
+                        <el-form-item  label="确认密码" prop="check_pass">
+                            <el-input  type="password" v-model="form.check_pass"  placeholder="请再次输入密码" autocomplete="off">
+                            <i slot="prefix" class="iconfont icon-lock"></i>
+                            </el-input>
+                        </el-form-item>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -66,13 +69,43 @@ import * as consts from '../../common/const'
 import axios from 'axios'
 export default {
     data() {
+    let validatePass = (rule, value, callback) => {
+            if (value === '') {
+            callback(new Error('请输入密码'));
+            } else {
+            if (this.form.check_pass !== '') {
+                this.$refs.form.validateField('check_pass');
+            }
+            callback();
+        }
+    };
+    let validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+            callback(new Error('请再次输入密码'));
+        } else if (value !== this.form.password) {
+            callback(new Error('两次输入密码不一致!'));
+        } else {
+            callback();
+        }
+    };
         return {
             centerDialogVisible: false,
             showMenu: true,
             menu: {},
             type: -1,
-            password: '',
-            check_pass: ''
+            form:{
+                password: '',
+                check_pass: ''
+            },
+            rules:{
+                password:[
+                    {validator:validatePass,trigger:'blur'},
+                    { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: 'blur' }
+                ],
+                check_pass:[
+                    {validator:validatePass2 ,trigger:'blur'}
+                ]
+            }
         }
     },
     created() {
@@ -142,8 +175,8 @@ export default {
             this.centerDialogVisible = false;
             var uid = this.$store.state.data.uid;
             this.axios.post('setinfopassword', {
-                "password": this.password,
-                "check_pass": this.check_pass,
+                "password": this.form.password,
+                "check_pass": this.form.check_pass,
                 "uid": uid
             })
                 .then(res => {
