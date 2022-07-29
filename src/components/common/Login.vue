@@ -118,10 +118,8 @@
                         console.log(res)
                         window.sessionStorage.setItem('userToken', res.data.access_token)
                         this.$store.state.token=res.data.access_token
-                        console.log("当前token为: "+this.$store.state.token)
-                        console.log()
-                        this.$message.success('登录成功')
-                        this.$router.push('/index')
+                        // console.log("当前token为: "+this.$store.state.token)
+                        // console.log()
                         this.axios({
                           method: 'post',
                           url: 'login_get_user',
@@ -130,18 +128,21 @@
                           })
                         .then(res=> {
                             //handle success
-                            window.sessionStorage.setItem('uid', res.data[0].uid)
-                            window.sessionStorage.setItem('name', res.data[0].name)
-                            window.sessionStorage.setItem('password', res.data[0].password)
-                            window.sessionStorage.setItem('type', res.data[0].type)
-                            window.sessionStorage.setItem('area', res.data[0].area)
-                            window.sessionStorage.setItem('ID', res.data[0].ID)
-                            window.sessionStorage.setItem('IDName', res.data[0].IDName)
+                            // window.sessionStorage.setItem('uid', res.data[0].uid)
+                            // window.sessionStorage.setItem('name', res.data[0].name)
+                            // window.sessionStorage.setItem('password', res.data[0].password)
+                            // window.sessionStorage.setItem('type', res.data[0].type)
+                            // window.sessionStorage.setItem('area', res.data[0].area)
+                            // window.sessionStorage.setItem('ID', res.data[0].ID)
+                            // window.sessionStorage.setItem('IDName', res.data[0].IDName)
                             window.sessionStorage.setItem('data',JSON.stringify(res.data[0]))
                             this.$store.state.data = res.data[0]
-                            console.log(res);
-                            console.log(res.data[0].uid)
-                            console.log(this.data)
+                            this.$message.success('登录成功')
+                            this.$router.push('/index')
+
+                            // console.log(res);
+                            // console.log(res.data[0].uid)
+                            // console.log(this.data)
                             // console.log(this.name+this.password+this.area+this.type+this.ID+this.IDName)
                             
                         })

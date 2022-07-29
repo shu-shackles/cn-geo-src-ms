@@ -15,6 +15,7 @@ export default new Vuex.Store({
         IDName: sessionStorage.getItem('IDName'),
         ID    : sessionStorage.getItem('ID'),
         token : sessionStorage.getItem('userToken'),
+        valid : sessionStorage.getItem('valid'),
         data  : JSON.parse(sessionStorage.getItem('data'))
     },
     mutations:{
@@ -25,6 +26,11 @@ export default new Vuex.Store({
         SET_Data(state, data) {
             state.data = data
             sessionStorage.setItem("data", data)
+        },
+        SET_Valid(state,data)
+        {
+            state.valid = data
+            sessionStorage.setItem("valid", data)
         }
     },
     actions:{

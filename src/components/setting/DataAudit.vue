@@ -11,10 +11,20 @@
     <el-table-column prop="uid" label="UID"  width="100"></el-table-column>
 
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
-    <el-table-column prop="time" :formatter="timeFormat" label="提交时间"></el-table-column>
+    <el-table-column prop="time" :formatter="timeFormat" label="提交时间">
+    <template slot-scope="scope">
+        <i class="el-icon-time"></i>
+        <span style="margin-left: 10px" >{{ scope.row.time.replace('T',' ') }}</span>
+      </template>
+    </el-table-column>
     <el-table-column prop="title" label="标题"></el-table-column>
     <el-table-column prop="tag_sesc" label="描述"></el-table-column>
-    <!-- <el-table-column prop="ID" label="身份证号"></el-table-column> -->
+    <el-table-column prop="enentype" label="类型">
+        <template slot-scope="scope">
+            <el-tag size="medium">{{ scope.row.enentype }}</el-tag>
+        </template>
+        
+    </el-table-column>
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
     <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
     <el-table-column label="详细信息" width="150">
@@ -80,7 +90,7 @@
                 <i class="el-icon-date"></i>
                 提交时间
             </template>
-            {{form.time}}
+            {{form.time.replace('T',' ')}}
             </el-descriptions-item>
             <el-descriptions-item>
                 <template slot="label">
@@ -117,7 +127,7 @@
       background
       layout="total, sizes, prev, pager, next, jumper"
       :total="pageInfo.pageTotal"
-      :page-sizes="[12, 10, 8, 5]"
+      :page-sizes="[ 10, 8, 5]"
       :page-size="pageInfo.pageSize"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -136,7 +146,7 @@
         //分页
       pageInfo: {
         currentPage: 1,
-        pageSize: 12, //每页的初始数量
+        pageSize: 10, //每页的初始数量
         pageTotal: 6, //总页数
       },
       btnChangeEnable: false,
@@ -352,7 +362,7 @@
 @import '../../../static/css/clear';
 @import '../../../static/css/common';
 .survey_content2{
-   width: 99.5%;
+   width: 100%;
   height: 100%;
   .body{
     height: 100%;
@@ -361,8 +371,8 @@
   background-color: #fff;
   // background-color: rgb(198, 219, 212);
   margin: 0px 0px 0px 20px;
-  padding: 15px;
-  height: 95%;
+  padding: 0px;
+  height: 95.5%;
   }
   .right{
     // height: 30px;

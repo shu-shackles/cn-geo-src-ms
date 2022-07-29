@@ -15,13 +15,18 @@
     <el-table :data="userData.slice(
         (pageInfo.currentPage - 1) * pageInfo.pageSize,
         pageInfo.currentPage * pageInfo.pageSize
-      )"  style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'}" >
-    <el-table-column prop="uid" label="UID" sortable width="80"></el-table-column>
-    <el-table-column prop="name" label="用户名称"></el-table-column>
+      )"  :header-cell-style="{background:'#eee',color:black}" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'} "  >
+    <el-table-column  prop="uid" label="UID" sortable width="120"></el-table-column>
+    <el-table-column  prop="name" label="用户名称"  width="150">
+
+    </el-table-column>
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
-    <el-table-column prop="type" label="用户类型"></el-table-column>
-    <el-table-column prop="area" :formatter="areaFormat" label="地区"></el-table-column>
-    <el-table-column prop="IDName" label="姓名"></el-table-column>
+    <el-table-column prop="type" label="用户类型" align="center" :formatter="typeFormat"></el-table-column>
+    <el-table-column prop="area" :formatter="areaFormat" label="地区" width="150">
+    </el-table-column>
+    <el-table-column prop="IDName" label="姓名" width="150">
+
+    </el-table-column>
     <el-table-column prop="ID" label="身份证号"></el-table-column>
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
     <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
@@ -50,7 +55,16 @@
             </el-select>
           </el-form-item>
           <el-form-item label="用户区域" :label-width="formLabelWidth">
-            <el-input v-model="form.area" autocomplete="off"></el-input>
+             <el-select v-model="form.area" placeholder="请选择所在区域" :disabled="Display()">
+              <el-option
+                v-for="item in cities"
+                :key="item.area"
+                :label="item.area"
+                :value="item.area">
+                <span style="float: left">{{ item.area }}</span>
+                <!-- <span style="float: right; color: #8492a6; font-size: 13px"></span> -->
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -70,7 +84,7 @@
 
   </div>
   
-  <div class="block" style="  margin-bottom: 0px;background-color: #fff;">
+  <div class="block" style=" background-color: #fff;">
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
@@ -91,6 +105,7 @@
   export default {
     data() {
       return {
+      forbidDisplay:true,
       //分页
       pageInfo: {
         currentPage: 1,
@@ -109,14 +124,17 @@
         IDName: '',
         ID: ''
       },
-      formLabelWidth: '120px'      
+      formLabelWidth: '120px'  ,
+      cities:[]    
       }
+
     },
     computed:{
       ...mapState(['data'])
     },
     mounted(){
       this.QueryUser();
+      this.GetAllArea();
     },
     methods: {
       handleSizeChange(val) {
@@ -127,8 +145,36 @@
         //currentPage 改变时会触发
         this.pageInfo.currentPage = val
       },
-
-      // 类型格式化
+      //获得所有area
+      GetAllArea(){
+        this.axios({
+                  method: 'get',
+                  url: `http://localhost:8080/api/v1/areas`,
+                })
+              .then(res=>{
+                this.cities=res.data;
+                console.log(res)
+                })
+              .catch(err => {
+                console.log(2)
+                console.log(err)
+              })
+      },
+      // type格式化
+      typeFormat (row) {
+        let showProp = "普通用户"
+        if (row.type == "0"){
+          showProp = "管理员"
+        }
+        else if(row.type=="1"){
+          showProp = "地质勘探员"
+        }
+        else{
+          showProp = "普通用户"
+        }
+        return showProp
+      },
+      // 地区格式化
       areaFormat (row) {
         let showProp = null
         row.area ? showProp = row.area : showProp = '----'
@@ -137,6 +183,11 @@
       //根据用户名模糊查询用户
       QueryInfo(name) {
         // console.log(name)
+        if(name===""){
+          this.QueryUser();
+
+        }
+        else{
             this.axios({
                   method: 'get',
                   url: `http://localhost:8080/api/v1/info_name`+"/"+name,
@@ -152,6 +203,7 @@
                 console.log(2)
                 console.log(err)
               })
+        }
       }
     
   ,
@@ -253,6 +305,15 @@
       // 创建角色
       add(){
         this.dialogFormVisible=true
+      },
+      Display(){
+        if(this.form.type =='1'){
+          return false;
+        }
+        else{
+          this.form.area = "";
+          return true;
+        }
       }
     }
   }
@@ -261,17 +322,17 @@
 @import '../../../static/css/clear';
 @import '../../../static/css/common';
 .survey_content2{
-   width: 99.5%;
+   width: 100%;
   height: 100%;
   .body{
-    height: 90%;
+    height: 100%;
   }
   .contents{
   background-color: #fff;
   // background-color: rgb(198, 219, 212);
   margin: 0px 0px 0px 20px;
-  padding: 15px;
-  height: 95%;
+  padding: 0px;
+  height: 95.5%;
   }
   .right{
     // height: 30px;
