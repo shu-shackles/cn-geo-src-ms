@@ -80,46 +80,19 @@ const router = new Router({
 });
 const whiteRouter = ["/","/register"];
 
-// 用了一些奇技淫巧解决了一些问题，不值得学习
-var flag = true;
-var n = 1;
-//全局前置路由守卫：初始化的时候被调用、在每一次路由切换之前被调用
-router.beforeEach((to, from, next) => {
-  if (whiteRouter.indexOf(to.path) !== -1) {
-    next();
-    n = 1;
-  } else {
-    getToken();
-    console.log(flag);
-    if (flag) {
-      next();
-    } else {
-      router.replace({ name: 'login' })
-      //location.reload();
-      alert("请先登录！");
+router.beforeEach(async(to, from, next) => {
+    let token = store.state.token;
+    if(whiteRouter.indexOf(to.path) === -1 && !token){
+        alert("请先登录！")
+        next({name:'login'})
+    } else {  
+    // if(whiteRouter.indexOf(to.path) !== -1 && token){
+    //     next('/index')
+    // }
+    //else{
+        next()
+    //    }
     }
-  }
-});
-
-function getToken() {
-  if (n > 0) {
-    var config = {
-      method: "post",
-      url: "http://localhost:8080/api/v1/login_get_user",
-      headers: {
-        Authorization: "Bearer " + store.state.token
-      }
-    };
-    axios(config)
-      .then(response => {
-        flag = true;
-        n = 1;
-      })
-      .catch(error => {
-        flag = false;
-        n = 0;
-      });
-  }
-}
+})
 
 export default router;

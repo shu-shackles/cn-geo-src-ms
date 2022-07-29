@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
+        news: undefined,
         uid   : sessionStorage.getItem('uid'),
         name  : sessionStorage.getItem('name'),
         password: sessionStorage.getItem('password'),

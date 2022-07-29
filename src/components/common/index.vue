@@ -3,7 +3,7 @@
         <sider></sider>
         <baidu-map style="margin-left:160px;" :class="'hello flex10'" :zoom="zoom" @ready="handler" center="延安"
             :scroll-wheel-zoom="true">
-            <TagForm @change='$forceUpdate'/>
+            <TagForm @change='$forceUpdate' />
             <div class="float_left">
                 <el-select size="mini" style="position:absolute;left:200px;top:20px;" v-model="searchName"
                     @change="changeType" placeholder="请选择标记类型">
@@ -25,10 +25,13 @@
                         <el-descriptions :title="item.title" :column="1" size="mini" style="width:150%;">
                             <el-descriptions-item label="类型">{{ item.enentype }}</el-descriptions-item>
                             <el-descriptions-item label="时间">{{ item.time }}</el-descriptions-item>
+                            <el-descriptions-item label="地点">{{ item.lng > 0 ? `东经${item.lng}` : `西经${-item.lat}` }}°, {{
+                                    item.lng > 0 ? `北纬${item.lat}` : `南纬${-item.lat}`
+                            }}°</el-descriptions-item>
                             <el-descriptions-item label="描述">{{ item.tag_sesc }}
                             </el-descriptions-item>
                             <el-descriptions-item label="图片"><img :src="item.imgSrc" style="width:175px;height:100px;"
-                                    alt="" /></el-descriptions-item>
+                                    alt="图片加载失败" /></el-descriptions-item>
                         </el-descriptions>
                     </bm-info-window>
                 </bm-marker>
@@ -63,7 +66,7 @@ export default {
         };
     },
     created() {
-
+        this.update()
     },
     mounted() {
         window.sessionStorage.setItem('historyList', JSON.stringify([]))
@@ -100,6 +103,18 @@ export default {
     },
     watch: {},
     methods: {
+        update() {
+            axios({
+                method: 'get',
+                url: 'http://localhost:8080/api/v1/news/title',
+                params: { key: '', nums: 10 }
+            }).then(response => {
+                this.$store.state.news = response.data
+            },
+                error => {
+                    this.$store.state.news = error.message
+                });
+        },
         changeType() {
             this.projects = []
             for (let i = 0; i < this.projectPoints.length; i++) {
@@ -133,8 +148,8 @@ export default {
             });
         },
         locationSuccess(point) {
-            console.log(point.point.lng,point.point.lat);
-            this.$bus.$emit('location',point.point)
+            console.log(point.point.lng, point.point.lat);
+            this.$bus.$emit('location', point.point)
         },
     },
     components: { TagForm }

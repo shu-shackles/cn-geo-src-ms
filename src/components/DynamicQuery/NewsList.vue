@@ -33,7 +33,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            listData: [],
+            listData: this.$store.state.news,
             pagination: {
                 onChange: page => {
                     console.log(page);
@@ -45,7 +45,12 @@ export default {
         };
     },
     mounted() {
-        this.update()
+        console.log(this.$store.state.news)
+        if(!this.$store.state.news){
+            this.update()
+        }else{
+            this.loading = false
+        }
         this.$bus.$on('search', (data) => {
             this.queryString = data
             this.update()
@@ -64,7 +69,7 @@ export default {
             axios({
                 method: 'get',
                 url: 'http://localhost:8080/api/v1/news/title',
-                params: { key: this.queryString, nums: 5 }
+                params: { key: this.queryString, nums: 10 }
             }).then(response => {
                 console.log(response.data)
                 this.listData = response.data

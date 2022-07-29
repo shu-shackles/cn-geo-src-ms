@@ -59,7 +59,7 @@ export default {
         return {
             show: false,
             image: undefined,
-            userInfo: JSON.parse(this.$store.state.data),
+            userInfo: this.$store.state.data,
             ruleForm: {
                 lng: undefined,
                 lat: undefined,
@@ -93,7 +93,7 @@ export default {
     },
     watch: {
         show() {
-            this.userInfo = JSON.parse(this.$store.state.data)
+            this.userInfo = this.$store.state.data
         }
     },
     mounted() {
