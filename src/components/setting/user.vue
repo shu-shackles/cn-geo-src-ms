@@ -253,11 +253,14 @@
             if(type!=='1'){
               area = "----"
             }
+            if(area == null){
+              area = "----"
+            }
         this.dialogFormVisible = false;
         this.axios.post('setinfo_type_area', {
-            uid: this.form.uid,
-            type: this.form.type,
-            area:this.form.area
+            uid: uid,
+            type: type,
+            area:area
         })
         .then(res => {
             if (res.status === 200) {
