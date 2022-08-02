@@ -246,6 +246,13 @@
           });
           return
         }
+            var uid=this.form.uid;
+            var type=this.form.type;
+            
+            var area=this.form.area;
+            if(type!=='1'){
+              area = "----"
+            }
         this.dialogFormVisible = false;
         this.axios.post('setinfo_type_area', {
             uid: this.form.uid,
