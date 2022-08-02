@@ -14,6 +14,7 @@ class SelectImageItem(BaseModel):
 async def image_upload(file: UploadFile):
     image_bytes = file.file.read()
     image_name = file.filename
+    # 避免重名
     i = 1
     while os.path.exists(f'images/{image_name}({i})'):
         i = i + 1

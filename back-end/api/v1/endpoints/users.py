@@ -43,6 +43,7 @@ class DeleteItem(BaseModel):
     uid: int
 
 
+# 从offset行开始查询count行
 @users.get("/info/{offset}/{count}", summary="查询用户表")
 async def user_info(offset, count):
     sql_result = user.user_info(offset, count)
@@ -59,15 +60,18 @@ async def user_info_name(username):
 
 @users.post('/setinfo', summary="修改用户")
 async def user_setinfo(item: SetInfoItem):
+    # 不修改密码
     if item.password == user.get_password_uid(item.uid):
         if user.user_setinfotype(item.type, item.uid) and user.user_setinfoarea(item.area, item.uid):
             return "修改成功"
         else:
             return "修改失败"
+    # 修改密码需要验证格式
     if len(item.password) > 16:
         return "密码长度大于16位"
     if len(item.password) < 6:
         return "密码长度小于6位"
+    # 加密
     item.password = get_password_hash(item.password)
     if user.user_setinfo(item.type, item.password, item.area, item.uid):
         return "修改成功"
