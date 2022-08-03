@@ -1,14 +1,27 @@
 from models.db import con
 
 
+# 处理字符串%
+def change_desc(desc: str):
+    desc_list = list(desc)
+    i = 0
+    while i < len(desc_list):
+        if desc_list[i] == '%':
+            desc_list.insert(i, '%')
+            i = i+1
+        i = i+1
+    desc = ''.join(desc_list)
+    return desc
+
+
 # 上传到已审核表
 def tag_upload(area, uid, time, lng, lat, etype, title, desc, imgSrc):
     con.execute(f'insert into tags (area, uid, lng, lat, title, `desc`, etype, time, imgSrc) '
-                f'values (\'{area}\', {uid}, {lng}, {lat}, \'{title}\', \'{desc}\', {etype}, \'{time}\', \'{imgSrc}\')')
+                f'values (\'{area}\', {uid}, {lng}, {lat}, \'{title}\', \'{desc}\', \'{etype}\', \'{time}\', \'{imgSrc}\')')
     # 检验数据库中是否存在
     sql_result = con.execute(
         f'select * from tags where area = \'{area}\' and uid = {uid} and lng = {lng} and lat = {lat} '
-        f'and title =\'{title}\' and `desc` = \'{desc}\' and etype = {etype} and time = \'{time}\' and '
+        f'and title =\'{title}\' and `desc` = \'{desc}\' and etype = \'{etype}\' and time = \'{time}\' and '
         f'imgSrc = \'{imgSrc}\'')
     if sql_result.all():
         return True
@@ -19,11 +32,11 @@ def tag_upload(area, uid, time, lng, lat, etype, title, desc, imgSrc):
 # 上传到待审核表
 def tag_upload_informal(area, uid, time, lng, lat, etype, title, desc, imgSrc):
     con.execute(f'insert into informal_tags (area, uid, lng, lat, title, `desc`, etype, time, imgSrc) '
-                f'values (\'{area}\', {uid}, {lng}, {lat}, \'{title}\', \'{desc}\', {etype}, \'{time}\', \'{imgSrc}\')')
+                f'values (\'{area}\', {uid}, {lng}, {lat}, \'{title}\', \'{desc}\', \'{etype}\', \'{time}\', \'{imgSrc}\')')
     # 检验数据库中是否存在
     sql_result = con.execute(
         f'select * from informal_tags where area = \'{area}\' and uid = {uid} and lng = {lng} and lat = {lat} '
-        f'and title =\'{title}\' and `desc` = \'{desc}\' and etype = {etype} and time = \'{time}\' and '
+        f'and title =\'{title}\' and `desc` = \'{desc}\' and etype = \'{etype}\' and time = \'{time}\' and '
         f'imgSrc = \'{imgSrc}\'')
     if sql_result.all():
         return True

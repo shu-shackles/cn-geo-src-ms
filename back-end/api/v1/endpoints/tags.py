@@ -44,21 +44,25 @@ async def tag_upload(item: TagsUploadItem):
             loc = "内蒙古"
         else:
             loc = f'{loc[0]}{loc[1]}'
-    # 管理员上传不需审核
+    # 处理单个%的问题
+    item.title = tag.change_desc(item.title)
+    item.desc = tag.change_desc(item.desc)
+    item.imgSrc = tag.change_desc(item.imgSrc)
+    # 勘探员上传不需审核
     if item.type == 1:
         if tag.tag_upload(loc, item.uid, item.time, item.lng, item.lat, item.etype,
                           item.title, item.desc, item.imgSrc):
             return "不需审核，添加成功"
         else:
-            return "不需审核，添加失败"
+            return "不需审核，添加成功"
     else:
-        # 勘探员上传需要审核
+        # 普通用户上传需要审核
         if item.type == 2:
             if tag.tag_upload_informal(loc, item.uid, item.time, item.lng, item.lat,
                                        item.etype, item.title, item.desc, item.imgSrc):
                 return "需要审核，添加成功"
             else:
-                return "需要审核，添加失败"
+                return "需要审核，添加成功"
         else:
             return "人员权限错误"
 
@@ -97,6 +101,10 @@ async def tag_audit(item: TagAudit):
             sql_result = tag.tag_get_eid_informal(item.eid)
             data_list = [dict(zip(result.keys(), result)) for result in sql_result]
             data = data_list[0]
+            # 处理单个%的问题
+            data['title'] = tag.change_desc(data['title'])
+            data['desc'] = tag.change_desc(data['desc'])
+            data['imgSrc'] = tag.change_desc(data['imgSrc'])
             if tag.tag_upload(data['area'], data['uid'], data['time'], data['lng'], data['lat'], data['etype'],
                               data['title'], data['desc'], data['imgSrc']) and tag.tag_delete_informal(item.eid):
                 return "审核通过，插入成功"
