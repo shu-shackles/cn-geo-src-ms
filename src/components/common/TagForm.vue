@@ -23,12 +23,12 @@
                 </el-form-item>
                 <el-form-item label="类型" prop="etype">
                     <el-select v-model="ruleForm.etype" placeholder="请选择类型" size="small">
-                        <el-option label="动物" :value="2"></el-option>
-                        <el-option label="植物" :value="3"></el-option>
-                        <el-option label="景观" :value="4"></el-option>
-                        <el-option label="矿物" :value="5"></el-option>
-                        <el-option label="事件" :value="6"></el-option>
-                        <el-option label="其他" :value="1"></el-option>
+                        <el-option label="动物" :value="1"></el-option>
+                        <el-option label="植物" :value="2"></el-option>
+                        <el-option label="景观" :value="3"></el-option>
+                        <el-option label="矿物" :value="4"></el-option>
+                        <el-option label="事件" :value="5"></el-option>
+                        <el-option label="其他" :value="0"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop="desc">
@@ -132,7 +132,7 @@ export default {
                             }else{
                                 this.backPage()
                             }
-                            
+
                         })
                         .catch(error=> {
                             console.log(error);
