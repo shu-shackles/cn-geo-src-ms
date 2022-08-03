@@ -36,8 +36,8 @@ def get_password_uid(uid):
 
 # 插入新用户
 def insert(name, password, _id, id_name):
-    con.execute(f'insert into users(name, password, type, ID, IDNAME) values(\'{name}\', \'{password}\', 2 ,\'{_id}\','
-                f' \'{id_name}\')')
+    con.execute(f'insert into users(name, password, type, ID, IDNAME) values(\'{name}\', \'{password}\', \'2\', '
+                f'\'{_id}\', \'{id_name}\')')
     # 检查插入是否成功
     sql_result = con.execute(f'select uid from users where name=\'{name}\' and password= \'{password}\'')
     if sql_result.all():
