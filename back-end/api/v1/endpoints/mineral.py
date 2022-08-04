@@ -50,16 +50,3 @@ def get_type(type):
     data = [dict(zip(result.keys(), result)) for result in sql_result]
     return data
 
-
-# coal(100M tons)
-
-
-# sql_result = con.execute(f'SELECT * FROM mineral_resources')
-# data_list = sql_result.all()
-# result1 = []
-# result2 = []
-# for data in data_list:
-#     result1.append(data[0])
-#     result2.append(data[type])
-# result3 = list(zip(result1, result2))
-# return result3

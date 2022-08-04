@@ -104,4 +104,4 @@ def user_delete(uid):
 
 # 查询所有用户
 def user_all():
-    return con.execute(f'select * from users where name <> "admin"')
+    return con.execute(f'select * from users where type <> "0"')

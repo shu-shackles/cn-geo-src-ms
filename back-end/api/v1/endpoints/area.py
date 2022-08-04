@@ -61,10 +61,3 @@ def delete_area(area):
     else:
         return "区域不存在"
 
-# 根据获取到的区域名称返回区域内所有点位
-@area.get("/areaBoundaries", summary="区域内点位")
-def get_single(area):
-    sql_result = con.execute(
-        f'SELECT lng, lat FROM boundaries WHERE area=\'{area}\' ORDER BY `order`')
-    data = [dict(zip(result.keys(), result)) for result in sql_result]
-    return data
