@@ -7,19 +7,19 @@
         (pageInfo.currentPage - 1) * pageInfo.pageSize,
         pageInfo.currentPage * pageInfo.pageSize
       )" style="width: 100%" :default-sort = "{prop: 'eid', order: 'ascending'}" >
-    <el-table-column prop="eid" sortable label="标记ID" width="150"></el-table-column>
-    <el-table-column prop="uid" label="UID"  width="100"></el-table-column>
+    <el-table-column prop="eid" sortable label="标记ID" align="center" width="150"></el-table-column>
+    <el-table-column prop="uid" label="UID"  width="80"></el-table-column>
 
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
-    <el-table-column prop="time" :formatter="timeFormat" label="提交时间">
+    <el-table-column prop="time" align="center" width="260" :formatter="timeFormat" label="提交时间">
     <template slot-scope="scope">
         <i class="el-icon-time"></i>
         <span style="margin-left: 10px" >{{ scope.row.time.replace('T',' ') }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="title" label="标题"></el-table-column>
-    <el-table-column prop="tag_sesc" label="描述"></el-table-column>
-    <el-table-column prop="enentype" label="类型">
+    <el-table-column prop="title" label="标题" align="center" width="200"></el-table-column>
+    <el-table-column prop="tag_sesc" label="描述" header-align="center" width="260"></el-table-column>
+    <el-table-column prop="enentype" align="center" label="类型" width="180">
         <template slot-scope="scope">
             <el-tag size="medium">{{ scope.row.enentype }}</el-tag>
         </template>
@@ -27,17 +27,25 @@
     </el-table-column>
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
     <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
-    <el-table-column label="详细信息" width="150">
+    <el-table-column label="详细信息" align="center" width="150">
       <template slot-scope="scope">
 
         <el-button
           size="mini"
           type="warning"
+          icon="el-icon-s-promotion"
           @click="clickEdit(scope.$index, scope.row)">详情
         </el-button>
         <el-dialog title="标记信息" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-        <el-descriptions class="margin-top" title="标记详情" :column="3" :size="size" border>
+        <el-descriptions class="margin-top" 
+          title="标记详情" 
+          :column="2" 
+          :size="size" 
+          labelStyle="word-break:keep-all" 
+          contentStyle="max-width: 240px; word-break: break-all"
+          border
+          >
             <template slot="extra">
                 <el-button :disabled="btnChangeEnable" type="success" @click="auditSuc(form.eid)" size="small">审核通过</el-button>
                 <el-button :disabled="btnChangeEnable" type="danger" @click="auditErr(form.eid)" size="small">审核失败</el-button>
@@ -122,12 +130,12 @@
   </el-table>
   
   </div>
-<div class="block" style="  margin-bottom: 0px;background-color: #fff;">
+<div class="block" style="background-color: #fff;position:absolute;bottom: 10px;left:0px;right: 0px;">
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
       :total="pageInfo.pageTotal"
-      :page-sizes="[ 10, 8, 5]"
+      :page-sizes="[ 4, 2, 1]"
       :page-size="pageInfo.pageSize"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -146,7 +154,7 @@
         //分页
       pageInfo: {
         currentPage: 1,
-        pageSize: 10, //每页的初始数量
+        pageSize: 4, //每页的初始数量
         pageTotal: 6, //总页数
       },
       btnChangeEnable: false,
@@ -372,7 +380,7 @@
   // background-color: rgb(198, 219, 212);
   margin: 0px 0px 0px 20px;
   padding: 0px;
-  height: 95.5%;
+  height: 100%;
   }
   .right{
     // height: 30px;

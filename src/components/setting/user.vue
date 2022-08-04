@@ -16,18 +16,18 @@
         (pageInfo.currentPage - 1) * pageInfo.pageSize,
         pageInfo.currentPage * pageInfo.pageSize
       )"  :header-cell-style="{background:'#eee',color:black}" style="width: 100%" :default-sort = "{prop: 'uid', order: 'ascending'} "  >
-    <el-table-column  prop="uid" label="UID" sortable width="120"></el-table-column>
-    <el-table-column  prop="name" label="用户名称"  width="150">
+    <el-table-column  prop="uid" label="UID" align="center" sortable width="180"></el-table-column>
+    <el-table-column  prop="name" label="用户名称" align="center"  width="120">
 
     </el-table-column>
     <!-- <el-table-column prop="password" label="用户密码"></el-table-column> -->
     <el-table-column prop="type" label="用户类型" align="center" :formatter="typeFormat"></el-table-column>
-    <el-table-column prop="area" :formatter="areaFormat" label="地区" width="150">
+    <el-table-column prop="area" :formatter="areaFormat" label="地区" align="center"   width="150">
     </el-table-column>
-    <el-table-column prop="IDName" label="姓名" width="150">
+    <el-table-column prop="IDName" label="姓名" align="center" width="150">
 
     </el-table-column>
-    <el-table-column prop="ID" label="身份证号"></el-table-column>
+    <el-table-column prop="ID" align="center" label="身份证号"></el-table-column>
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
     <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
     <el-table-column label="操作" width="150">
@@ -84,12 +84,12 @@
 
   </div>
   
-  <div class="block" style=" background-color: #fff;">
+  <div class="block" style=" background-color: #fff;position:absolute;bottom: 10px;left:0px;right: 0px;">
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
       :total="pageInfo.pageTotal"
-      :page-sizes="[12, 10, 8, 5]"
+      :page-sizes="[ 10, 8, 5]"
       :page-size="pageInfo.pageSize"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -109,7 +109,7 @@
       //分页
       pageInfo: {
         currentPage: 1,
-        pageSize: 12, //每页的初始数量
+        pageSize: 10, //每页的初始数量
         pageTotal: 2, //总页数
       },
       inputName:'',
@@ -342,7 +342,7 @@
   // background-color: rgb(198, 219, 212);
   margin: 0px 0px 0px 20px;
   padding: 0px;
-  height: 95.5%;
+  height: 100%;
   }
   .right{
     // height: 30px;
