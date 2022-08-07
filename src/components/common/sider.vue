@@ -23,13 +23,13 @@
                         </el-form-item>
 
                         <el-form-item  label="确认密码" prop="check_pass">
-                            <el-input  type="password" v-model="form.check_pass"  placeholder="请再次输入密码" autocomplete="off">
+                            <el-input  type="password" v-model="form.check_pass" @input="complete"  placeholder="请再次输入密码" autocomplete="off">
                             <i slot="prefix" class="iconfont icon-lock"></i>
                             </el-input>
                         </el-form-item>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
-                            <el-button @click="centerDialogVisible = false">取 消</el-button>
+                            <el-button @click="unChangePW()">取 消</el-button>
                             <el-button type="primary" @click="changePW()">确 定</el-button>
                         </span>
                     </el-dialog>
@@ -100,10 +100,10 @@ export default {
             rules:{
                 password:[
                     {validator:validatePass,trigger:'blur'},
-                    { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: 'blur' }
+                    { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: ['blur', "change"] }
                 ],
                 check_pass:[
-                    {validator:validatePass2 ,trigger:'blur'}
+                    {validator:validatePass2 ,trigger:['blur', "change"]}
                 ]
             }
         }
@@ -128,6 +128,15 @@ export default {
         },
     },
     methods: {
+     
+        complete(e) {
+            if(this.form.check_pass.length>=0) {
+                
+                e.srcElement.blur(); // 让输入框主动失焦
+            }
+        },
+
+
         // 导航栏显示与否
         showMenus() {
             this.showMenu = !this.showMenu
@@ -171,6 +180,11 @@ export default {
             this.$router.push({ name: 'index' })
         },
         changeTitle() { },
+        unChangePW(){
+            this.centerDialogVisible = false;
+            this.form.password = '';
+            this.form.check_pass = '';
+        },
         changePW() {
             this.centerDialogVisible = false;
             var uid = this.$store.state.data.uid;
@@ -181,9 +195,13 @@ export default {
             })
                 .then(res => {
                     this.$message.success('密码修改成功！');
+                    this.form.password = '';
+                    this.form.check_pass = '';
                 })
                 .catch(err => {
                     this.$message.error('密码修改失败！');
+                    this.form.password = '';
+                    this.form.check_pass = '';
                 })
         }
 

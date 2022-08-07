@@ -30,16 +30,18 @@
     <el-table-column prop="ID" align="center" label="身份证号"></el-table-column>
     <!-- <el-table-column prop="add" label="创建时间" sortable></el-table-column>
     <el-table-column prop="change" label="修改时间" sortable></el-table-column> -->
-    <el-table-column label="操作" width="150">
+    <el-table-column label="操作" header-align="center" width="200">
       <template slot-scope="scope">
         <el-button
           size="mini"
           type="danger"
+          icon="el-icon-delete"
           @click="handleDelete(scope.$index, scope.row)">删除
         </el-button>
         <el-button
           size="mini"
           type="warning"
+          icon="el-icon-edit"
           @click="clickEdit(scope.$index, scope.row)">编辑
         </el-button>
         <el-dialog title="编辑用户信息" :visible.sync="dialogFormVisible">
@@ -120,7 +122,7 @@
         name: '',
         password: '',
         type: '',
-        area: '',
+        area: '----',
         IDName: '',
         ID: ''
       },
@@ -250,10 +252,11 @@
             var type=this.form.type;
             
             var area=this.form.area;
+            console.log("area:"+area)
             if(type!=='1'){
               area = "----"
             }
-            if(area == null){
+            if(area == null || area == ""){
               area = "----"
             }
         this.dialogFormVisible = false;
