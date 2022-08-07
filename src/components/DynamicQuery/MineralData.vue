@@ -18,7 +18,6 @@
 <script>
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
-import * as Points from "../monitor/points";
 import MasterMap from "./MasterMap.vue"
 import Rank from "./Rank.vue"
 import axios from 'axios'

@@ -3,34 +3,6 @@
         <div :class="'nav_title clearfix left1'">
             <p class='survey'>{{ name }}</p>
             <div class='content'>
-                <!-- <div class="float_left" v-if="headerShow[0]">
-            <span>时间：</span>
-            <el-date-picker 
-              size="mini"             
-              v-model="time"
-              type="datetimerange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              format="yyyy-MM-dd"
-              :picker-options="pickerOptions"
-              @change="changeTime">
-            </el-date-picker>
-          </div> -->
-                <!-- <div class="float_left" v-if="headerShow[1]">
-            <span>滑坡区：</span>
-            <el-select
-              size="mini"
-              v-model="queryData.projectId"
-              @change="changeProject">
-              <el-option
-                v-for="item in projectList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </div> -->
                 <div class="float_left" v-if="headerShow[0]">
                     <span>类型：</span>
                     <el-select size="medium" v-model="queryData.tableType" @change="changeTableType">
@@ -53,69 +25,6 @@
                         </el-option>
                     </el-select>
                 </div>
-                <!-- <div class="float_left" v-if="headerShow[3]">
-                    <span>监测点：</span>
-                    <el-cascader size="mini" class="select-md-w" expand-trigger="hover" v-model="initPoint"
-                        :options="pointList" @change="changePoint">
-                    </el-cascader>
-                </div>
-                <div class="float_left" v-if="headerShow[4]">
-                    <span>类型：</span>
-                    <el-select size="mini" v-model="queryData.graphType" @change="changeTableType">
-                        <el-option v-for="item in GraphTypeList" :key="item.value" :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-                <div class="float_right flex-nowrap right_switch" v-if="contrastStatus">
-                    <span>对比：</span>
-                    <span class="padding-right-md">
-                        <el-switch v-model="switchStatus" active-color="#3C76FF" inactive-color="#EDEDED"
-                            @change="onContrast">
-                        </el-switch>
-                    </span>
-                    <transition name="slide-fade">
-                        <div v-if="switchStatus" class="flex-nowrap">
-                            <el-select v-model="checkId" placeholder="请选择" @change="updateCheck" size="mini">
-                                <el-option v-for="(item, index) in options" :key="index" :label="item.label"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select>
-                            <span v-show="checked[0]" class="padding-left-10">
-                                <label>
-                                    <div v-if="!showPick" class="a_pick font-theme">与其它时间段对比</div>
-                                    <el-date-picker size="mini" class="clearable" v-model="timeVal" type="datetimerange"
-                                        :picker-options="pickerOptions" range-separator="-" start-placeholder="开始日期"
-                                        end-placeholder="结束日期" align="right" format="yyyy-MM-dd" @change="changeEnd">
-                                    </el-date-picker>
-                                </label>
-                            </span>
-                            <span class="padding-left-10" v-if="checked[1]">
-                                <div class="el-select">
-                                    <el-select size="mini" class="font-theme" placeholder="选择对比类型"
-                                        v-model="queryData.compareTableType" @change="changeTable_other">
-                                        <el-option v-for="item in TableTypeList" :key="item.value" :label="item.label"
-                                            :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </div>
-                            </span>
-                        </div>
-                    </transition>
-                </div>
-                <div class="float_right flex-nowrap upload" v-if="headerShow[5]">
-                    <el-upload ref="upload" action="https://jsonplaceholder.typicode.com/posts/" :multiple='true'
-                        :auto-upload="false">
-                        <el-button slot="trigger" size="mini" type="primary">导入</el-button>
-                        <el-button style="margin-right: 80px;" size="mini" type="primary" @click="submitUpload">上传
-                        </el-button>
-                    </el-upload>
-
-                </div>
-                <div class="float_right flex-nowrap upload" v-if="headerShow[6]">
-                    <el-button style="margin-left: 10px;" size="mini" type="success" @click="submitUpload">下载
-                    </el-button>
-                </div> -->
             </div>
         </div>
     </div>

@@ -27,7 +27,6 @@
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
 import MineralChart from "../common/chart/MineralChart.vue";
-import * as Points from "./points";
 import axios from 'axios';
 
 export default {

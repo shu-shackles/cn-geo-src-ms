@@ -24,7 +24,6 @@
 import * as consts from "../../common/const";
 import * as Contents from "../../common/content";
 import ForestChart from "../common/chart/ForestChart.vue";
-import * as Points from "./points";
 import axios from 'axios';
 
 export default {
@@ -66,9 +65,6 @@ export default {
     created() {
         this.header = consts.getHeaderConfig("ForestAnalysis");
         this.page = consts.getPageConfig("two");
-        // this.contens=Contents.getContent('table')
-        // this.one=this.contens.one
-        //this.getTableData();
         this.getPointsData();
     },
     mounted() {
