@@ -138,8 +138,7 @@ import {test} from "../test.js"
                   this.$router.push('/')
                 }else{
                   // this.$message.error('注册失败: '+res.data,{center:true})
-                  this.$alert('注册失败: '+res.data,{type:"error"}
-                      )
+                  this.$alert('注册失败: '+res.data,{type:"error"})
                 }
               })
               .catch(err=>{
@@ -175,7 +174,7 @@ import {test} from "../test.js"
               else{
                 this.IDValid = false;
                 console.log(this.IDValid);
-                this.$alert('身份核验失败，请重试！:',{type:"error"});
+                this.$alert('身份核验失败，请重试！',{type:"error"});
               }
             })
           

@@ -14,7 +14,7 @@
                             {{ $store.state.data.name }}</div>
                     </div>
                     <el-dialog :modal-append-to-body="false" title="修改密码" :visible.sync="centerDialogVisible"
-                        width="30%" center>
+                        width="30%" center :append-to-body="true">
                         <el-form ref="form" status-icon :model="form" :rules="rules">
                         <el-form-item label="密码" prop="password">
                         <el-input  type="password" v-model="form.password" placeholder="请输入密码" autocomplete="off">
@@ -23,7 +23,7 @@
                         </el-form-item>
 
                         <el-form-item  label="确认密码" prop="check_pass">
-                            <el-input  type="password" v-model="form.check_pass" @input="complete"  placeholder="请再次输入密码" autocomplete="off">
+                            <el-input  type="password" v-model="form.check_pass"   placeholder="请再次输入密码" autocomplete="off">
                             <i slot="prefix" class="iconfont icon-lock"></i>
                             </el-input>
                         </el-form-item>
@@ -128,14 +128,6 @@ export default {
         },
     },
     methods: {
-     
-        complete(e) {
-            if(this.form.check_pass.length>=0) {
-                
-                e.srcElement.blur(); // 让输入框主动失焦
-            }
-        },
-
 
         // 导航栏显示与否
         showMenus() {
@@ -194,7 +186,15 @@ export default {
                 "uid": uid
             })
                 .then(res => {
-                    this.$message.success('密码修改成功！');
+                    console.log(res);
+                    console.log(1);
+                    if(res.status==200){
+                        this.$message.success('密码修改成功！');
+                    }
+                    else{
+                        this.$message.error("出现错误："+res.data);
+                    }
+
                     this.form.password = '';
                     this.form.check_pass = '';
                 })

@@ -137,7 +137,7 @@
                             // window.sessionStorage.setItem('IDName', res.data[0].IDName)
                             window.sessionStorage.setItem('data',JSON.stringify(res.data[0]))
                             this.$store.state.data = res.data[0]
-                            this.$message.success('登录成功')
+                            this.$message.success('登录成功！')
                             this.$router.push('/index')
 
                             // console.log(res);
@@ -153,7 +153,7 @@
 
                       }else{
                         console.log(res)
-                        this.$message.error('token返回失败: ')
+                        this.$message.error('登录出现错误：'+res.data)
                         // this.$refs[formName].resetFields()
                       }
                     })
