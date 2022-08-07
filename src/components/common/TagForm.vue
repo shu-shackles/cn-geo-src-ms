@@ -4,7 +4,7 @@
                 class="el-icon-arrow-right"></i></el-button>
         <el-button v-show="!show" type="primary" class='back-button' @click="openPage">提交标记<i
                 class="el-icon-arrow-left"></i></el-button>
-        <el-card style="text-align:left;position:absolute;right:-600px;top:60px;height:590px;width:400px;"
+        <el-card style="text-align:left;position:absolute;right:-600px;top:60px;height:80vh;width:400px;overflow-y: auto;"
             id="tagAddPage">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
                 style="margin-top:0%;margin-left:-50px;margin-right:20px;" hide-required-asterisk="true">
@@ -18,7 +18,7 @@
                         :step="0.01" :min="-90" :max="90">
                     </el-input-number>
                 </el-form-item>
-                <el-form-item label="标题" prop="title">
+                <el-form-item label="标题" prop="title"> 
                     <el-input v-model="ruleForm.title" size="small"></el-input>
                 </el-form-item>
                 <el-form-item label="类型" prop="etype">
@@ -32,17 +32,17 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop="desc">
-                    <el-input type="textarea" v-model="ruleForm.desc" maxlength="100" show-word-limit resize="none">
+                    <el-input type="textarea" v-model="ruleForm.desc" maxlength="100" resize="none">
                     </el-input>
                 </el-form-item>
-                <el-form-item label="图片" prop="imgSrc">
+                <el-form-item label="图片" prop="imgSrc" style="margin-bottom:20px;">
                     <el-upload class="avatar-uploader" action="https://www.imgtp.com/api/upload" :show-file-list="false"
                         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" v-model="ruleForm.imgSrc">
                         <img v-if="ruleForm.imgSrc" :src="ruleForm.imgSrc" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
-                <el-form-item style="margin-top:0px;margin-left:40px;">
+                <el-form-item style="margin-top:0px;margin-left:40px;margin-bottom:-5px;">
                     <el-button type="primary" @click="submitForm('ruleForm')">立即提交</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
