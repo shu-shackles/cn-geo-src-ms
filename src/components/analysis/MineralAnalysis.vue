@@ -78,11 +78,7 @@ export default {
         ['lead', '铅矿（万吨）'], ['silver', '银矿（万吨）'], ['zinc', '锌矿（万吨）']])
         this.header = consts.getHeaderConfig("MineralAnalysis");
         this.page = consts.getPageConfig("two");
-        // this.contens=Contents.getContent('table')
-        // this.one=this.contens.one
-        //this.getTableData();
-        this.getPointsData();
-                axios({
+        axios({
             method: 'get',
             url: 'http://localhost:8080/api/v1/mineralHistory',
         }).then(response => {
@@ -111,10 +107,6 @@ export default {
         filterTag(value, row) {
             return row.format === value;
         },
-        getPointsData() {
-            this.option = Points.onePoints;
-            // this.option=Points.one
-        }
     }
 };
 </script>
