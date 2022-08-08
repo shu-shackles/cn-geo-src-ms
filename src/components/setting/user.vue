@@ -51,7 +51,7 @@
           </el-form-item> -->
           <el-form-item label="用户类型" :label-width="formLabelWidth">
             <el-select v-model="form.type" placeholder="请选择用户类型">
-              <el-option label="管理员" value="0"></el-option>
+              <!-- <el-option label="管理员" value="0"></el-option> -->
               <el-option label="地质勘探员" value="1"></el-option>
               <el-option label="普通用户" value="2"></el-option>
             </el-select>
@@ -320,11 +320,12 @@
         this.dialogFormVisible=true
       },
       Display(){
+        
         if(this.form.type =='1'){
           return false;
         }
         else{
-          this.form.area = "";
+          this.form.area = "----";
           return true;
         }
       }

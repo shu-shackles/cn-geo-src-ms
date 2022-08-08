@@ -74,7 +74,7 @@
             </el-descriptions-item>
             <el-descriptions-item>
             <template slot="label">
-                <i class="el-icon-more"></i>
+                <i class="el-icon-collection"></i>
                 标记类型
             </template>
             <el-tag size="small">{{form.enentype}}</el-tag>
