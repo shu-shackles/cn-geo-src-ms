@@ -285,8 +285,9 @@
       // 删除
       handleDelete(index, row) {
         this.form.uid=row.uid;
+
         console.log(index, row);
-        if(row.uid===1){
+        if(row.type===0){
           this.$message({
           message: '超级管理员不可以删除',
           type: 'error'
@@ -301,7 +302,10 @@
         .then(res => {
             if (res.status === 200) {
               console.log(res);
-              this.userData.splice(index,1)
+              // console.log("index:"+index);
+              this.$message.success(res.data)
+              this.QueryUser();
+              // this.userData.splice(index-1,1);
             }else{
               //如果删除失败，重置表单，重新填写
               //element的消息提示组件

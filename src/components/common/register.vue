@@ -169,7 +169,7 @@ import {test} from "../test.js"
                 //身份核验成功后身份信息不可更改
                 document.getElementById("CardID").setAttribute("readonly",true);
                 document.getElementById("CardIDName").setAttribute("readonly",true);
-                this.$alert('身份核验成功:！',{type:"success"});
+                this.$alert('身份核验成功！',{type:"success"});
               }
               else{
                 this.IDValid = false;
